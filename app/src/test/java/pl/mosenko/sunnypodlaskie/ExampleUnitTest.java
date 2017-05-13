@@ -1,5 +1,8 @@
 package pl.mosenko.sunnypodlaskie;
 
+import android.util.Base64;
+import android.util.Log;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -111,4 +111,16 @@ public class Main {
         this.grndLevel = grndLevel;
     }
 
+    @Override
+    public String toString() {
+        return "Main{" +
+                "temp=" + temp +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                ", tempMin=" + tempMin +
+                ", tempMax=" + tempMax +
+                ", seaLevel=" + seaLevel +
+                ", grndLevel=" + grndLevel +
+                '}';
+    }
 }

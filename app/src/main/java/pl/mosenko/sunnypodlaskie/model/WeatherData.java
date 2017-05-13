@@ -46,4 +46,11 @@ public class WeatherData {
         this.list = list;
     }
 
+    @Override
+    public String toString() {
+        return "WeatherData{" +
+                "cnt=" + cnt +
+                ", list=" + list +
+                '}';
+    }
 }

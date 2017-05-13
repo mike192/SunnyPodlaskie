@@ -137,4 +137,18 @@ public class List {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "List{" +
+                "coord=" + coord +
+                ", sys=" + sys +
+                ", weather=" + weather +
+                ", main=" + main +
+                ", wind=" + wind +
+                ", clouds=" + clouds +
+                ", dt=" + dt +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
