@@ -1,6 +1,7 @@
 package pl.mosenko.sunnypodlaskie;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +19,16 @@ import pl.mosenko.sunnypodlaskie.model.List;
 import pl.mosenko.sunnypodlaskie.model.WeatherData;
 import pl.mosenko.sunnypodlaskie.network.RxWeatherDataAPI;
 
+import static android.R.color.holo_blue_dark;
+
 public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.GetCurrentWeatherDataListCallback {
 
     private final String TAG = MainActivity.class.getSimpleName();
 
     @Inject
     RxWeatherDataAPI rxWeatherDataAPI;
+    @BindView(R.id.swipe_refresh_weather_layout)
+    SwipeRefreshLayout mSwipeRefreshWeatherLayout;
     @BindView(R.id.recyclerview_current_weather)
     RecyclerView mCurrentWeatherRecycyler;
     private CompositeDisposable mCompositeDisposable;
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mCompositeDisposable = new CompositeDisposable();
         getSupportActionBar().setElevation(0f);
         ButterKnife.bind(this);
         ((MainApplication) getApplication()).getMainActivityComponent().inject(this);
@@ -42,7 +48,16 @@ public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.
         mCurrentWeatherRecycyler.setHasFixedSize(true);
         mWeatherAdaper = new WeatherAdaper(this, new ArrayList<>());
         mCurrentWeatherRecycyler.setAdapter(mWeatherAdaper);
-        mCompositeDisposable = new CompositeDisposable();
+        mSwipeRefreshWeatherLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.activated),
+                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorPrimaryDark));
+        mSwipeRefreshWeatherLayout.setOnRefreshListener(() -> updateWeatherData());
+        updateWeatherData();
+    }
+
+    private void updateWeatherData() {
+        mSwipeRefreshWeatherLayout.setRefreshing(true);
         Disposable disposable = rxWeatherDataAPI.getCurrentWeatherData(this);
         mCompositeDisposable.add(disposable);
     }
@@ -58,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.
         for (List list: weatherDataList.getList()) {
             Log.d(TAG, list.toString());
         }
+        mSwipeRefreshWeatherLayout.setRefreshing(false);
        mWeatherAdaper.swapWeatherList(weatherDataList.getList());
     }
 
