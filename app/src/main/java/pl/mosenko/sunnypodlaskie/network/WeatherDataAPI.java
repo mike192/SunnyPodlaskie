@@ -15,6 +15,6 @@ import static android.R.attr.apiKey;
  */
 
 public interface WeatherDataAPI {
-    @GET("data/2.5/group?id=757718,759503,776597,771506,768785,766027,764421,758651,753895,754479,775986,759320,759320,759320,771158,776069&units=metric")
+    @GET("data/2.5/group?id=757718,759503,776597,771506,768785,766027,764421,758651,753895,754479,775986,759320,771158,776069&units=metric")
     Observable<WeatherData> getCurrentWeatherData(@Query("appid") String apiKey);
 }

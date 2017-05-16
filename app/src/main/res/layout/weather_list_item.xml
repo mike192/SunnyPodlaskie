@@ -53,22 +53,10 @@
         android:layout_marginRight="@dimen/temperature_space"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintRight_toLeftOf="@+id/pressure"
-        android:textSize="@dimen/weather_text_size"
-        tools:text="19\u00b0"
-        />
-
-    <TextView
-        android:id="@+id/pressure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:textSize="@dimen/weather_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintRight_toRightOf="parent"
         android:gravity="end"
-        tools:text="1010hPa"
+        android:textSize="@dimen/weather_text_size"
+        tools:text="19\u00b0"
         />
 
 <android.support.constraint.Guideline
