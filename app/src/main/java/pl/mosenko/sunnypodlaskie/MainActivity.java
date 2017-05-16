@@ -15,11 +15,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import pl.mosenko.sunnypodlaskie.model.List;
-import pl.mosenko.sunnypodlaskie.model.WeatherData;
+import pl.mosenko.sunnypodlaskie.dto.List;
+import pl.mosenko.sunnypodlaskie.dto.WeatherData;
 import pl.mosenko.sunnypodlaskie.network.RxWeatherDataAPI;
-
-import static android.R.color.holo_blue_dark;
 
 public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.GetCurrentWeatherDataListCallback {
 

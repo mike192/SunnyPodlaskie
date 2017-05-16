@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie.model;
+package pl.mosenko.sunnypodlaskie.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

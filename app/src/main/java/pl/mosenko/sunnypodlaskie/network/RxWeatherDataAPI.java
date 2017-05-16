@@ -3,7 +3,7 @@ package pl.mosenko.sunnypodlaskie.network;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import pl.mosenko.sunnypodlaskie.model.WeatherData;
+import pl.mosenko.sunnypodlaskie.dto.WeatherData;
 import pl.mosenko.sunnypodlaskie.util.APIKeyProvider;
 
 /**

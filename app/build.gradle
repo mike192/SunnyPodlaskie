@@ -24,6 +24,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "BASEURL", "\"http://api.openweathermap.org/\""
+        buildConfigField "Boolean", "DEBUG", "true"
     }
     buildTypes {
         debug {
@@ -68,5 +69,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     //annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.j256.ormlite:ormlite-android:5.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:support-annotations:25.3.1'
 }

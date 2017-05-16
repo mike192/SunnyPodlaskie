@@ -10,10 +10,8 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import pl.mosenko.sunnypodlaskie.model.List;
+import pl.mosenko.sunnypodlaskie.dto.List;
 import pl.mosenko.sunnypodlaskie.util.WeatherUtil;
-
-import static android.R.attr.x;
 
 /**
  * Created by syk on 15.05.17.
@@ -21,7 +19,7 @@ import static android.R.attr.x;
 
 public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherViewHolder> {
 
-    private java.util.List<pl.mosenko.sunnypodlaskie.model.List> weatherList;
+    private java.util.List<pl.mosenko.sunnypodlaskie.dto.List> weatherList;
     private Context context;
 
     public WeatherAdaper(Context context, java.util.List<List> weatherList) {

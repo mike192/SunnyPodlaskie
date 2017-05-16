@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie.model;
+package pl.mosenko.sunnypodlaskie.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,7 +10,7 @@ public class WeatherData {
     private Integer cnt;
     @SerializedName("list")
     @Expose
-    private java.util.List<pl.mosenko.sunnypodlaskie.model.List> list = null;
+    private java.util.List<pl.mosenko.sunnypodlaskie.dto.List> list = null;
 
     /**
      * No args constructor for use in serialization
@@ -24,7 +24,7 @@ public class WeatherData {
      * @param cnt
      * @param list
      */
-    public WeatherData(Integer cnt, java.util.List<pl.mosenko.sunnypodlaskie.model.List> list) {
+    public WeatherData(Integer cnt, java.util.List<pl.mosenko.sunnypodlaskie.dto.List> list) {
         super();
         this.cnt = cnt;
         this.list = list;
@@ -38,11 +38,11 @@ public class WeatherData {
         this.cnt = cnt;
     }
 
-    public java.util.List<pl.mosenko.sunnypodlaskie.model.List> getList() {
+    public java.util.List<pl.mosenko.sunnypodlaskie.dto.List> getList() {
         return list;
     }
 
-    public void setList(java.util.List<pl.mosenko.sunnypodlaskie.model.List> list) {
+    public void setList(java.util.List<pl.mosenko.sunnypodlaskie.dto.List> list) {
         this.list = list;
     }
 

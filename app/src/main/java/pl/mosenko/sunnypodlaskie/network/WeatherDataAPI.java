@@ -1,14 +1,9 @@
 package pl.mosenko.sunnypodlaskie.network;
 
-import java.util.List;
-
 import io.reactivex.Observable;
-import pl.mosenko.sunnypodlaskie.model.WeatherData;
+import pl.mosenko.sunnypodlaskie.dto.WeatherData;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
-
-import static android.R.attr.apiKey;
 
 /**
  * Created by syk on 11.05.17.
