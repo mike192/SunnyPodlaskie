@@ -5,8 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import java.sql.SQLException;
+
+import pl.mosenko.sunnypodlaskie.BuildConfig;
 
 /**
  * Created by syk on 16.05.17.
@@ -23,12 +29,25 @@ public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
-
+    public void onCreate(@NonNull SQLiteDatabase database, @NonNull ConnectionSource connectionSource) {
+        try {
+            TableUtils.clearTable(connectionSource, WeatherDataEntity.class);
+        } catch (SQLException e) {
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-
+    public void onUpgrade(@NonNull SQLiteDatabase database, @NonNull ConnectionSource connectionSource, int oldVersion, int newVersion) {
+        try {
+            TableUtils.dropTable(connectionSource, WeatherDataEntity.class, true);
+        } catch (SQLException e) {
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        onCreate(database, connectionSource);
     }
 }
