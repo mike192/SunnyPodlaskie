@@ -13,6 +13,7 @@ import android.util.Log;
 import java.sql.SQLException;
 
 import pl.mosenko.sunnypodlaskie.BuildConfig;
+import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 
 /**
  * Created by syk on 16.05.17.

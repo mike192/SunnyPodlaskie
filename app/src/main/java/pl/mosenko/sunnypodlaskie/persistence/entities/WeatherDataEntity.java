@@ -1,11 +1,13 @@
-package pl.mosenko.sunnypodlaskie.persistence;
+package pl.mosenko.sunnypodlaskie.persistence.entities;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-import static pl.mosenko.sunnypodlaskie.persistence.WeatherDataEntity.TABLE_NAME;
+import pl.mosenko.sunnypodlaskie.persistence.dao.DAOWeatherDataEntity;
+
+import static pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity.TABLE_NAME;
 
 /**
  * Created by syk on 16.05.17.
