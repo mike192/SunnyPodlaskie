@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie.network;
+package pl.mosenko.sunnypodlaskie.module;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -7,6 +7,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import pl.mosenko.sunnypodlaskie.BuildConfig;
+import pl.mosenko.sunnypodlaskie.network.RxWeatherDataAPI;
+import pl.mosenko.sunnypodlaskie.network.WeatherDataAPI;
 import pl.mosenko.sunnypodlaskie.util.APIKeyProvider;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

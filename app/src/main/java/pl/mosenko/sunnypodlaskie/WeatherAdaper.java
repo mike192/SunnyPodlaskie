@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.mosenko.sunnypodlaskie.dto.List;
+import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.util.WeatherUtil;
 
 /**
@@ -19,12 +22,12 @@ import pl.mosenko.sunnypodlaskie.util.WeatherUtil;
 
 public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherViewHolder> {
 
-    private java.util.List<pl.mosenko.sunnypodlaskie.dto.List> weatherList;
+    private java.util.List<WeatherDataEntity> weatherList;
     private Context context;
 
-    public WeatherAdaper(Context context, java.util.List<List> weatherList) {
+    public WeatherAdaper(Context context) {
         this.context = context;
-        this.weatherList = weatherList;
+        this.weatherList = new ArrayList<WeatherDataEntity>();
     }
 
     @Override
@@ -36,12 +39,12 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
 
     @Override
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
-        List weatherInfo = weatherList.get(position);
-        int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherInfo.getWeather().get(0).getIcon());
+        WeatherDataEntity weatherInfo = weatherList.get(position);
+        int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherInfo.getIconKey());
         holder.weatherIcon.setImageResource(iconResource);
-        holder.city.setText(weatherInfo.getName());
-        holder.temperature.setText(String.format("%2.1f", weatherInfo.getMain().getTemp())  + "\u00b0");
-        holder.weatherDescription.setText(weatherInfo.getWeather().get(0).getDescription());
+        holder.city.setText(weatherInfo.getCity());
+        holder.temperature.setText(String.format("%2.1f", weatherInfo.getTemperature())  + "\u00b0");
+        holder.weatherDescription.setText(weatherInfo.getDescription());
     }
 
     @Override
@@ -49,7 +52,7 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
         return weatherList.size();
     }
 
-    public void swapWeatherList(java.util.List<List> weatherList) {
+    public void swapWeatherList(java.util.List<WeatherDataEntity> weatherList) {
         this.weatherList = weatherList;
         notifyDataSetChanged();
     }

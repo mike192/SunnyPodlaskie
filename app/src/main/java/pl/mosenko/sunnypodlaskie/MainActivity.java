@@ -1,6 +1,7 @@
 package pl.mosenko.sunnypodlaskie;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,11 +14,23 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import pl.mosenko.sunnypodlaskie.dto.List;
 import pl.mosenko.sunnypodlaskie.dto.WeatherData;
 import pl.mosenko.sunnypodlaskie.network.RxWeatherDataAPI;
+import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
+import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
+import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter;
+import pl.mosenko.sunnypodlaskie.util.WeatherUtil;
+
+import static pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter.convertToWeatherDataEntityList;
 
 public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.GetCurrentWeatherDataListCallback {
 
@@ -25,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.
 
     @Inject
     RxWeatherDataAPI rxWeatherDataAPI;
+    @Inject
+    WeatherDataEntityDAO weatherDataEntityDAO;
+
     @BindView(R.id.swipe_refresh_weather_layout)
     SwipeRefreshLayout mSwipeRefreshWeatherLayout;
     @BindView(R.id.recyclerview_current_weather)
@@ -40,24 +56,32 @@ public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.
         getSupportActionBar().setElevation(0f);
         ButterKnife.bind(this);
         ((MainApplication) getApplication()).getMainActivityComponent().inject(this);
+        customizeRecyclerView();
+        mSwipeRefreshWeatherLayout.setOnRefreshListener(() -> updateWeatherData());
+        updateWeatherData();
+    }
+
+    private void customizeRecyclerView() {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mCurrentWeatherRecycyler.setLayoutManager(layoutManager);
         mCurrentWeatherRecycyler.setHasFixedSize(true);
-        mWeatherAdaper = new WeatherAdaper(this, new ArrayList<>());
+        mWeatherAdaper = new WeatherAdaper(this);
         mCurrentWeatherRecycyler.setAdapter(mWeatherAdaper);
         mSwipeRefreshWeatherLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
                 getResources().getColor(R.color.activated),
                 getResources().getColor(R.color.colorPrimary),
                 getResources().getColor(R.color.colorPrimaryDark));
-        mSwipeRefreshWeatherLayout.setOnRefreshListener(() -> updateWeatherData());
-        updateWeatherData();
     }
 
     private void updateWeatherData() {
         mSwipeRefreshWeatherLayout.setRefreshing(true);
-        Disposable disposable = rxWeatherDataAPI.getCurrentWeatherData(this);
-        mCompositeDisposable.add(disposable);
+        //TODO firstly check if data are current
+        Disposable disposableDao = weatherDataEntityDAO.rxQueryForAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(p -> showWeatherData(p), t -> onError(t));
+        mCompositeDisposable.add(disposableDao);
     }
 
     @Override
@@ -66,13 +90,43 @@ public class MainActivity extends AppCompatActivity implements RxWeatherDataAPI.
         mCompositeDisposable.dispose();
     }
 
+    private void showWeatherData(java.util.List<WeatherDataEntity> weatherDataEntityList) {
+        if (weatherDataEntityList == null || weatherDataEntityList.isEmpty()) {
+            synchronizeWeatherData();
+        } else {
+            updateWeatherDataRecyclerView(weatherDataEntityList);
+        }
+        mSwipeRefreshWeatherLayout.setRefreshing(false);
+    }
+
+    private void synchronizeWeatherData() {
+        Disposable disposable = rxWeatherDataAPI.getCurrentWeatherData(this);
+        mCompositeDisposable.add(disposable);
+    }
+
     @Override
-    public void onSuccess(WeatherData weatherDataList) {
+    public void onSuccess(final WeatherData weatherDataList) {
+        mSwipeRefreshWeatherLayout.setRefreshing(false);
         for (List list: weatherDataList.getList()) {
             Log.d(TAG, list.toString());
         }
-        mSwipeRefreshWeatherLayout.setRefreshing(false);
-       mWeatherAdaper.swapWeatherList(weatherDataList.getList());
+       Disposable disposable = Observable.fromCallable(() -> updateWeatherDataOnDatabase(weatherDataList))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(p -> updateWeatherDataRecyclerView(p), e -> onError(e));
+
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void updateWeatherDataRecyclerView(java.util.List<WeatherDataEntity> weatherDataEntityList) {
+        mWeatherAdaper.swapWeatherList(weatherDataEntityList);
+    }
+
+    @NonNull
+    private java.util.List<WeatherDataEntity> updateWeatherDataOnDatabase(WeatherData weatherDataList) throws java.sql.SQLException {
+        java.util.List<WeatherDataEntity> weatherDataEntityList = WeatherDtoEntityConverter.convertToWeatherDataEntityList(weatherDataList.getList());
+        weatherDataEntityDAO.create(weatherDataEntityList);
+        return weatherDataEntityList;
     }
 
     @Override

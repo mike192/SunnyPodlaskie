@@ -5,6 +5,8 @@ import android.util.Log;
 
 import org.junit.Test;
 
+import io.reactivex.Observable;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,5 +18,14 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
+    }
+
+    String result="";
+
+    @Test
+    public void returnAValue(){
+        Observable<String> observer = Observable.just("Hello"); // provides datea
+        observer.subscribe(s -> result=s); // Callable as subscriber
+        assertTrue(result.equals("Hello"));
     }
 }

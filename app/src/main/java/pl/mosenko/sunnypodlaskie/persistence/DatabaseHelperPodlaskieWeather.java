@@ -35,7 +35,7 @@ public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
             TableUtils.clearTable(connectionSource, WeatherDataEntity.class);
         } catch (SQLException e) {
             if (BuildConfig.DEBUG) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage(), e);
             }
         }
     }
@@ -46,7 +46,7 @@ public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, WeatherDataEntity.class, true);
         } catch (SQLException e) {
             if (BuildConfig.DEBUG) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         onCreate(database, connectionSource);

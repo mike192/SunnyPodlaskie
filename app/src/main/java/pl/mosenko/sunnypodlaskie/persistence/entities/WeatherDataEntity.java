@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-import pl.mosenko.sunnypodlaskie.persistence.dao.DAOWeatherDataEntity;
+import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
 
 import static pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity.TABLE_NAME;
 
@@ -13,7 +13,7 @@ import static pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity.T
  * Created by syk on 16.05.17.
  */
 
-@DatabaseTable(tableName = TABLE_NAME, daoClass = DAOWeatherDataEntity.class)
+@DatabaseTable(tableName = TABLE_NAME, daoClass = WeatherDataEntityDAO.class)
 public class WeatherDataEntity extends AbstractOrmLiteEntity {
     public static final String TABLE_NAME = "weather_data";
     public static final String CITY_COLUMN = "city";

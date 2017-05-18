@@ -24,7 +24,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "BASEURL", "\"http://api.openweathermap.org/\""
-        buildConfigField "Boolean", "DEBUG", "true"
     }
     buildTypes {
         debug {
