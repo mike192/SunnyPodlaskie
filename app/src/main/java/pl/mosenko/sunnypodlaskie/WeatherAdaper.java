@@ -46,7 +46,7 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
         int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherInfo.getIconKey());
         holder.weatherIcon.setImageResource(iconResource);
         holder.city.setText(weatherInfo.getCity());
-        holder.temperature.setText(String.format("%2.1f", weatherInfo.getTemperature())  + "\u00b0");
+        holder.temperature.setText(WeatherUtil.getFormattedTemperature(weatherInfo.getTemperature()));
         holder.weatherDescription.setText(weatherInfo.getDescription());
     }
 

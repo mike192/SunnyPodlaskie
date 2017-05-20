@@ -1,6 +1,5 @@
 package pl.mosenko.sunnypodlaskie;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,10 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,6 +21,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
+import pl.mosenko.sunnypodlaskie.util.WeatherUtil;
 
 /**
  * Created by syk on 20.05.17.
@@ -29,6 +32,15 @@ public class WeatherDataDetailFragment extends Fragment {
     public static final String ARG_WEATHER_DATA_ID = "weather_data_id";
     @Inject
     WeatherDataEntityDAO weatherDataEntityDAO;
+
+    @BindView(R.id.city_detail)
+    TextView mCityDetailTV;
+    @BindView(R.id.weather_icon_detail)
+    ImageView mIconDetailIV;
+    @BindView(R.id.temperature_detail)
+    TextView mTemperatureTV;
+    @BindView(R.id.weather_description_detail)
+    TextView mWeatherDescriptionTV;
     private Unbinder mUnbinder;
     private Long weatherDataId;
     private CompositeDisposable mCompositeDisposable;
@@ -78,6 +90,11 @@ public class WeatherDataDetailFragment extends Fragment {
 
     private void fillGraphicalComponents(WeatherDataEntity weatherDataEntity) {
         Toast.makeText(getActivity(), weatherDataEntity.getCity(), Toast.LENGTH_SHORT).show();
+        mCityDetailTV.setText(weatherDataEntity.getCity());
+        mTemperatureTV.setText(WeatherUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
+        mWeatherDescriptionTV.setText(weatherDataEntity.getDescription());
+        int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey());
+        mIconDetailIV.setImageResource(iconResource);
         //TODO: fill all components
     }
 

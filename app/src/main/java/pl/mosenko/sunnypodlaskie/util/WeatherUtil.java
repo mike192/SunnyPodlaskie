@@ -45,4 +45,8 @@ public class WeatherUtil {
                 throw new IllegalArgumentException("There's no icon for provided icon code.");
         }
     }
+
+    public static String getFormattedTemperature(Double temperature) {
+        return String.format("%2.1f", temperature)  + "\u00b0";
+    }
 }

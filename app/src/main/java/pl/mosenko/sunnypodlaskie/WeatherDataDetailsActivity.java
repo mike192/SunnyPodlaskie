@@ -1,6 +1,5 @@
 package pl.mosenko.sunnypodlaskie;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +7,11 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by syk on 20.05.17.

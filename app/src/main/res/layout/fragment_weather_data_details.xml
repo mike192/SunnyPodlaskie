@@ -6,4 +6,17 @@
     android:layout_height="match_parent"
     tools:context="pl.mosenko.sunnypodlaskie.WeatherDataDetailFragment">
 
+    <include
+        android:id="@+id/primary_info"
+        layout="@layout/primary_weather_info"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_weight="1" />
+
+    <include
+        android:id="@+id/extra_info"
+        layout="@layout/extra_weather_info"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>
