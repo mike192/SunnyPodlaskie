@@ -80,12 +80,16 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflateFragmentLayout(inflater, container);
-        mUnbinder = ButterKnife.bind(this, rootView);
+        bindGraphicalComponents(rootView);
         customizeRecyclerView();
         customizeSwipeRefreshLayout();
         initializeCompositeDisposable();
         synchronizeCurrentWeatherData();
         return rootView;
+    }
+
+    private void bindGraphicalComponents(View rootView) {
+        mUnbinder = ButterKnife.bind(this, rootView);
     }
 
     private View inflateFragmentLayout(LayoutInflater inflater, @Nullable ViewGroup container) {

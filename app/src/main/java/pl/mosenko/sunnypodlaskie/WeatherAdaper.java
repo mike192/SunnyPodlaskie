@@ -73,6 +73,7 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
         public WeatherViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         @Override
