@@ -2,8 +2,8 @@ package pl.mosenko.sunnypodlaskie;
 
 import android.app.Application;
 
-import pl.mosenko.sunnypodlaskie.component.DaggerMainActivityComponent;
-import pl.mosenko.sunnypodlaskie.component.MainActivityComponent;
+import pl.mosenko.sunnypodlaskie.component.DIComponent;
+import pl.mosenko.sunnypodlaskie.component.DaggerDIComponent;
 import pl.mosenko.sunnypodlaskie.module.ContextModule;
 import pl.mosenko.sunnypodlaskie.module.DatabaseModule;
 import pl.mosenko.sunnypodlaskie.module.NetworkModule;
@@ -14,7 +14,7 @@ import pl.mosenko.sunnypodlaskie.module.NetworkModule;
  */
 
 public class MainApplication extends Application {
-    private MainActivityComponent mainActivityComponent;
+    private DIComponent mainActivityComponent;
 
     @Override
     public void onCreate() {
@@ -23,14 +23,14 @@ public class MainApplication extends Application {
     }
 
     private void buildComponent() {
-        mainActivityComponent = DaggerMainActivityComponent.builder()
+        mainActivityComponent = DaggerDIComponent.builder()
                 .contextModule(new ContextModule(getApplicationContext()))
                 .networkModule(new NetworkModule())
                 .databaseModule(new DatabaseModule())
                 .build();
     }
 
-    public MainActivityComponent getMainActivityComponent() {
+    public DIComponent getMainActivityComponent() {
         return mainActivityComponent;
     }
 }

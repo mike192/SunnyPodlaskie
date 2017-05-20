@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import pl.mosenko.sunnypodlaskie.MainActivity;
+import pl.mosenko.sunnypodlaskie.WeatherDataListFragment;
 import pl.mosenko.sunnypodlaskie.module.ContextModule;
 import pl.mosenko.sunnypodlaskie.module.DatabaseModule;
 import pl.mosenko.sunnypodlaskie.module.NetworkModule;
@@ -14,6 +15,7 @@ import pl.mosenko.sunnypodlaskie.module.NetworkModule;
 
 @Singleton
 @Component(modules = {NetworkModule.class, ContextModule.class, DatabaseModule.class})
-public interface MainActivityComponent {
+public interface DIComponent {
     void inject(MainActivity mainActivity);
+    void inject(WeatherDataListFragment weatherDataListFragment);
 }
