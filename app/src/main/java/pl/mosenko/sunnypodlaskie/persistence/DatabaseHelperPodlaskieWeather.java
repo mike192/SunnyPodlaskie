@@ -22,7 +22,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
     private static final String TAG = DatabaseHelperPodlaskieWeather.class.getSimpleName();
     private static final String DATABASE_NAME = "weather_data.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
 
     public DatabaseHelperPodlaskieWeather(@NonNull Context context) {
@@ -32,7 +32,7 @@ public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(@NonNull SQLiteDatabase database, @NonNull ConnectionSource connectionSource) {
         try {
-            TableUtils.clearTable(connectionSource, WeatherDataEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, WeatherDataEntity.class);
         } catch (SQLException e) {
             if (BuildConfig.DEBUG) {
                 Log.e(TAG, e.getMessage(), e);

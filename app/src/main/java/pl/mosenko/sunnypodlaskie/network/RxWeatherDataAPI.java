@@ -23,13 +23,13 @@ public class RxWeatherDataAPI {
         return weatherDataAPI.getCurrentWeatherData(apiKeyProvider.getDecodedAPIKey())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(p -> weatherListCallback.onSuccess(p), t -> weatherListCallback.onError(t));
+                .subscribe(p -> weatherListCallback.onDownloadWeatherDataSuccess(p), t -> weatherListCallback.onDownloadWeatherDataError(t));
     }
 
 
     public interface GetCurrentWeatherDataListCallback {
-        void onSuccess(WeatherData weatherDataList);
+        void onDownloadWeatherDataSuccess(WeatherData weatherDataList);
 
-        void onError(Throwable networkError);
+        void onDownloadWeatherDataError(Throwable networkError);
     }
 }
