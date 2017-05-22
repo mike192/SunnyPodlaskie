@@ -41,6 +41,17 @@ public class WeatherDataDetailFragment extends Fragment {
     TextView mTemperatureTV;
     @BindView(R.id.weather_description_detail)
     TextView mWeatherDescriptionTV;
+    @BindView(R.id.pressure_detail)
+    TextView mPressure;
+    @BindView(R.id.wind_detail)
+    TextView mWindDetails;
+    @BindView(R.id.humidity_detail)
+    TextView mHumidityDetail;
+    @BindView(R.id.sunrise_detail)
+    TextView mSunrise;
+    @BindView(R.id.sunset_detail)
+    TextView mSunset;
+
     private Unbinder mUnbinder;
     private Long weatherDataId;
     private CompositeDisposable mCompositeDisposable;
@@ -90,12 +101,16 @@ public class WeatherDataDetailFragment extends Fragment {
 
     private void fillGraphicalComponents(WeatherDataEntity weatherDataEntity) {
         Toast.makeText(getActivity(), weatherDataEntity.getCity(), Toast.LENGTH_SHORT).show();
-        mCityDetailTV.setText(weatherDataEntity.getCity());
+        mCityDetailTV.setText(WeatherUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime()));
         mTemperatureTV.setText(WeatherUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
         mWeatherDescriptionTV.setText(weatherDataEntity.getDescription());
         int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey());
         mIconDetailIV.setImageResource(iconResource);
-        //TODO: fill all components
+        mPressure.setText(WeatherUtil.getFormattedPressure(weatherDataEntity.getPressure()));
+        mWindDetails.setText(WeatherUtil.getFormattedWindDetails(weatherDataEntity.getWindSpeed(), weatherDataEntity.getWindDegree()));
+        mHumidityDetail.setText(WeatherUtil.getFormattedHumidity(weatherDataEntity.getHumidity()));
+        mSunrise.setText(WeatherUtil.getFormattedTime(weatherDataEntity.getSunrise()));
+        mSunset.setText(WeatherUtil.getFormattedTime(weatherDataEntity.getSunset()));
     }
 
     private void logError(Throwable throwable) {

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="weather_detail_horizontal_padding">32dp</dimen>
+    <dimen name="weather_detail_vertical_padding">16dp</dimen>
     <dimen name="temperature_space">8dp</dimen>
     <dimen name="list_item_padding_vertical">12dp</dimen>
     <dimen name="list_item_padding_horizontal">16dp</dimen>

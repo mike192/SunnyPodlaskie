@@ -17,6 +17,7 @@ import static pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity.T
 public class WeatherDataEntity extends AbstractOrmLiteEntity {
     public static final String TABLE_NAME = "weather_data";
     public static final String CITY_COLUMN = "city";
+    public static final String RECEIVING_TIME_COLUMN = "receiving_time";
     public static final String ICON_KEY_COLUMN = "icon_key";
     public static final String DESCRIPTION_COLUMN = "description";
     public static final String TEMPERATURE_COLUMN = "temperature";
@@ -24,11 +25,14 @@ public class WeatherDataEntity extends AbstractOrmLiteEntity {
     public static final String HUMIDITY_COLUMN = "humidity";
     public static final String WIND_SPEED_COLUMN = "wind_speed";
     public static final String WIND_DEGREE_COLUMN = "wind_degree";
+    public static final String CLOUDINESS = "cloudiness";
     public static final String SUNRISE_COLUMN = "sunrise";
     public static final String SUNSET_COLUMN = "sunset";
 
     @DatabaseField(columnName = CITY_COLUMN, canBeNull = false)
     private String city;
+    @DatabaseField(columnName = RECEIVING_TIME_COLUMN, canBeNull = false)
+    private Date receivingTime;
     @DatabaseField(columnName = ICON_KEY_COLUMN, canBeNull = false)
     private String iconKey;
     @DatabaseField(columnName = DESCRIPTION_COLUMN)
@@ -57,6 +61,14 @@ public class WeatherDataEntity extends AbstractOrmLiteEntity {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Date getReceivingTime() {
+        return receivingTime;
+    }
+
+    public void setReceivingTime(Date receivingTime) {
+        this.receivingTime = receivingTime;
     }
 
     public String getIconKey() {

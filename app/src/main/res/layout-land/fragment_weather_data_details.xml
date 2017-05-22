@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="pl.mosenko.sunnypodlaskie.WeatherDataDetailFragment">
@@ -9,14 +9,14 @@
     <include
         android:id="@+id/primary_info"
         layout="@layout/primary_weather_info"
-        android:layout_height="0dp"
-        android:layout_width="match_parent"
-        android:layout_weight=".45" />
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1" />
 
     <include
         android:id="@+id/extra_info"
         layout="@layout/extra_weather_info"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".55" />
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 </LinearLayout>

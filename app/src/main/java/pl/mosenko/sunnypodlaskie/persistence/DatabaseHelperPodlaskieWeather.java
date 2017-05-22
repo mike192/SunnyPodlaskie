@@ -22,7 +22,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
     private static final String TAG = DatabaseHelperPodlaskieWeather.class.getSimpleName();
     private static final String DATABASE_NAME = "weather_data.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
 
     public DatabaseHelperPodlaskieWeather(@NonNull Context context) {

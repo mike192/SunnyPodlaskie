@@ -41,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements WeatherDataListFr
         } else {
             startWeatherDataDetailsActivity(weatherDataId);
         }
-        if (BuildConfig.DEBUG) {
-            Toast.makeText(this, "Clicked: " + weatherDataId, Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void startWeatherDataDetailsActivity(long weatherDataId) {

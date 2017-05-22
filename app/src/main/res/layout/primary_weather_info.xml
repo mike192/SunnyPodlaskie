@@ -1,55 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/horizontal_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"
-        tools:layout_editor_absoluteX="192dp"
-        tools:layout_editor_absoluteY="0dp"/>
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            tools:layout_editor_absoluteX="192dp"
+            tools:layout_editor_absoluteY="0dp"/>
 
-    <TextView
-        android:id="@+id/city_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/weather_icon_detail"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="Białystok"/>
+        <TextView
+            android:id="@+id/city_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/weather_icon_detail"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="Białystok"/>
 
-    <ImageView
-        android:id="@+id/weather_icon_detail"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:adjustViewBounds="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/horizontal_middle"
-        tools:src="@drawable/art_clear"
-        />
+        <ImageView
+            android:id="@+id/weather_icon_detail"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/art_clear"/>
 
-     <TextView
-         android:id="@+id/weather_description_detail"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="8dp"
-         android:textSize="20sp"
-         android:textColor="@color/secondary_text"
-         app:layout_constraintHorizontal_bias="0.52"
-         app:layout_constraintLeft_toLeftOf="@+id/weather_icon_detail"
-         app:layout_constraintRight_toRightOf="@+id/weather_icon_detail"
-         app:layout_constraintTop_toBottomOf="@+id/weather_icon_detail"
-         tools:text="Słonecznie"
-         />
+        <TextView
+            android:id="@+id/weather_description_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/secondary_text"
+            android:textSize="20sp"
+            app:layout_constraintHorizontal_bias="0.52"
+            app:layout_constraintLeft_toLeftOf="@+id/weather_icon_detail"
+            app:layout_constraintRight_toRightOf="@+id/weather_icon_detail"
+            app:layout_constraintTop_toBottomOf="@+id/weather_icon_detail"
+            tools:text="Rainy"/>
 
     <TextView
         android:id="@+id/temperature_detail"
@@ -63,7 +62,8 @@
         app:layout_constraintTop_toTopOf="@+id/weather_icon_detail"
         app:layout_constraintBottom_toBottomOf="@+id/weather_description_detail"
         app:layout_constraintHorizontal_bias="0.45"
-        tools:text="19\u00b0"
+        tools:text="23\u00b0"
         />
 
-</android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>

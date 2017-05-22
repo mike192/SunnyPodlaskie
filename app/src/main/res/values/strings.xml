@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Pogodne Podlaskie</string>
+    <string name="pressure_label">Ciśnienie</string>
+    <string name="wind_label">Wiatr</string>
+    <string name="humidity_label">Wilgotność</string>
+    <string name="sunrise_label">Wschód słońca</string>
+    <string name="sunset_label">Zachód słońca</string>
 </resources>

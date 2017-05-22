@@ -2,6 +2,7 @@ package pl.mosenko.sunnypodlaskie.util;
 
 import android.text.format.DateUtils;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,7 @@ public class WeatherDtoEntityConverter {
 
     private static WeatherDataEntity convertToWeatherDataEntity(List weatherInfo) {
         WeatherDataEntity weatherDataEntity = new WeatherDataEntity();
+        weatherDataEntity.setReceivingTime(convertToDate(weatherInfo.getDt()));
         weatherDataEntity.setIconKey(weatherInfo.getWeather().get(0).getIcon());
         weatherDataEntity.setCity(weatherInfo.getName());
         weatherDataEntity.setTemperature(weatherInfo.getMain().getTemp());
@@ -42,7 +44,7 @@ public class WeatherDtoEntityConverter {
         return weatherDataEntityList;
     }
 
-    private static Date convertToDate(Integer timestamp) {
-        return new Date(timestamp);
+    private static Date convertToDate(Long unixTimestamp) {
+        return new Date(unixTimestamp * 1000);
     }
 }

@@ -1,7 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout android:id="@+id/extra_weather_details"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/detail_accent_pane_background"
+    android:paddingBottom="@dimen/weather_detail_horizontal_padding"
+    android:paddingEnd="@dimen/weather_detail_horizontal_padding"
+    android:paddingLeft="@dimen/weather_detail_horizontal_padding"
+    android:paddingRight="@dimen/weather_detail_horizontal_padding"
+    android:paddingStart="@dimen/weather_detail_horizontal_padding"
+    android:paddingTop="@dimen/weather_detail_vertical_padding"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <TextView
+        android:id="@+id/pressure_detail_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DetailLabel"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/pressure_label"
+        app:layout_constraintVertical_bias="0.33"
+        />
+
+    <TextView
+        android:id="@+id/pressure_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ExtraWeatherMeasurement"
+        tools:text="1012hPa"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/pressure_detail_label"
+        />
+
+    <TextView
+        android:id="@+id/wind_detail_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DetailLabel"
+        app:layout_constraintLeft_toLeftOf="@+id/pressure_detail_label"
+        app:layout_constraintTop_toBottomOf="@+id/pressure_detail_label"
+        app:layout_constraintBottom_toTopOf="@+id/humidity_detail_label"
+        android:text="@string/wind_label"
+        />
+
+    <TextView
+        android:id="@+id/wind_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ExtraWeatherMeasurement"
+        tools:text="80 m/s NNE"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/wind_detail_label"
+        />
+
+    <TextView
+        android:id="@+id/humidity_detail_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DetailLabel"
+        app:layout_constraintLeft_toLeftOf="@+id/wind_detail_label"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/humidity_label"
+        />
+
+    <TextView
+        android:id="@+id/humidity_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ExtraWeatherMeasurement"
+        tools:text="30%"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"
+        app:layout_constraintBottom_toBottomOf="@+id/humidity_detail_label"
+        />
+
+    <TextView
+        android:id="@+id/sunrise_detail_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DetailLabel"
+        app:layout_constraintLeft_toLeftOf="@+id/humidity_detail_label"
+        app:layout_constraintTop_toBottomOf="@+id/humidity_detail_label"
+        app:layout_constraintBottom_toTopOf="@+id/sunset_detail_label"
+        android:text="@string/sunrise_label" />
+
+    <TextView
+        android:id="@+id/sunrise_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ExtraWeatherMeasurement"
+        tools:text="6:34:02"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/sunrise_detail_label"
+        />
+
+    <TextView
+        android:id="@+id/sunset_detail_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DetailLabel"
+        app:layout_constraintLeft_toLeftOf="@+id/sunrise_detail_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/sunset_label"
+        />
+
+    <TextView
+        android:id="@+id/sunset_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ExtraWeatherMeasurement"
+        tools:text="20:36:12"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"
+        app:layout_constraintBottom_toBottomOf="@+id/sunset_detail_label"
+        />
 </android.support.constraint.ConstraintLayout>

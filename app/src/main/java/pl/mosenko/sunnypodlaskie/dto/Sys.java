@@ -19,10 +19,10 @@ public class Sys {
     private String country;
     @SerializedName("sunrise")
     @Expose
-    private Integer sunrise;
+    private Long sunrise;
     @SerializedName("sunset")
     @Expose
-    private Integer sunset;
+    private Long sunset;
 
     /**
      * No args constructor for use in serialization
@@ -40,7 +40,7 @@ public class Sys {
      * @param type
      * @param country
      */
-    public Sys(Integer type, Integer id, Double message, String country, Integer sunrise, Integer sunset) {
+    public Sys(Integer type, Integer id, Double message, String country, Long sunrise, Long sunset) {
         super();
         this.type = type;
         this.id = id;
@@ -82,19 +82,19 @@ public class Sys {
         this.country = country;
     }
 
-    public Integer getSunrise() {
+    public Long getSunrise() {
         return sunrise;
     }
 
-    public void setSunrise(Integer sunrise) {
+    public void setSunrise(Long sunrise) {
         this.sunrise = sunrise;
     }
 
-    public Integer getSunset() {
+    public Long getSunset() {
         return sunset;
     }
 
-    public void setSunset(Integer sunset) {
+    public void setSunset(Long sunset) {
         this.sunset = sunset;
     }
 

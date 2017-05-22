@@ -25,7 +25,7 @@ public class List {
     private Clouds clouds;
     @SerializedName("dt")
     @Expose
-    private Integer dt;
+    private Long dt;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -52,7 +52,7 @@ public class List {
      * @param weather
      * @param main
      */
-    public List(Coord coord, Sys sys, java.util.List<Weather> weather, Main main, Wind wind, Clouds clouds, Integer dt, Integer id, String name) {
+    public List(Coord coord, Sys sys, java.util.List<Weather> weather, Main main, Wind wind, Clouds clouds, Long dt, Integer id, String name) {
         super();
         this.coord = coord;
         this.sys = sys;
@@ -113,11 +113,11 @@ public class List {
         this.clouds = clouds;
     }
 
-    public Integer getDt() {
+    public Long getDt() {
         return dt;
     }
 
-    public void setDt(Integer dt) {
+    public void setDt(Long dt) {
         this.dt = dt;
     }
 
