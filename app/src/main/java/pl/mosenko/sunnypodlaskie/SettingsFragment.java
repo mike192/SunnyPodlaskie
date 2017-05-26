@@ -3,8 +3,10 @@ package pl.mosenko.sunnypodlaskie;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceScreen;
 
 import pl.mosenko.sunnypodlaskie.util.PreferenceWeatherUtil;
 import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
@@ -21,8 +23,23 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.pref_general);
-        mSharedPreferences = getPreferenceScreen().getSharedPreferences();
+        initializeSharedPreferences();
+        addInitialSyncTimeSummary();
+    }
 
+    private void initializeSharedPreferences() {
+        mSharedPreferences = getPreferenceScreen().getSharedPreferences();
+    }
+
+    private void addInitialSyncTimeSummary() {
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        int count = preferenceScreen.getPreferenceCount();
+        for (int i = 0; i < count; i++) {
+            Preference preference = preferenceScreen.getPreference(i);
+            if (preference instanceof EditTextPreference) {
+                addSyncTimePreferenceSummary(mSharedPreferences, preference.getKey());
+            }
+        }
     }
 
     @Override
@@ -34,7 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onStop() {
         super.onStop();
-        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -50,6 +67,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void addSyncTimePreferenceSummary(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
-        preference.setSummary(sharedPreferences.getString(key, ""));
+        preference.setSummary(sharedPreferences.getString(key, getString(R.string.pref_sync_time_default)));
     }
 }

@@ -43,6 +43,7 @@ public class WeatherNotificationUtil {
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationContentText + receivingTimeFormatted)
+                .setSmallIcon(R.drawable.ic_clear) //app's icon
                 .setAutoCancel(true);
 
         PendingIntent mainAcitivityIntentPendingIntent = getPendingIntent(context);

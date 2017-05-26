@@ -4,15 +4,12 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.v7.preference.PreferenceManager;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import pl.mosenko.sunnypodlaskie.broadcastreceiver.AlarmWeatherSyncReceiver;
-import pl.mosenko.sunnypodlaskie.R;
 
 /**
  * Created by syk on 26.05.17.

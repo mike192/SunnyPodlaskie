@@ -12,6 +12,9 @@ import pl.mosenko.sunnypodlaskie.util.WeatherDataJobSyncUtils;
 
 public class AlarmWeatherSyncReceiver extends BroadcastReceiver {
 
+    public AlarmWeatherSyncReceiver() {
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         WeatherDataJobSyncUtils.scheduleFirebaseJobDispatcherSync(context);

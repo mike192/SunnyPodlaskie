@@ -32,7 +32,7 @@ public class WeatherDataJobSyncUtils {
                 .setService(WeatherDataSyncJobService.class)
                 .setTag(WEATHER_DATA_SYNC_TAG)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setLifetime(Lifetime.FOREVER)
+                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
                 .setTrigger(Trigger.executionWindow(SYNC_INTERVAL_SECONDS, SYNC_FLEXTIME_SECONDS))
                 .setRecurring(false)
                 .setReplaceCurrent(true)

@@ -45,7 +45,6 @@ public class WeatherDataSyncJobService extends JobService implements RxWeatherDa
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "onCreate");
         injectFields();
         initializeCompositeDisposable();
     }
@@ -56,10 +55,9 @@ public class WeatherDataSyncJobService extends JobService implements RxWeatherDa
 
     @Override
     public boolean onStartJob(JobParameters job) {
-        Log.d(TAG, "onStartJob start");
         Disposable disposable = mRxWeatherDataAPI.getCurrentWeatherData(this);
         mCompositeDisposable.add(disposable);
-        Log.d(TAG, "onStartJob end");
+        mJob = job;
         return true;
     }
 
