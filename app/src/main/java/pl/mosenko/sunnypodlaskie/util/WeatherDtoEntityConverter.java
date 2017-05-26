@@ -1,14 +1,12 @@
 package pl.mosenko.sunnypodlaskie.util;
 
-import android.text.format.DateUtils;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import pl.mosenko.sunnypodlaskie.dto.List;
-import pl.mosenko.sunnypodlaskie.dto.WeatherData;
+import pl.mosenko.sunnypodlaskie.dto.Weather;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 
 /**
@@ -16,6 +14,18 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
  */
 
 public class WeatherDtoEntityConverter {
+    private final static Map<String, String> CORRECT_NAMES_OF_CITIES = new HashMap<>();
+    static {
+        CORRECT_NAMES_OF_CITIES.put("Suwalki", "Suwałki");
+        CORRECT_NAMES_OF_CITIES.put("Augustow", "Augustów");
+        CORRECT_NAMES_OF_CITIES.put("Lomza", "Łomża");
+        CORRECT_NAMES_OF_CITIES.put("Monki", "Mońki");
+        CORRECT_NAMES_OF_CITIES.put("Sokolka", "Sokółka");
+        CORRECT_NAMES_OF_CITIES.put("Zambrow", "Zambrów");
+        CORRECT_NAMES_OF_CITIES.put("Hajnowka", "Hajnówka");
+        CORRECT_NAMES_OF_CITIES.put("Bialystok", "Białystok");
+    }
+
     private WeatherDtoEntityConverter() {
     }
 
@@ -23,7 +33,7 @@ public class WeatherDtoEntityConverter {
         WeatherDataEntity weatherDataEntity = new WeatherDataEntity();
         weatherDataEntity.setReceivingTime(convertToDate(weatherInfo.getDt()));
         weatherDataEntity.setIconKey(weatherInfo.getWeather().get(0).getIcon());
-        weatherDataEntity.setCity(weatherInfo.getName());
+        weatherDataEntity.setCity(mapCityToCorrectCity(weatherInfo.getName()));
         weatherDataEntity.setTemperature(weatherInfo.getMain().getTemp());
         weatherDataEntity.setDescription(weatherInfo.getWeather().get(0).getDescription());
         weatherDataEntity.setPressure(weatherInfo.getMain().getPressure());
@@ -33,6 +43,11 @@ public class WeatherDtoEntityConverter {
         weatherDataEntity.setSunrise(convertToDate(weatherInfo.getSys().getSunrise()));
         weatherDataEntity.setSunset(convertToDate(weatherInfo.getSys().getSunset()));
         return weatherDataEntity;
+    }
+
+    private static String mapCityToCorrectCity(String name) {
+        String cityCorrectName = CORRECT_NAMES_OF_CITIES.get(name);
+        return cityCorrectName != null ? cityCorrectName : name;
     }
 
     public static java.util.List<WeatherDataEntity> convertToWeatherDataEntityList(java.util.List<List> weatherDataList) {
