@@ -19,6 +19,7 @@ public class RxWeatherDataAPI {
         this.apiKeyProvider = apiKeyProvider;
     }
 
+
     public Disposable getCurrentWeatherData(final GetCurrentWeatherDataListCallback weatherListCallback) {
         return weatherDataAPI.getCurrentWeatherData(apiKeyProvider.getDecodedAPIKey())
                 .subscribeOn(Schedulers.io())

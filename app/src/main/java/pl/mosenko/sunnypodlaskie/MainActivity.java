@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
+
 public class MainActivity extends AppCompatActivity implements WeatherDataListFragment.OnWeatherDataItemClickListener {
 
     private final String TAG = MainActivity.class.getSimpleName();
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements WeatherDataListFr
     private void initializeActivity() {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0f);
+        WeatherDataAlarmSyncUtil.startAlarmOnRunApp(this);
     }
 
     @Override

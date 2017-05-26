@@ -9,7 +9,10 @@
     <string name="pref_enable_notifications_label">Powiadomienia o pogodzie</string>
     <string name="pref_enable_notifications_true">Odblokowane</string>
     <string name="pref_enable_notifications_false">Zablokowane</string>
-    <string name="pref_sync_time" translatable="false">sync_time</string>
+    <string name="pref_sync_time_key" translatable="false">sync_time</string>
     <string name="pref_sync_time_label">Czas synchronizacji</string>
     <string name="settings">Ustawienia</string>
+    <string name="pref_sync_time_default">7:00</string>
+    <string name="notification_title">Pobrano pogodę na dziś</string>
+    <string name="notification_content_text">Czas aktualizacji: </string>
 </resources>

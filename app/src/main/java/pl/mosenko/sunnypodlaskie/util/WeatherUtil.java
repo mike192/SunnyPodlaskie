@@ -1,11 +1,15 @@
 package pl.mosenko.sunnypodlaskie.util;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import pl.mosenko.sunnypodlaskie.R;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by syk on 15.05.17.
@@ -50,7 +54,9 @@ public class WeatherUtil {
             case "13n":
                 return R.drawable.art_snow;
             default:
-                throw new IllegalArgumentException("There's no icon for provided icon code.");
+     //           throw new IllegalArgumentException("There's no icon for provided icon code.");
+                Log.d(TAG, "dziwna ikona");
+                return R.drawable.art_snow;
         }
     }
 

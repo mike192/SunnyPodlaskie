@@ -13,41 +13,36 @@ import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
 
+import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
+
 /**
  * Created by syk on 22.05.17.
  */
 
-public class WeatherDataSyncUtils {
-    private static boolean sInitialized;
+public class WeatherDataJobSyncUtils {
     private static final String WEATHER_DATA_SYNC_TAG = "weather_data_sync";
-    private static final int SYNC_INTERVAL_HOURS = 24;
-    private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.HOURS.toSeconds(SYNC_INTERVAL_HOURS);
-    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS + (int) TimeUnit.MINUTES.toSeconds(15);
+    private static final int SYNC_INTERVAL_SECONDS = 5;
+    private static final int SYNC_FLEXTIME_SECONDS = 10; //(int) TimeUnit.HOURS.toSeconds(4);
 
-    private static void scheduleFirebaseJobDispatcherSync(@NonNull Context context) {
+    public static void scheduleFirebaseJobDispatcherSync(@NonNull Context context) {
         Driver driver = new GooglePlayDriver(context);
         FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(driver);
 
         Job syncWeatherDataJob = firebaseJobDispatcher.newJobBuilder()
-                .setService(null) //TODO setSERVICE!!!
+                .setService(WeatherDataSyncJobService.class)
                 .setTag(WEATHER_DATA_SYNC_TAG)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setLifetime(Lifetime.FOREVER)
-                .setTrigger(Trigger.executionWindow(SYNC_INTERVAL_SECONDS, SYNC_INTERVAL_SECONDS + SYNC_FLEXTIME_SECONDS))
-                .setRecurring(true)
+                .setTrigger(Trigger.executionWindow(SYNC_INTERVAL_SECONDS, SYNC_FLEXTIME_SECONDS))
+                .setRecurring(false)
                 .setReplaceCurrent(true)
                 .build();
         firebaseJobDispatcher.schedule(syncWeatherDataJob);
     }
 
-    synchronized public static void initialize(@NonNull final Context context) {
-        if (sInitialized) {
-            return;
-        } else {
-            sInitialized = true;
-        }
-        scheduleFirebaseJobDispatcherSync(context);
+    public static void cancelFirebaseJobDispatcherSync(@NonNull Context context) {
+        Driver driver = new GooglePlayDriver(context);
+        FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(driver);
+        firebaseJobDispatcher.cancel(WEATHER_DATA_SYNC_TAG);
     }
-
-
 }

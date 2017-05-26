@@ -5,7 +5,10 @@ import android.util.Log;
 
 import org.junit.Test;
 
+import java.util.Date;
+
 import io.reactivex.Observable;
+import pl.mosenko.sunnypodlaskie.util.PreferenceWeatherUtil;
 
 import static org.junit.Assert.*;
 
@@ -17,15 +20,8 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
+        Date date = PreferenceWeatherUtil.parseSyncTime("07:13");
+        System.out.println(date);
         assertEquals(4, 2 + 2);
-    }
-
-    String result="";
-
-    @Test
-    public void returnAValue(){
-        Observable<String> observer = Observable.just("Hello"); // provides datea
-        observer.subscribe(s -> result=s); // Callable as subscriber
-        assertTrue(result.equals("Hello"));
     }
 }
