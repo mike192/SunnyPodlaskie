@@ -42,7 +42,7 @@ public class WeatherNotificationUtil {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setContentTitle(notificationTitle)
-                .setContentText(notificationContentText + receivingTimeFormatted)
+                .setContentText(notificationContentText + " " + receivingTimeFormatted)
                 .setSmallIcon(R.drawable.ic_clear) //app's icon
                 .setAutoCancel(true);
 

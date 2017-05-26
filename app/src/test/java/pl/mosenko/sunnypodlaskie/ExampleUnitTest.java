@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        Date date = PreferenceWeatherUtil.parseSyncTime("07:13");
+        Date date = PreferenceWeatherUtil.parseSyncTimeToPartiallyDate("07:13");
         System.out.println(date);
         assertEquals(4, 2 + 2);
     }

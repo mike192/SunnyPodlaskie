@@ -1,6 +1,9 @@
 package pl.mosenko.sunnypodlaskie.module;
 
+import android.content.Context;
+
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.novoda.merlin.MerlinsBeard;
 
 import javax.inject.Singleton;
 
@@ -46,5 +49,11 @@ public class NetworkModule {
     @Singleton
     public RxWeatherDataAPI provideRxWeatherDataAPI(WeatherDataAPI watherDataAPI, APIKeyProvider apiKeyProvider) {
         return new RxWeatherDataAPI(watherDataAPI, apiKeyProvider);
+    }
+
+    @Provides
+    @Singleton
+    public MerlinsBeard provideMerlinsBeard(Context context) {
+        return MerlinsBeard.from(context);
     }
 }

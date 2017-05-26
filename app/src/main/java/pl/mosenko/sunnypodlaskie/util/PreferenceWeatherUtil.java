@@ -67,7 +67,7 @@ public class PreferenceWeatherUtil {
     }
 
     @Nullable
-    private static Date parseSyncTimeToPartiallyDate(String syncTimeString) {
+    public static Date parseSyncTimeToPartiallyDate(String syncTimeString) {
         SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm");
         Date syncTimeDate = null;
         try {

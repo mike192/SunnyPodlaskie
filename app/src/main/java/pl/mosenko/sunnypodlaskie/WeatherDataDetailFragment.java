@@ -100,7 +100,6 @@ public class WeatherDataDetailFragment extends Fragment {
     }
 
     private void fillGraphicalComponents(WeatherDataEntity weatherDataEntity) {
-        Toast.makeText(getActivity(), weatherDataEntity.getCity(), Toast.LENGTH_SHORT).show();
         mCityDetailTV.setText(WeatherUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime()));
         mTemperatureTV.setText(WeatherUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
         mWeatherDescriptionTV.setText(weatherDataEntity.getDescription());

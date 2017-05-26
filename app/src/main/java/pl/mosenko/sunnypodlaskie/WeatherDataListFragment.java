@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.novoda.merlin.MerlinsBeard;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -43,6 +45,8 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     RxWeatherDataAPI rxWeatherDataAPI;
     @Inject
     WeatherDataEntityDAO weatherDataEntityDAO;
+    @Inject
+    MerlinsBeard merlinsBeard;
 
     @BindView(R.id.swipe_refresh_weather_layout)
     SwipeRefreshLayout mSwipeRefreshWeatherLayout;
@@ -119,7 +123,15 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
 
     private void synchronizeCurrentWeatherData() {
         showLoading();
-        Disposable disposable = rxWeatherDataAPI.getCurrentWeatherData(this);
+        Disposable disposable = null;
+        if (merlinsBeard.isConnected()) {
+            disposable = rxWeatherDataAPI.getCurrentWeatherData(this);
+        } else {
+            disposable = weatherDataEntityDAO.rxQueryForAll()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(p -> showCurrentWeatherDataRecyclerView(p), e -> onDownloadWeatherDataError(e));
+        }
         mCompositeDisposable.add(disposable);
     }
 
