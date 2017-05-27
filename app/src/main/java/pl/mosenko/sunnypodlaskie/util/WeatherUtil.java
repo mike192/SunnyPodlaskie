@@ -26,37 +26,43 @@ public class WeatherUtil {
     public static int getWeatherIconResourceByCode(final String code) {
         switch (code) {
             case "01d":
-                return R.drawable.art_clear;
+                return R.drawable.art_01d;
             case "02d":
-                return R.drawable.art_fog; //cloudy fog
+                return R.drawable.art_02d;
             case "03d":
-                return R.drawable.art_clouds; //cloud down
-            case "10d":
-                return R.drawable.art_rain;
-            case "11d":
-                return R.drawable.art_storm;
-            case "13d":
-                return R.drawable.art_snow;
-            case "01n":
-                return R.drawable.art_clear;
+                return R.drawable.art_03d;
             case "04d":
-                return R.drawable.art_clouds;
-            case "04n":
-                return R.drawable.art_clouds;
+                return R.drawable.art_04d;
+            case "09d":
+                return R.drawable.art_09d;
+            case "10d":
+                return R.drawable.art_10d;
+            case "11d":
+                return R.drawable.art_11d;
+            case "13d":
+                return R.drawable.art_13d;
+            case "50d":
+                return R.drawable.art_50d;
+            case "01n":
+                return R.drawable.art_01n;
             case "02n":
-                return R.drawable.art_clouds;
+                return R.drawable.art_02n;
             case "03n":
-                return R.drawable.art_fog;
+                return R.drawable.art_03d;
+            case "04n":
+                return R.drawable.art_04d;
+            case "09n":
+                return R.drawable.art_09d;
             case "10n":
-                return R.drawable.art_fog;
+                return R.drawable.art_10n;
             case "11n":
-                return R.drawable.art_rain;
+                return R.drawable.art_11d;
             case "13n":
-                return R.drawable.art_snow;
+                return R.drawable.art_13d;
+            case "50n":
+                return R.drawable.art_50d;
             default:
-     //           throw new IllegalArgumentException("There's no icon for provided icon code.");
-                Log.d(TAG, "dziwna ikona");
-                return R.drawable.art_snow;
+                return R.drawable.art_xx;
         }
     }
 
@@ -74,6 +80,7 @@ public class WeatherUtil {
     }
 
     private static String converWindDegreeToTextDescription(Double windDegree) {
+        if (windDegree == null) return "";
         if (windDegree > 337.5) return "N";
         if (windDegree > 292.5) return "NW";
         if (windDegree > 247.5) return "W";

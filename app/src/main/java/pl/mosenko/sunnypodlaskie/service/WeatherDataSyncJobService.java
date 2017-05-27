@@ -86,6 +86,7 @@ public class WeatherDataSyncJobService extends JobService implements RxWeatherDa
         java.util.List<WeatherDataEntity> weatherDataEntityList = WeatherDtoEntityConverter.convertToWeatherDataEntityList(weatherDataList.getList());
         mWeatherDataEntityDAO.deleteBuilder().delete();
         mWeatherDataEntityDAO.create(weatherDataEntityList);
+        weatherDataEntityList = mWeatherDataEntityDAO.queryForAll();
         return weatherDataEntityList;
     }
 

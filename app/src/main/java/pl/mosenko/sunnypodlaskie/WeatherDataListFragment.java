@@ -153,6 +153,7 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         java.util.List<WeatherDataEntity> weatherDataEntityList = WeatherDtoEntityConverter.convertToWeatherDataEntityList(weatherDataList.getList());
         weatherDataEntityDAO.deleteBuilder().delete();
         weatherDataEntityDAO.create(weatherDataEntityList);
+        weatherDataEntityList = weatherDataEntityDAO.queryForAll();
         return weatherDataEntityList;
     }
 

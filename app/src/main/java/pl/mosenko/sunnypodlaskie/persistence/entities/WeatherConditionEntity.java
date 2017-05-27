@@ -6,13 +6,11 @@ import com.google.gson.annotations.Expose;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import static pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity.TABLE_NAME;
-
 /**
  * Created by syk on 27.05.17.
  */
 
-@DatabaseTable(tableName = TABLE_NAME)
+@DatabaseTable(tableName = WeatherConditionEntity.TABLE_NAME)
 public class WeatherConditionEntity {
     public static final String TABLE_NAME = "weather_condition";
     public static final String COLUMN_DESCRIPTION = "description";
