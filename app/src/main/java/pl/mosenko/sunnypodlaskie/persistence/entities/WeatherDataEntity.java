@@ -1,5 +1,7 @@
 package pl.mosenko.sunnypodlaskie.persistence.entities;
 
+import android.provider.BaseColumns;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -19,13 +21,13 @@ public class WeatherDataEntity extends AbstractOrmLiteEntity {
     public static final String CITY_COLUMN = "city";
     public static final String RECEIVING_TIME_COLUMN = "receiving_time";
     public static final String ICON_KEY_COLUMN = "icon_key";
-    public static final String DESCRIPTION_COLUMN = "description";
+    //  public static final String DESCRIPTION_COLUMN = "description";
+    public static final String WEATHER_CONDITION = "weather_condition";
     public static final String TEMPERATURE_COLUMN = "temperature";
     public static final String PRESSURE_COLUMN = "pressure";
     public static final String HUMIDITY_COLUMN = "humidity";
     public static final String WIND_SPEED_COLUMN = "wind_speed";
     public static final String WIND_DEGREE_COLUMN = "wind_degree";
-    public static final String CLOUDINESS = "cloudiness";
     public static final String SUNRISE_COLUMN = "sunrise";
     public static final String SUNSET_COLUMN = "sunset";
 
@@ -35,8 +37,8 @@ public class WeatherDataEntity extends AbstractOrmLiteEntity {
     private Date receivingTime;
     @DatabaseField(columnName = ICON_KEY_COLUMN, canBeNull = false)
     private String iconKey;
-    @DatabaseField(columnName = DESCRIPTION_COLUMN)
-    private String description;
+    @DatabaseField(columnName = WEATHER_CONDITION, canBeNull = false, foreignColumnName = BaseColumns._ID, foreign = true, foreignAutoRefresh = true)
+    private WeatherConditionEntity weatherCondition;
     @DatabaseField(columnName = TEMPERATURE_COLUMN, canBeNull = false)
     private Double temperature;
     @DatabaseField(columnName = PRESSURE_COLUMN)
@@ -79,12 +81,12 @@ public class WeatherDataEntity extends AbstractOrmLiteEntity {
         this.iconKey = iconKey;
     }
 
-    public String getDescription() {
-        return description;
+    public WeatherConditionEntity getWeatherCondition() {
+        return weatherCondition;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setWeatherCondition(WeatherConditionEntity weatherCondition) {
+        this.weatherCondition = weatherCondition;
     }
 
     public Double getTemperature() {

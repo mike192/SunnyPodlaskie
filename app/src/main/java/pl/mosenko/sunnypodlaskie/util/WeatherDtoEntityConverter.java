@@ -1,5 +1,7 @@
 package pl.mosenko.sunnypodlaskie.util;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,6 +9,7 @@ import java.util.Map;
 
 import pl.mosenko.sunnypodlaskie.dto.List;
 import pl.mosenko.sunnypodlaskie.dto.Weather;
+import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 
 /**
@@ -35,7 +38,7 @@ public class WeatherDtoEntityConverter {
         weatherDataEntity.setIconKey(weatherInfo.getWeather().get(0).getIcon());
         weatherDataEntity.setCity(mapCityToCorrectCity(weatherInfo.getName()));
         weatherDataEntity.setTemperature(weatherInfo.getMain().getTemp());
-        weatherDataEntity.setDescription(weatherInfo.getWeather().get(0).getDescription());
+        weatherDataEntity.setWeatherCondition(getWeatherConditionFromId(weatherInfo));
         weatherDataEntity.setPressure(weatherInfo.getMain().getPressure());
         weatherDataEntity.setHumidity(weatherInfo.getMain().getHumidity());
         weatherDataEntity.setWindSpeed(weatherInfo.getWind().getSpeed());
@@ -43,6 +46,11 @@ public class WeatherDtoEntityConverter {
         weatherDataEntity.setSunrise(convertToDate(weatherInfo.getSys().getSunrise()));
         weatherDataEntity.setSunset(convertToDate(weatherInfo.getSys().getSunset()));
         return weatherDataEntity;
+    }
+
+    @NonNull
+    private static WeatherConditionEntity getWeatherConditionFromId(List weatherInfo) {
+        return new WeatherConditionEntity(Long.valueOf(weatherInfo.getWeather().get(0).getId()));
     }
 
     private static String mapCityToCorrectCity(String name) {

@@ -47,7 +47,7 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
         holder.weatherIcon.setImageResource(iconResource);
         holder.city.setText(weatherInfo.getCity());
         holder.temperature.setText(WeatherUtil.getFormattedTemperature(weatherInfo.getTemperature()));
-        holder.weatherDescription.setText(weatherInfo.getDescription());
+        holder.weatherDescription.setText(weatherInfo.getWeatherCondition().getDescription());
     }
 
     @Override

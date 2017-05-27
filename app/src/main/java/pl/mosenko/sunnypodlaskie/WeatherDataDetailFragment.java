@@ -102,7 +102,7 @@ public class WeatherDataDetailFragment extends Fragment {
     private void fillGraphicalComponents(WeatherDataEntity weatherDataEntity) {
         mCityDetailTV.setText(WeatherUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime()));
         mTemperatureTV.setText(WeatherUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
-        mWeatherDescriptionTV.setText(weatherDataEntity.getDescription());
+        mWeatherDescriptionTV.setText(weatherDataEntity.getWeatherCondition().getDescription());
         int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey());
         mIconDetailIV.setImageResource(iconResource);
         mPressure.setText(WeatherUtil.getFormattedPressure(weatherDataEntity.getPressure()));
