@@ -16,4 +16,5 @@
     <string name="notification_title">Pobrano pogodę na dziś</string>
     <string name="notification_content_text">Czas aktualizacji:</string>
     <string name="bad_sync_time_format_message">Prawidłowy format godziny: HH:mm</string>
+    <string name="no_data_found">Nie znaleziono danych. Włącz Internet, aby uzyskać najświeższe dane pogodowe.</string>
 </resources>

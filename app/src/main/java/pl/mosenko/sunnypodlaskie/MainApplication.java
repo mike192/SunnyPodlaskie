@@ -2,6 +2,8 @@ package pl.mosenko.sunnypodlaskie;
 
 import android.app.Application;
 
+import java.util.Locale;
+
 import pl.mosenko.sunnypodlaskie.component.DIComponent;
 import pl.mosenko.sunnypodlaskie.component.DaggerDIComponent;
 import pl.mosenko.sunnypodlaskie.module.ContextModule;
@@ -19,7 +21,12 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        setDefaultLocale();
         buildComponent();
+    }
+
+    private void setDefaultLocale() {
+        Locale.setDefault(new Locale("pl"));
     }
 
     private void buildComponent() {

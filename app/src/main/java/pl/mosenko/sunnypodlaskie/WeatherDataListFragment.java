@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
+import com.novoda.merlin.registerable.connection.Connectable;
 
 import javax.inject.Inject;
 
@@ -47,6 +49,8 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     WeatherDataEntityDAO weatherDataEntityDAO;
     @Inject
     MerlinsBeard merlinsBeard;
+    @Inject
+    Merlin merlin;
 
     @BindView(R.id.swipe_refresh_weather_layout)
     SwipeRefreshLayout mSwipeRefreshWeatherLayout;
@@ -54,6 +58,8 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     RecyclerView mCurrentWeatherRecycyler;
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
+    @BindView(R.id.no_cached_data)
+    TextView noDataFoundTextView;
 
     private CompositeDisposable mCompositeDisposable;
     private WeatherAdaper mWeatherAdaper;
@@ -88,8 +94,16 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         customizeRecyclerView();
         customizeSwipeRefreshLayout();
         initializeCompositeDisposable();
-        synchronizeCurrentWeatherData();
+        registerMerlinCallbacks();
         return rootView;
+    }
+
+    private void registerMerlinCallbacks() {
+        merlin.registerConnectable(() -> {
+            if (mSwipeRefreshWeatherLayout != null) {
+                synchronizeCurrentWeatherData();
+            }
+        });
     }
 
     private void bindGraphicalComponents(View rootView) {
@@ -158,21 +172,35 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     }
 
     private void showCurrentWeatherDataRecyclerView(java.util.List<WeatherDataEntity> weatherDataEntityList) {
-        mWeatherAdaper.swapWeatherList(weatherDataEntityList);
-        showWeatherDataView();
+        if (!weatherDataEntityList.isEmpty()) {
+            noDataFoundTextView.setVisibility(View.GONE);
+            mWeatherAdaper.swapWeatherList(weatherDataEntityList);
+            showWeatherDataView();
+        } else {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            noDataFoundTextView.setVisibility(View.VISIBLE);
+            mSwipeRefreshWeatherLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void onDownloadWeatherDataError(Throwable networkError) {
+        showWeatherDataView();
         Log.e(TAG, networkError.getMessage());
     }
 
     private void customizeSwipeRefreshLayout() {
-        mSwipeRefreshWeatherLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
-                getResources().getColor(R.color.activated),
-                getResources().getColor(R.color.colorPrimary),
-                getResources().getColor(R.color.colorPrimaryDark));
-        mSwipeRefreshWeatherLayout.setOnRefreshListener(() -> synchronizeCurrentWeatherData());
+        mSwipeRefreshWeatherLayout.setColorSchemeResources(
+                R.color.colorAccent,
+                R.color.activated,
+                R.color.colorPrimary,
+                R.color.colorPrimaryDark);
+        mSwipeRefreshWeatherLayout.setOnRefreshListener(() ->
+        {
+            if (!mLoadingIndicator.isShown()) {
+                synchronizeCurrentWeatherData();
+            }
+        });
     }
 
     private void customizeRecyclerView() {
@@ -186,7 +214,9 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
 
     @Override
     public void onClick(long id) {
-        mCallback.onWeatherDataItemSelected(id);
+        if (!mSwipeRefreshWeatherLayout.isRefreshing()) {
+            mCallback.onWeatherDataItemSelected(id);
+        }
     }
 
     @Override
@@ -198,6 +228,19 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     @Override
     public void onStop() {
         super.onStop();
+        mCompositeDisposable.dispose();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        merlin.bind();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        merlin.unbind();
         mCompositeDisposable.dispose();
     }
 

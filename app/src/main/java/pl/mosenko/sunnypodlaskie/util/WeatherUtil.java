@@ -4,8 +4,10 @@ import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import pl.mosenko.sunnypodlaskie.R;
 
@@ -102,12 +104,18 @@ public class WeatherUtil {
     }
 
     public static String getFormattedTime(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
-        return simpleDateFormat.format(date);
+        DateFormat currentFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        currentFormat.setTimeZone(TimeZone.getTimeZone(getCurrentTimeZone()));
+        return currentFormat.format(date);
+    }
+
+    private static String getCurrentTimeZone(){
+        TimeZone timeZone = Calendar.getInstance().getTimeZone();
+        return timeZone.getID();
     }
 
     public static String getDetailsTitle(String city, Date receivingTime) {
-        DateFormat dateFormat = new SimpleDateFormat("MM dd hh:mm:ss ");
+        DateFormat dateFormat = new SimpleDateFormat("dd MMMM HH:mm:ss ", Locale.getDefault());
         String formattedReceivingDate = dateFormat.format(receivingTime);
         return city + ", " + formattedReceivingDate;
     }

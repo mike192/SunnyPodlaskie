@@ -15,7 +15,7 @@
         android:id="@+id/icon_weather"
         android:layout_width="@dimen/list_icon"
         android:layout_height="@dimen/list_icon"
-        tools:src="@drawable/art_clear"
+        tools:src="@drawable/art_01d"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintLeft_toLeftOf="parent"

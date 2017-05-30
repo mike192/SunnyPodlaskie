@@ -34,7 +34,7 @@ import pl.mosenko.sunnypodlaskie.util.RawResourceUtil;
 public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
     private static final String TAG = DatabaseHelperPodlaskieWeather.class.getSimpleName();
     private static final String DATABASE_NAME = "weather_data.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private Context mContext;
 
     public DatabaseHelperPodlaskieWeather(@NonNull Context context) {

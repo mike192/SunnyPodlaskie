@@ -3,6 +3,7 @@ package pl.mosenko.sunnypodlaskie.module;
 import android.content.Context;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 
 import javax.inject.Singleton;
@@ -55,5 +56,11 @@ public class NetworkModule {
     @Singleton
     public MerlinsBeard provideMerlinsBeard(Context context) {
         return MerlinsBeard.from(context);
+    }
+
+    @Provides
+    @Singleton
+    public Merlin provideMerlin(Context context) {
+        return new Merlin.Builder().withConnectableCallbacks().build(context);
     }
 }
