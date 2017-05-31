@@ -65,6 +65,13 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     private Disposable mInternetSubscription;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        injectFields();
+        initializeCompositeDisposable();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         tryToInitializeCallbackField(context);
@@ -79,20 +86,18 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         }
     }
 
-    private void injectFields() {
-        ((MainApplication) getActivity().getApplication()).getMainActivityComponent().inject(this);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflateFragmentLayout(inflater, container);
-        injectFields();
         bindGraphicalComponents(rootView);
         customizeRecyclerView();
         customizeSwipeRefreshLayout();
-        initializeCompositeDisposable();
         return rootView;
+    }
+
+    private void injectFields() {
+        ((MainApplication) getActivity().getApplication()).getMainActivityComponent().inject(this);
     }
 
     private void bindGraphicalComponents(View rootView) {
@@ -189,7 +194,6 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
             if (!mLoadingIndicator.isShown()) {
              synchronizeCurrentWeatherData();
             }
-       //     mSwipeRefreshWeatherLayout.setRefreshing(false);
         });
     }
 
@@ -218,13 +222,18 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     @Override
     public void onStop() {
         super.onStop();
-        mCompositeDisposable.dispose();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         observeInternetConnectivity();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.clear();
     }
 
     private void observeInternetConnectivity() {
