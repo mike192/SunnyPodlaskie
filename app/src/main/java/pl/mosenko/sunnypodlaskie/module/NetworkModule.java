@@ -57,10 +57,4 @@ public class NetworkModule {
     public MerlinsBeard provideMerlinsBeard(Context context) {
         return MerlinsBeard.from(context);
     }
-
-    @Provides
-    @Singleton
-    public Merlin provideMerlin(Context context) {
-        return new Merlin.Builder().withConnectableCallbacks().build(context);
-    }
 }

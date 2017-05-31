@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pogodne Podlaskie</string>
+    <string name="app_name">Pogodne podlaskie</string>
     <string name="pressure_label">Ciśnienie</string>
     <string name="wind_label">Wiatr</string>
     <string name="humidity_label">Wilgotność</string>

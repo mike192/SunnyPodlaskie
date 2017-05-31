@@ -15,9 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.novoda.merlin.Merlin;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.novoda.merlin.MerlinsBeard;
-import com.novoda.merlin.registerable.connection.Connectable;
 
 import javax.inject.Inject;
 
@@ -36,21 +35,19 @@ import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by syk on 20.05.17.
  */
 
 public class WeatherDataListFragment extends Fragment implements RxWeatherDataAPI.GetCurrentWeatherDataListCallback, WeatherAdaper.WeatherAdapterOnClickHandler {
+    private static final String TAG = WeatherDataListFragment.class.getSimpleName();
+
     @Inject
     RxWeatherDataAPI rxWeatherDataAPI;
     @Inject
     WeatherDataEntityDAO weatherDataEntityDAO;
     @Inject
     MerlinsBeard merlinsBeard;
-    @Inject
-    Merlin merlin;
 
     @BindView(R.id.swipe_refresh_weather_layout)
     SwipeRefreshLayout mSwipeRefreshWeatherLayout;
@@ -65,11 +62,11 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     private WeatherAdaper mWeatherAdaper;
     private Unbinder mUnbinder;
     private OnWeatherDataItemClickListener mCallback;
+    private Disposable mInternetSubscription;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        injectFields();
         tryToInitializeCallbackField(context);
     }
 
@@ -90,21 +87,12 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflateFragmentLayout(inflater, container);
+        injectFields();
         bindGraphicalComponents(rootView);
         customizeRecyclerView();
         customizeSwipeRefreshLayout();
         initializeCompositeDisposable();
-        synchronizeCurrentWeatherData();
-        registerMerlinCallbacks();
         return rootView;
-    }
-
-    private void registerMerlinCallbacks() {
-        merlin.registerConnectable(() -> {
-            if (mSwipeRefreshWeatherLayout != null && !mLoadingIndicator.isShown()) {
-                synchronizeCurrentWeatherData();
-            }
-        });
     }
 
     private void bindGraphicalComponents(View rootView) {
@@ -236,13 +224,30 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     @Override
     public void onResume() {
         super.onResume();
-        merlin.bind();
+        observeInternetConnectivity();
+    }
+
+    private void observeInternetConnectivity() {
+      mInternetSubscription = ReactiveNetwork.observeInternetConnectivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isConnectedToInternet -> {
+                    if (isConnectedToInternet) {
+                        synchronizeCurrentWeatherData();
+                    }
+                });
     }
 
     @Override
     public void onPause() {
-        merlin.unbind();
         super.onPause();
+        safelyDisposeInternetSubscription();
+    }
+
+    private void safelyDisposeInternetSubscription() {
+        if (mInternetSubscription != null && !mInternetSubscription.isDisposed()) {
+            mInternetSubscription.dispose();
+        }
     }
 
     public interface OnWeatherDataItemClickListener {

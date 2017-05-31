@@ -4,7 +4,12 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="@dimen/weather_primary_detail_padding"
+    android:paddingEnd="@dimen/weather_primary_detail_padding"
+    android:paddingLeft="@dimen/weather_primary_detail_padding"
+    android:paddingRight="@dimen/weather_primary_detail_padding"
+    android:paddingStart="@dimen/weather_primary_detail_padding" >
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
@@ -35,7 +40,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/art_clear"/>
+            tools:src="@drawable/art_01d"/>
 
         <TextView
             android:id="@+id/weather_description_detail"
