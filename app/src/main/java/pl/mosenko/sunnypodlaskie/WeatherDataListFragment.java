@@ -69,12 +69,7 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         super.onCreate(savedInstanceState);
         injectFields();
         initializeCompositeDisposable();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        tryToInitializeCallbackField(context);
+        tryToInitializeCallbackField(getActivity());
     }
 
     private void tryToInitializeCallbackField(Context context) {
@@ -112,9 +107,9 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         mCompositeDisposable = new CompositeDisposable();
     }
 
-
     private void showLoading() {
         if (!mSwipeRefreshWeatherLayout.isRefreshing()) {
+            noDataFoundTextView.setVisibility(View.INVISIBLE);
             mCurrentWeatherRecycyler.setVisibility(View.INVISIBLE);
             mLoadingIndicator.setVisibility(View.VISIBLE);
         }
@@ -129,10 +124,10 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         }
     }
 
-    private void synchronizeCurrentWeatherData() {
+    private void synchronizeCurrentWeatherData(boolean isConnectedToInternet) {
         showLoading();
         Disposable disposable = null;
-        if (merlinsBeard.isConnected()) {
+        if (isConnectedToInternet) {
             disposable = rxWeatherDataAPI.getCurrentWeatherData(this);
         } else {
             disposable = weatherDataEntityDAO.rxQueryForAll()
@@ -167,7 +162,6 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
 
     private void showCurrentWeatherDataRecyclerView(java.util.List<WeatherDataEntity> weatherDataEntityList) {
         if (!weatherDataEntityList.isEmpty()) {
-            noDataFoundTextView.setVisibility(View.GONE);
             mWeatherAdaper.swapWeatherList(weatherDataEntityList);
             showWeatherDataView();
         } else {
@@ -192,7 +186,7 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         mSwipeRefreshWeatherLayout.setOnRefreshListener(() ->
         {
             if (!mLoadingIndicator.isShown()) {
-             synchronizeCurrentWeatherData();
+             synchronizeCurrentWeatherData(merlinsBeard.isConnected());
             }
         });
     }
@@ -241,9 +235,7 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isConnectedToInternet -> {
-                    if (isConnectedToInternet) {
-                        synchronizeCurrentWeatherData();
-                    }
+                        synchronizeCurrentWeatherData(isConnectedToInternet);
                 });
     }
 
