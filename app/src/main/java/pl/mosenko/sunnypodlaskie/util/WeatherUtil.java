@@ -99,7 +99,7 @@ public class WeatherUtil {
         return addPercentPostfix(stringHumidity);
     }
 
-    public static String addPercentPostfix(String string) {
+    private static String addPercentPostfix(String string) {
         return string + "%";
     }
 

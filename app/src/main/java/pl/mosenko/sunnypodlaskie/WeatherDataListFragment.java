@@ -94,13 +94,14 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         customizeRecyclerView();
         customizeSwipeRefreshLayout();
         initializeCompositeDisposable();
+        synchronizeCurrentWeatherData();
         registerMerlinCallbacks();
         return rootView;
     }
 
     private void registerMerlinCallbacks() {
         merlin.registerConnectable(() -> {
-            if (mSwipeRefreshWeatherLayout != null) {
+            if (mSwipeRefreshWeatherLayout != null && !mLoadingIndicator.isShown()) {
                 synchronizeCurrentWeatherData();
             }
         });
@@ -198,8 +199,9 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
         mSwipeRefreshWeatherLayout.setOnRefreshListener(() ->
         {
             if (!mLoadingIndicator.isShown()) {
-                synchronizeCurrentWeatherData();
+             synchronizeCurrentWeatherData();
             }
+       //     mSwipeRefreshWeatherLayout.setRefreshing(false);
         });
     }
 
@@ -239,9 +241,8 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
 
     @Override
     public void onPause() {
-        super.onPause();
         merlin.unbind();
-        mCompositeDisposable.dispose();
+        super.onPause();
     }
 
     public interface OnWeatherDataItemClickListener {
