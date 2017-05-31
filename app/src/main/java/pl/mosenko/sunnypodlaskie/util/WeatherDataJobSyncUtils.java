@@ -22,7 +22,7 @@ import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
 public class WeatherDataJobSyncUtils {
     private static final String WEATHER_DATA_SYNC_TAG = "weather_data_sync";
     private static final int SYNC_INTERVAL_SECONDS = 5;
-    private static final int SYNC_FLEXTIME_SECONDS = 10; //(int) TimeUnit.HOURS.toSeconds(4);
+    private static final int SYNC_FLEXTIME_SECONDS = (int) TimeUnit.HOURS.toSeconds(4);
 
     public static void scheduleFirebaseJobDispatcherSync(@NonNull Context context) {
         Driver driver = new GooglePlayDriver(context);
@@ -38,11 +38,5 @@ public class WeatherDataJobSyncUtils {
                 .setReplaceCurrent(true)
                 .build();
         firebaseJobDispatcher.schedule(syncWeatherDataJob);
-    }
-
-    public static void cancelFirebaseJobDispatcherSync(@NonNull Context context) {
-        Driver driver = new GooglePlayDriver(context);
-        FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(driver);
-        firebaseJobDispatcher.cancel(WEATHER_DATA_SYNC_TAG);
     }
 }

@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -53,12 +54,5 @@ public class WeatherDataAlarmSyncUtil {
     private static PendingIntent getPendingIntent(@NonNull Context context) {
         Intent alarmIntent = new Intent(context, AlarmWeatherSyncReceiver.class);
         return PendingIntent.getBroadcast(context, REQUEST_CODE, alarmIntent, 0);
-    }
-
-    public static void cancelAlarm(@NonNull Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = getPendingIntent(context);
-        alarmManager.cancel(pendingIntent);
-        WeatherDataJobSyncUtils.cancelFirebaseJobDispatcherSync(context);
     }
 }
