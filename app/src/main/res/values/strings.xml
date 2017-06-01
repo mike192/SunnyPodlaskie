@@ -6,9 +6,9 @@
     <string name="sunrise_label">Wschód słońca</string>
     <string name="sunset_label">Zachód słońca</string>
     <string name="pref_enable_notifications_key" translatable="false">enable_notifications</string>
-    <string name="pref_enable_notifications_label">Powiadomienia o pogodzie</string>
-    <string name="pref_enable_notifications_true">Odblokowane</string>
-    <string name="pref_enable_notifications_false">Zablokowane</string>
+    <string name="pref_enable_notifications_label">Włącz powiadomienia</string>
+    <string name="pref_enable_notifications_true">Włączone</string>
+    <string name="pref_enable_notifications_false">Wyłączone</string>
     <string name="pref_sync_time_key" translatable="false">sync_time</string>
     <string name="pref_sync_time_label">Czas synchronizacji</string>
     <string name="settings">Ustawienia</string>
@@ -17,4 +17,5 @@
     <string name="notification_content_text">Czas aktualizacji:</string>
     <string name="bad_sync_time_format_message">Prawidłowy format godziny: HH:mm</string>
     <string name="no_data_found">Nie znaleziono danych. Włącz Internet, aby uzyskać najświeższe dane pogodowe.</string>
+    <string name="message_no_connection">Nie można uaktualnić danych, sprawdź połączenie z internetem.</string>
 </resources>

@@ -16,7 +16,7 @@ import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
  * Created by syk on 23.05.17.
  */
 
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
     private SharedPreferences mSharedPreferences;
 
@@ -38,6 +38,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             Preference preference = preferenceScreen.getPreference(i);
             if (preference instanceof EditTextPreference) {
                 addSyncTimePreferenceSummary(mSharedPreferences, preference.getKey());
+                preference.setOnPreferenceChangeListener(this);
             }
         }
     }
@@ -59,14 +60,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         final Context context = getContext();
         boolean changedSyncTime = key.equals(getString(R.string.pref_sync_time_key));
 
-        if (changedSyncTime && validateNewSyncTime(sharedPreferences, key)) {
+        if (changedSyncTime) {
             addSyncTimePreferenceSummary(sharedPreferences, key);
             WeatherDataAlarmSyncUtil.startAlarm(context);
         }
     }
 
-    private boolean validateNewSyncTime(SharedPreferences sharedPreferences, String key) {
-        String syncTimeString = sharedPreferences.getString(key, "");
+    private boolean validateNewSyncTime(String syncTimeString) {
         if (PreferenceWeatherUtil.parseSyncTimeToPartiallyDate(syncTimeString) == null) {
             Toast.makeText(getContext(), R.string.bad_sync_time_format_message, Toast.LENGTH_SHORT).show();
             return false;
@@ -77,5 +77,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private void addSyncTimePreferenceSummary(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
         preference.setSummary(sharedPreferences.getString(key, getString(R.string.pref_sync_time_default)));
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+            return validateNewSyncTime(newValue.toString());
     }
 }

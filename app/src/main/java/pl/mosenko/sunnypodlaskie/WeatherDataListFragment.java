@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.novoda.merlin.MerlinsBeard;
@@ -126,16 +127,21 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
 
     private void synchronizeCurrentWeatherData(boolean isConnectedToInternet) {
         showLoading();
-        Disposable disposable = null;
+        Disposable disposable;
         if (isConnectedToInternet) {
             disposable = rxWeatherDataAPI.getCurrentWeatherData(this);
+            mCompositeDisposable.add(disposable);
         } else {
-            disposable = weatherDataEntityDAO.rxQueryForAll()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(p -> showCurrentWeatherDataRecyclerView(p), e -> onDownloadWeatherDataError(e));
+            if (mWeatherAdaper.getItemCount() == 0) {
+                disposable = weatherDataEntityDAO.rxQueryForAll()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(p -> showCurrentWeatherDataRecyclerView(p), e -> onDownloadWeatherDataError(e));
+                mCompositeDisposable.add(disposable);
+            }
+            Toast.makeText(getActivity(), R.string.message_no_connection, Toast.LENGTH_SHORT).show();
+            showWeatherDataView();
         }
-        mCompositeDisposable.add(disposable);
     }
 
     @Override

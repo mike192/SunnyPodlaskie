@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import pl.mosenko.sunnypodlaskie.R;
 
@@ -68,14 +69,30 @@ public class PreferenceWeatherUtil {
 
     @Nullable
     public static Date parseSyncTimeToPartiallyDate(String syncTimeString) {
-        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm");
-        Date syncTimeDate = null;
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         try {
-            syncTimeDate = simpleTimeFormat.parse(syncTimeString);
+            Date syncTimeDate = simpleTimeFormat.parse(syncTimeString);
+            return isValidTime(syncTimeString) ? syncTimeDate : null;
         } catch (ParseException e) {
-            Log.e(TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-        return syncTimeDate;
+
+        return null;
+    }
+
+    private static boolean isValidTime(String syncTimeString) {
+        String hourPart = syncTimeString.substring(0, syncTimeString.indexOf(":"));
+        String minutePart = syncTimeString.substring(syncTimeString.indexOf(":") + 1);
+
+        Integer hours;
+        Integer minutes;
+        try {
+            hours = Integer.valueOf(hourPart);
+            minutes = Integer.valueOf(minutePart);
+        } catch (NumberFormatException ne) {
+            return false;
+        }
+
+        return hours >= 0 && hours <= 24 && minutes >= 0 && minutes <= 59;
     }
 }
