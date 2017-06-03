@@ -17,7 +17,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "pl.mosenko.sunnypodlaskie"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -68,6 +68,9 @@ dependencies {
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
     compile 'com.novoda:merlin:0.10.0'
     compile 'com.github.pwittchen:reactivenetwork-rx2:0.9.1'
+    compile 'com.hannesdorfmann.mosby3:mvp:3.0.4'
+    compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.4'
+    compile 'com.github.jkwiecien:Switcher:2.1.5'
 
     apt 'com.google.dagger:dagger-compiler:2.10'
     compile 'com.google.dagger:dagger:2.10'

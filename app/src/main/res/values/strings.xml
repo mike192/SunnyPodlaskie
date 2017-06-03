@@ -18,4 +18,5 @@
     <string name="bad_sync_time_format_message">Prawidłowy format godziny: HH:mm</string>
     <string name="no_data_found">Nie znaleziono danych. Włącz Internet, aby uzyskać najświeższe dane pogodowe.</string>
     <string name="message_no_connection">Nie można uaktualnić danych, sprawdź połączenie z internetem.</string>
+    <string name="error_data">Wystąpił niespotykany błąd. Spróbuj odświeżyć bądź zrestartować aplikację.</string>
 </resources>

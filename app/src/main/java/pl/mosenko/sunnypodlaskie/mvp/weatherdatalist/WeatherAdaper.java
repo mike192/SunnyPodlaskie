@@ -26,9 +26,9 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
 
     private java.util.List<WeatherDataEntity> mWeatherList;
     private Context mContext;
-    private WeatherAdapterOnClickHandler mClickHandler;
+    private WeatherDataClickedListener mClickHandler;
 
-    public WeatherAdaper(Context context, WeatherAdapterOnClickHandler clickHandler) {
+    public WeatherAdaper(Context context, WeatherDataClickedListener clickHandler) {
         this.mContext = context;
         this.mWeatherList = new ArrayList<WeatherDataEntity>();
         this.mClickHandler = clickHandler;
@@ -36,7 +36,7 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
 
     @Override
     public WeatherViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-         View itemView = LayoutInflater.from(mContext).inflate(R.layout.weather_list_item, parent, false);
+         View itemView = LayoutInflater.from(mContext).inflate(R.layout.weather_data_list_item, parent, false);
         itemView.setFocusable(true);
         return new WeatherViewHolder(itemView);
     }
@@ -61,8 +61,8 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
         notifyDataSetChanged();
     }
 
-    public interface WeatherAdapterOnClickHandler {
-        void onClick(long id);
+    public interface WeatherDataClickedListener {
+        void onWeatherDataItemClick(long id);
     }
 
     public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -81,7 +81,7 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             WeatherDataEntity weatherDataEntity = mWeatherList.get(adapterPosition);
-            mClickHandler.onClick(weatherDataEntity.getId());
+            mClickHandler.onWeatherDataItemClick(weatherDataEntity.getId());
         }
     }
 }

@@ -1,7 +1,6 @@
 package pl.mosenko.sunnypodlaskie.service;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.JobParameters;
@@ -12,18 +11,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather;
-import pl.mosenko.sunnypodlaskie.network.dto.WeatherData;
-import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataAPI;
-import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
+import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
+import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository;
 import pl.mosenko.sunnypodlaskie.util.PreferenceWeatherUtil;
-import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter;
 import pl.mosenko.sunnypodlaskie.util.WeatherNotificationUtil;
 
 import static android.media.CamcorderProfile.get;
@@ -32,14 +26,12 @@ import static android.media.CamcorderProfile.get;
  * Created by syk on 26.05.17.
  */
 
-public class WeatherDataSyncJobService extends JobService implements RxWeatherDataAPI.GetCurrentWeatherDataListCallback {
+public class WeatherDataSyncJobService extends JobService implements WeatherDataRepository.Callback {
     private static final String TAG = WeatherDataSyncJobService.class.getSimpleName();
 
     @Inject
-    RxWeatherDataAPI mRxWeatherDataAPI;
-    @Inject
-    WeatherDataEntityDAO mWeatherDataEntityDAO;
-    private CompositeDisposable mCompositeDisposable;
+    WeatherDataRepository mWeatherDataRepository;
+    private CompositeDisposable mRepositoryDisposable;
     private JobParameters mJob;
 
     @Override
@@ -50,13 +42,13 @@ public class WeatherDataSyncJobService extends JobService implements RxWeatherDa
     }
 
     private void initializeCompositeDisposable() {
-        mCompositeDisposable = new CompositeDisposable();
+        mRepositoryDisposable = new CompositeDisposable();
     }
 
     @Override
     public boolean onStartJob(JobParameters job) {
-        Disposable disposable = mRxWeatherDataAPI.getCurrentWeatherData(this);
-        mCompositeDisposable.add(disposable);
+        Disposable disposable = mWeatherDataRepository.loadCurrentWeatherData(true, this);
+        mRepositoryDisposable.add(disposable);
         mJob = job;
         return true;
     }
@@ -67,27 +59,14 @@ public class WeatherDataSyncJobService extends JobService implements RxWeatherDa
 
     @Override
     public boolean onStopJob(JobParameters job) {
-        mCompositeDisposable.dispose();
+        safelyDisposeRepositorySubscription();
         return true;
     }
 
-    @Override
-    public void onDownloadWeatherDataSuccess(WeatherData weatherDataList) {
-        Disposable disposable = Observable.fromCallable(() -> cacheCurrentWeatherDataOnDatabase(weatherDataList))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(p -> showNotification(p), e -> logError(e));
-
-        mCompositeDisposable.add(disposable);
-    }
-
-    @NonNull
-    private java.util.List<WeatherDataEntity> cacheCurrentWeatherDataOnDatabase(WeatherData weatherDataList) throws java.sql.SQLException {
-        java.util.List<WeatherDataEntity> weatherDataEntityList = WeatherDtoEntityConverter.convertToWeatherDataEntityList(weatherDataList.getList());
-        mWeatherDataEntityDAO.deleteBuilder().delete();
-        mWeatherDataEntityDAO.create(weatherDataEntityList);
-        weatherDataEntityList = mWeatherDataEntityDAO.queryForAll();
-        return weatherDataEntityList;
+    private void safelyDisposeRepositorySubscription() {
+        if (mRepositoryDisposable != null && !mRepositoryDisposable.isDisposed()) {
+            mRepositoryDisposable.dispose();
+        }
     }
 
     private void showNotification(List<WeatherDataEntity> weatherDataEntities) {
@@ -108,13 +87,15 @@ public class WeatherDataSyncJobService extends JobService implements RxWeatherDa
         throw new IllegalArgumentException("Downloaded weather data are incorrect.");
     }
 
-
     @Override
-    public void onDownloadWeatherDataError(Throwable networkError) {
-        logError(networkError);
+    public void onNextWeatherDataEntities(List<WeatherDataEntity> weatherDataEntityList, boolean isConnectedToInternet) {
+        showNotification(weatherDataEntityList);
     }
 
-    private void logError(Throwable e) {
-        Log.e(TAG, e.getMessage(), e);
+    @Override
+    public void onError(Throwable throwable) {
+       if (BuildConfig.DEBUG) {
+           Log.e(TAG, throwable.getMessage(), throwable);
+       }
     }
 }

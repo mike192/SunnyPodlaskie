@@ -13,9 +13,9 @@ import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailsActivity;
 import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
 
-public class MainActivity extends AppCompatActivity implements WeatherDataListFragment.OnWeatherDataItemClickListener {
+public class WeatherDataListActivity extends AppCompatActivity implements FragmentWeatherDataList.Callback {
 
-    private final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = WeatherDataListActivity.class.getSimpleName();
     private boolean mTwoPane;
 
     @Override
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements WeatherDataListFr
     }
 
     private void initializeActivity() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_weather_data_list);
         getSupportActionBar().setElevation(0f);
         WeatherDataAlarmSyncUtil.startAlarmOnRunApp(this);
     }
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements WeatherDataListFr
     }
 
     @Override
-    public void onWeatherDataItemSelected(long weatherDataId) {
+    public void onItemSelected(long weatherDataId) {
         if (mTwoPane) {
             replaceWeatherDataDetailsFragment(weatherDataId);
         } else {

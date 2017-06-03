@@ -9,6 +9,7 @@ import java.util.Map;
 
 import pl.mosenko.sunnypodlaskie.network.dto.List;
 import pl.mosenko.sunnypodlaskie.network.dto.Weather;
+import pl.mosenko.sunnypodlaskie.network.dto.WeatherData;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 
@@ -58,7 +59,8 @@ public class WeatherDtoEntityConverter {
         return cityCorrectName != null ? cityCorrectName : name;
     }
 
-    public static java.util.List<WeatherDataEntity> convertToWeatherDataEntityList(java.util.List<List> weatherDataList) {
+    public static java.util.List<WeatherDataEntity> convertToWeatherDataEntityList(WeatherData weatherData) {
+        java.util.List<List> weatherDataList = weatherData.getList();
         java.util.List<WeatherDataEntity> weatherDataEntityList = new ArrayList<>(weatherDataList.size());
         for (List weatherInfo : weatherDataList) {
             WeatherDataEntity weatherDataEntity = convertToWeatherDataEntity(weatherInfo);

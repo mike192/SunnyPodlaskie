@@ -3,12 +3,14 @@ package pl.mosenko.sunnypodlaskie.di.component;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.MainActivity;
+import pl.mosenko.sunnypodlaskie.di.module.RepositoryModule;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity;
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment;
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.FragmentWeatherDataList;
 import pl.mosenko.sunnypodlaskie.di.module.ContextModule;
 import pl.mosenko.sunnypodlaskie.di.module.DatabaseModule;
 import pl.mosenko.sunnypodlaskie.di.module.NetworkModule;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListPresenterImpl;
 import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
 
 /**
@@ -16,10 +18,11 @@ import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
  */
 
 @Singleton
-@Component(modules = {NetworkModule.class, ContextModule.class, DatabaseModule.class})
+@Component(modules = {NetworkModule.class, ContextModule.class, DatabaseModule.class, RepositoryModule.class})
 public interface DIComponent {
-    void inject(MainActivity mainActivity);
-    void inject(WeatherDataListFragment weatherDataListFragment);
+    void inject(WeatherDataListActivity weatherDataListActivity);
+    void inject(FragmentWeatherDataList fragmentWeatherDataList);
     void inject(WeatherDataDetailFragment weatherDataDetailFragment);
     void inject(WeatherDataSyncJobService weatherDataSyncJobService);
+    void inject(WeatherDataListPresenterImpl weatherDataListPresenter);
 }

@@ -21,7 +21,6 @@ public class WeatherDataEntity extends AbstractOrmLiteEntity {
     public static final String CITY_COLUMN = "city";
     public static final String RECEIVING_TIME_COLUMN = "receiving_time";
     public static final String ICON_KEY_COLUMN = "icon_key";
-    //  public static final String DESCRIPTION_COLUMN = "description";
     public static final String WEATHER_CONDITION = "weather_condition";
     public static final String TEMPERATURE_COLUMN = "temperature";
     public static final String PRESSURE_COLUMN = "pressure";

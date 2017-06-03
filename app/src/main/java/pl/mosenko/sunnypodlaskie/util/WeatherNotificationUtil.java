@@ -13,7 +13,7 @@ import android.support.v4.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.MainActivity;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity;
 import pl.mosenko.sunnypodlaskie.R;
 
 /**
@@ -51,7 +51,7 @@ public class WeatherNotificationUtil {
     }
 
     private static PendingIntent getPendingIntent(@NonNull Context context) {
-        Intent mainAcitivityIntent = new Intent(context, MainActivity.class);
+        Intent mainAcitivityIntent = new Intent(context, WeatherDataListActivity.class);
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
         taskStackBuilder.addNextIntent(mainAcitivityIntent);
         return taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

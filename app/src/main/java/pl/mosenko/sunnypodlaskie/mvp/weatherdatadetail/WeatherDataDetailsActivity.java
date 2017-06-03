@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import pl.mosenko.sunnypodlaskie.R;
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.MainActivity;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity;
 
 /**
  * Created by syk on 20.05.17.
@@ -58,7 +58,7 @@ public class WeatherDataDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, WeatherDataListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
