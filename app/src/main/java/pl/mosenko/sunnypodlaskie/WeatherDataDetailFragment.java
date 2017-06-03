@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -78,7 +77,7 @@ public class WeatherDataDetailFragment extends Fragment {
     }
 
     private void injectFields() {
-        ((MainApplication) getActivity().getApplication()).getMainActivityComponent().inject(this);
+        ApplicationPodlaskieWeather.sharedApplication().getDIComponent().inject(this);
     }
 
     @Nullable

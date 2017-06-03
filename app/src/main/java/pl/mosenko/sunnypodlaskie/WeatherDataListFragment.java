@@ -93,7 +93,7 @@ public class WeatherDataListFragment extends Fragment implements RxWeatherDataAP
     }
 
     private void injectFields() {
-        ((MainApplication) getActivity().getApplication()).getMainActivityComponent().inject(this);
+        ((ApplicationPodlaskieWeather) getActivity().getApplication()).getDIComponent().inject(this);
     }
 
     private void bindGraphicalComponents(View rootView) {

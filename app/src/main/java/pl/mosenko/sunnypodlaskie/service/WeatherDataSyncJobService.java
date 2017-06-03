@@ -17,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import pl.mosenko.sunnypodlaskie.MainApplication;
+import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather;
 import pl.mosenko.sunnypodlaskie.dto.WeatherData;
 import pl.mosenko.sunnypodlaskie.network.RxWeatherDataAPI;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
@@ -62,7 +62,7 @@ public class WeatherDataSyncJobService extends JobService implements RxWeatherDa
     }
 
     private void injectFields() {
-        ((MainApplication) getApplication()).getMainActivityComponent().inject(this);
+        ApplicationPodlaskieWeather.sharedApplication().getDIComponent().inject(this);
     }
 
     @Override

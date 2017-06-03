@@ -15,14 +15,20 @@ import pl.mosenko.sunnypodlaskie.module.NetworkModule;
  * Created by syk on 13.05.17.
  */
 
-public class MainApplication extends Application {
-    private DIComponent mainActivityComponent;
+public class ApplicationPodlaskieWeather extends Application {
+    private static ApplicationPodlaskieWeather sSharedApplication;
+    private DIComponent mDIComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        initializeSharedApplication();
         setDefaultLocale();
         buildComponent();
+    }
+
+    private void initializeSharedApplication() {
+        sSharedApplication = this;
     }
 
     private void setDefaultLocale() {
@@ -30,14 +36,24 @@ public class MainApplication extends Application {
     }
 
     private void buildComponent() {
-        mainActivityComponent = DaggerDIComponent.builder()
+        mDIComponent = DaggerDIComponent.builder()
                 .contextModule(new ContextModule(getApplicationContext()))
                 .networkModule(new NetworkModule())
                 .databaseModule(new DatabaseModule())
                 .build();
     }
 
-    public DIComponent getMainActivityComponent() {
-        return mainActivityComponent;
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        sSharedApplication = null;
+    }
+
+    public static ApplicationPodlaskieWeather sharedApplication() {
+        return sSharedApplication;
+    }
+
+    public DIComponent getDIComponent() {
+        return mDIComponent;
     }
 }
