@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie;
+package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,9 +18,12 @@ import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather;
+import pl.mosenko.sunnypodlaskie.BuildConfig;
+import pl.mosenko.sunnypodlaskie.R;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
-import pl.mosenko.sunnypodlaskie.util.WeatherUtil;
+import pl.mosenko.sunnypodlaskie.util.WeatherDataUtil;
 
 /**
  * Created by syk on 20.05.17.
@@ -99,16 +102,16 @@ public class WeatherDataDetailFragment extends Fragment {
     }
 
     private void fillGraphicalComponents(WeatherDataEntity weatherDataEntity) {
-        mCityDetailTV.setText(WeatherUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime()));
-        mTemperatureTV.setText(WeatherUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
+        mCityDetailTV.setText(WeatherDataUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime()));
+        mTemperatureTV.setText(WeatherDataUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
         mWeatherDescriptionTV.setText(weatherDataEntity.getWeatherCondition().getDescription());
-        int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey());
+        int iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey());
         mIconDetailIV.setImageResource(iconResource);
-        mPressure.setText(WeatherUtil.getFormattedPressure(weatherDataEntity.getPressure()));
-        mWindDetails.setText(WeatherUtil.getFormattedWindDetails(weatherDataEntity.getWindSpeed(), weatherDataEntity.getWindDegree()));
-        mHumidityDetail.setText(WeatherUtil.getFormattedHumidity(weatherDataEntity.getHumidity()));
-        mSunrise.setText(WeatherUtil.getFormattedTime(weatherDataEntity.getSunrise()));
-        mSunset.setText(WeatherUtil.getFormattedTime(weatherDataEntity.getSunset()));
+        mPressure.setText(WeatherDataUtil.getFormattedPressure(weatherDataEntity.getPressure()));
+        mWindDetails.setText(WeatherDataUtil.getFormattedWindDetails(weatherDataEntity.getWindSpeed(), weatherDataEntity.getWindDegree()));
+        mHumidityDetail.setText(WeatherDataUtil.getFormattedHumidity(weatherDataEntity.getHumidity()));
+        mSunrise.setText(WeatherDataUtil.getFormattedTime(weatherDataEntity.getSunrise()));
+        mSunset.setText(WeatherDataUtil.getFormattedTime(weatherDataEntity.getSunset()));
     }
 
     private void logError(Throwable throwable) {

@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import pl.mosenko.sunnypodlaskie.dto.List;
-import pl.mosenko.sunnypodlaskie.dto.Weather;
+import pl.mosenko.sunnypodlaskie.network.dto.List;
+import pl.mosenko.sunnypodlaskie.network.dto.Weather;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 

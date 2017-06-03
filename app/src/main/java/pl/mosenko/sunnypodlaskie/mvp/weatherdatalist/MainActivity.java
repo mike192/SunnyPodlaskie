@@ -1,14 +1,16 @@
-package pl.mosenko.sunnypodlaskie;
+package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import pl.mosenko.sunnypodlaskie.R;
+import pl.mosenko.sunnypodlaskie.mvp.setting.SettingsActivity;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailsActivity;
 import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
 
 public class MainActivity extends AppCompatActivity implements WeatherDataListFragment.OnWeatherDataItemClickListener {

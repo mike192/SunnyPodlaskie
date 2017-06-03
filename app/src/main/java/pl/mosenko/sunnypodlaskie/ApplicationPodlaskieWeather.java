@@ -4,11 +4,11 @@ import android.app.Application;
 
 import java.util.Locale;
 
-import pl.mosenko.sunnypodlaskie.component.DIComponent;
-import pl.mosenko.sunnypodlaskie.component.DaggerDIComponent;
-import pl.mosenko.sunnypodlaskie.module.ContextModule;
-import pl.mosenko.sunnypodlaskie.module.DatabaseModule;
-import pl.mosenko.sunnypodlaskie.module.NetworkModule;
+import pl.mosenko.sunnypodlaskie.di.component.DIComponent;
+import pl.mosenko.sunnypodlaskie.di.component.DaggerDIComponent;
+import pl.mosenko.sunnypodlaskie.di.module.ContextModule;
+import pl.mosenko.sunnypodlaskie.di.module.DatabaseModule;
+import pl.mosenko.sunnypodlaskie.di.module.NetworkModule;
 
 
 /**

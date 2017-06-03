@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie;
+package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,11 +7,9 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import pl.mosenko.sunnypodlaskie.R;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.MainActivity;
 
 /**
  * Created by syk on 20.05.17.

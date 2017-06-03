@@ -1,7 +1,7 @@
-package pl.mosenko.sunnypodlaskie.network;
+package pl.mosenko.sunnypodlaskie.network.api;
 
 import io.reactivex.Observable;
-import pl.mosenko.sunnypodlaskie.dto.WeatherData;
+import pl.mosenko.sunnypodlaskie.network.dto.WeatherData;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 

@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie;
+package pl.mosenko.sunnypodlaskie.mvp.setting;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +9,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
+import pl.mosenko.sunnypodlaskie.R;
 import pl.mosenko.sunnypodlaskie.util.PreferenceWeatherUtil;
 import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
 

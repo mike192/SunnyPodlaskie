@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie.module;
+package pl.mosenko.sunnypodlaskie.di.module;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

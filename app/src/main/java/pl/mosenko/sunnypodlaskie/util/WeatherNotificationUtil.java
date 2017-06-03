@@ -7,14 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import pl.mosenko.sunnypodlaskie.MainActivity;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.MainActivity;
 import pl.mosenko.sunnypodlaskie.R;
 
 /**

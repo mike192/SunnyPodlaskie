@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie;
+package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.mosenko.sunnypodlaskie.R;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
-import pl.mosenko.sunnypodlaskie.util.WeatherUtil;
+import pl.mosenko.sunnypodlaskie.util.WeatherDataUtil;
 
 import static android.media.CamcorderProfile.get;
 
@@ -43,10 +44,10 @@ public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherVie
     @Override
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
         WeatherDataEntity weatherInfo = mWeatherList.get(position);
-        int iconResource = WeatherUtil.getWeatherIconResourceByCode(weatherInfo.getIconKey());
+        int iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherInfo.getIconKey());
         holder.weatherIcon.setImageResource(iconResource);
         holder.city.setText(weatherInfo.getCity());
-        holder.temperature.setText(WeatherUtil.getFormattedTemperature(weatherInfo.getTemperature()));
+        holder.temperature.setText(WeatherDataUtil.getFormattedTemperature(weatherInfo.getTemperature()));
         holder.weatherDescription.setText(weatherInfo.getWeatherCondition().getDescription());
     }
 

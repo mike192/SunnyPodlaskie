@@ -11,19 +11,19 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:name=".ApplicationPodlaskieWeather">
-        <activity android:name=".MainActivity">
+        <activity android:name=".mvp.weatherdatalist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WeatherDataDetailsActivity"
-            android:parentActivityName=".MainActivity">
+        <activity android:name=".mvp.weatherdatadetail.WeatherDataDetailsActivity"
+            android:parentActivityName=".mvp.weatherdatalist.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".mvp.weatherdatalist.MainActivity"/>
         </activity>
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".mvp.setting.SettingsActivity" />
 
         <receiver android:name=".broadcastreceiver.AlarmWeatherSyncReceiver" >
             <intent-filter>

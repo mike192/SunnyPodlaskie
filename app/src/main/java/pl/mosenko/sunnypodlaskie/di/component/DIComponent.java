@@ -1,14 +1,14 @@
-package pl.mosenko.sunnypodlaskie.component;
+package pl.mosenko.sunnypodlaskie.di.component;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import pl.mosenko.sunnypodlaskie.MainActivity;
-import pl.mosenko.sunnypodlaskie.WeatherDataDetailFragment;
-import pl.mosenko.sunnypodlaskie.WeatherDataListFragment;
-import pl.mosenko.sunnypodlaskie.module.ContextModule;
-import pl.mosenko.sunnypodlaskie.module.DatabaseModule;
-import pl.mosenko.sunnypodlaskie.module.NetworkModule;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.MainActivity;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment;
+import pl.mosenko.sunnypodlaskie.di.module.ContextModule;
+import pl.mosenko.sunnypodlaskie.di.module.DatabaseModule;
+import pl.mosenko.sunnypodlaskie.di.module.NetworkModule;
 import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
 
 /**

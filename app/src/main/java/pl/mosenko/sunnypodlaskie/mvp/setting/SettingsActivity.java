@@ -1,9 +1,11 @@
-package pl.mosenko.sunnypodlaskie;
+package pl.mosenko.sunnypodlaskie.mvp.setting;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import pl.mosenko.sunnypodlaskie.R;
 
 /**
  * Created by syk on 23.05.17.

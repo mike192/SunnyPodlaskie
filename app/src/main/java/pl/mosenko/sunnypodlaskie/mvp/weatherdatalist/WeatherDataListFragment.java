@@ -1,4 +1,4 @@
-package pl.mosenko.sunnypodlaskie;
+package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -29,9 +29,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import pl.mosenko.sunnypodlaskie.dto.List;
-import pl.mosenko.sunnypodlaskie.dto.WeatherData;
-import pl.mosenko.sunnypodlaskie.network.RxWeatherDataAPI;
+import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather;
+import pl.mosenko.sunnypodlaskie.R;
+import pl.mosenko.sunnypodlaskie.network.dto.List;
+import pl.mosenko.sunnypodlaskie.network.dto.WeatherData;
+import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataAPI;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter;

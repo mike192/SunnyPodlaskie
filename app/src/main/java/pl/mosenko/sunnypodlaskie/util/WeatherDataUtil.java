@@ -17,13 +17,13 @@ import static android.content.ContentValues.TAG;
  * Created by syk on 15.05.17.
  */
 
-public class WeatherUtil {
+public class WeatherDataUtil {
     private static final String PRESSURE_UNIT = "hPa";
     private static final String TEMPERATURE_UNIT = "\u00b0";
     private static final String WIND_SPEED_UNIT = "m/s";
 
 
-    private WeatherUtil() {}
+    private WeatherDataUtil() {}
 
     public static int getWeatherIconResourceByCode(final String code) {
         switch (code) {

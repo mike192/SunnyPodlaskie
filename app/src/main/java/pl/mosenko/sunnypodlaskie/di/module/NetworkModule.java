@@ -1,9 +1,8 @@
-package pl.mosenko.sunnypodlaskie.module;
+package pl.mosenko.sunnypodlaskie.di.module;
 
 import android.content.Context;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 
 import javax.inject.Singleton;
@@ -11,8 +10,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import pl.mosenko.sunnypodlaskie.BuildConfig;
-import pl.mosenko.sunnypodlaskie.network.RxWeatherDataAPI;
-import pl.mosenko.sunnypodlaskie.network.WeatherDataAPI;
+import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataAPI;
+import pl.mosenko.sunnypodlaskie.network.api.WeatherDataAPI;
 import pl.mosenko.sunnypodlaskie.util.APIKeyProvider;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
