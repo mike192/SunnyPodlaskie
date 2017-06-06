@@ -8,11 +8,12 @@ import com.j256.ormlite.field.DatabaseField;
  * Created by syk on 16.05.17.
  */
 
-public abstract class AbstractOrmLiteEntity {
+public abstract class AbstractOrmLiteEntity implements BaseOrmLiteEntity {
     @DatabaseField(columnName = BaseColumns._ID, generatedId = true)
-    protected long _id;
+    protected Long _id;
 
-    public long getId() {
+    @Override
+    public Long getId() {
         return _id;
     }
 }

@@ -1,20 +1,14 @@
 package pl.mosenko.sunnypodlaskie;
 
-import android.util.Base64;
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Observable;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
-import pl.mosenko.sunnypodlaskie.util.PreferenceWeatherUtil;
 
 import static org.junit.Assert.*;
 

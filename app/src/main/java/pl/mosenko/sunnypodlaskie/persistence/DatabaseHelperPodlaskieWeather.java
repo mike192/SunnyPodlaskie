@@ -23,6 +23,7 @@ import java.util.List;
 
 import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.R;
+import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherConditionEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.util.RawResourceUtil;
@@ -47,7 +48,7 @@ public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTableIfNotExists(connectionSource, WeatherDataEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, WeatherConditionEntity.class);
-            addWeatherConditionsToDatabase();
+            addWeatherConditionsToDatabase(connectionSource);
         } catch (SQLException e) {
             if (BuildConfig.DEBUG) {
                 Log.e(TAG, e.getMessage(), e);
@@ -55,11 +56,11 @@ public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    private void addWeatherConditionsToDatabase() throws SQLException {
-        Dao<WeatherConditionEntity, Long> weatherConditionEntityDao = getDao(WeatherConditionEntity.class);
+    private void addWeatherConditionsToDatabase(ConnectionSource connectionSource) throws SQLException {
+        WeatherConditionEntityDAO weatherConditionEntities = new WeatherConditionEntityDAO(connectionSource);
         String weatherConditionsJson = RawResourceUtil.readRawTextFile(mContext, R.raw.weather_conditions);
         List<WeatherConditionEntity> conditionEntities = new Gson().fromJson(weatherConditionsJson, new TypeToken<List<WeatherConditionEntity>>(){}.getType());
-        weatherConditionEntityDao.create(conditionEntities);
+        weatherConditionEntities.create(conditionEntities);
     }
 
     @Override

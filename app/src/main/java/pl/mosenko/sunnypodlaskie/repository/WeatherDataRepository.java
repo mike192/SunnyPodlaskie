@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataAPI;
+import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherConditionEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter;
@@ -23,37 +24,39 @@ public class WeatherDataRepository {
     @Inject
     RxWeatherDataAPI mRxWeatherDataAPI;
     @Inject
-    WeatherDataEntityDAO weatherDataEntityDAO;
+    WeatherDataEntityDAO mWeatherDataEntityDAO;
+    @Inject
+    WeatherConditionEntityDAO mWeatherConditionEntities;
 
-    public WeatherDataRepository(RxWeatherDataAPI mRxWeatherDataAPI, WeatherDataEntityDAO weatherDataEntityDAO) {
-        this.mRxWeatherDataAPI = mRxWeatherDataAPI;
-        this.weatherDataEntityDAO = weatherDataEntityDAO;
+    public WeatherDataRepository(RxWeatherDataAPI rxWeatherDataAPI, WeatherDataEntityDAO weatherDataEntityDAO, WeatherConditionEntityDAO weatherConditionEntities) {
+        this.mRxWeatherDataAPI = rxWeatherDataAPI;
+        this.mWeatherDataEntityDAO = weatherDataEntityDAO;
+        this.mWeatherConditionEntities = weatherConditionEntities;
     }
 
-    public Disposable loadCurrentWeatherData(final boolean isConnectedToInternet, Callback callback) {
-        Observable<List<WeatherDataEntity>> weatherDataEntityObservable;
-
+    public Disposable loadCurrentWeatherData(final boolean isConnectedToInternet, final Callback callback) {
+       Observable<List<WeatherDataEntity>> weatherDataEntityObservable;
         if (isConnectedToInternet) {
             weatherDataEntityObservable = mRxWeatherDataAPI.getCurrentWeatherData()
-                    .map(p -> WeatherDtoEntityConverter.convertToWeatherDataEntityList(p))
-                    .doOnNext(p -> cacheCurrentWeatherData(p));
-
+                    .map(WeatherDtoEntityConverter::convertToWeatherDataEntityList)
+                    .doOnNext(this::cacheCurrentWeatherData);
         } else {
-            weatherDataEntityObservable = weatherDataEntityDAO.rxQueryForAll();
+            weatherDataEntityObservable = mWeatherDataEntityDAO.rxQueryForAll();
         }
         Disposable disposable = weatherDataEntityObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(p -> callback.onNextWeatherDataEntities(p, isConnectedToInternet), callback::onError);
-
         return disposable;
     }
 
     @NonNull
     private void cacheCurrentWeatherData(List<WeatherDataEntity> weatherDataEntityList) throws java.sql.SQLException {
-        weatherDataEntityDAO.deleteBuilder().delete();
-        weatherDataEntityDAO.create(weatherDataEntityList);
-        //weatherDataEntityDAO.queryForAll();
+        mWeatherDataEntityDAO.deleteBuilder().delete();
+        mWeatherDataEntityDAO.create(weatherDataEntityList);
+        for (WeatherDataEntity weatherEntity : weatherDataEntityList) {
+            mWeatherConditionEntities.refresh(weatherEntity.getWeatherCondition());
+        }
     }
 
     public interface Callback {

@@ -22,7 +22,7 @@ import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository;
  * Created by syk on 03.06.17.
  */
 
-public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataListView> implements WeatherDataListPresenter, WeatherDataRepository.Callback {
+public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataListContract.View> implements WeatherDataListContract.Presenter, WeatherDataRepository.Callback {
     private static final String TAG = WeatherDataListPresenterImpl.class.getSimpleName();
 
     @Inject
@@ -67,14 +67,14 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
     }
 
     private void safelyDisposeInternetSubscription() {
-        if (mInternetSubscription != null && !mInternetSubscription.isDisposed()) {
+        if (mInternetSubscription != null && mInternetSubscription.isDisposed()) {
             mInternetSubscription.dispose();
         }
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        loadData(pullToRefresh, mMerlinsBeard.isConnected());
+      loadData(pullToRefresh, mMerlinsBeard.isConnected());
     }
 
     private void loadData(boolean pullToRefresh, boolean isConnectedToInternet) {
@@ -92,19 +92,15 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
     }
 
     private void safelyDisposeRepositorySubscription() {
-        if (mRepositoryDisposable != null && !mRepositoryDisposable.isDisposed()) {
+        if (mRepositoryDisposable != null && mRepositoryDisposable.isDisposed()) {
             mRepositoryDisposable.dispose();
         }
     }
 
     @Override
-    public void attachView(WeatherDataListView view) {
-
-    }
-
-    @Override
     public void detachView(boolean retainInstance) {
-        mRepositoryDisposable.clear();
+        super.detachView(retainInstance);
+        safelyDisposeRepositorySubscription();
     }
 
     @Override

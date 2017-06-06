@@ -16,7 +16,9 @@ import dagger.Module;
 import dagger.Provides;
 import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.persistence.DatabaseHelperPodlaskieWeather;
+import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherConditionEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
+import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 /**
  * Created by syk on 18.05.17.
@@ -42,6 +44,25 @@ public class DatabaseModule {
                 return new WeatherDataEntityDAO(connectionSource, tableConfig);
             } else {
                 return new WeatherDataEntityDAO(connectionSource);
+            }
+        } catch (SQLException e) {
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, e.getMessage(), e);
+            }
+            return null;
+        }
+    }
+
+    @Provides
+    @Singleton
+    public WeatherConditionEntityDAO provideWeatherConditionEntityDAO(@NonNull final DatabaseHelperPodlaskieWeather databaseHelperPodlaskieWeather) {
+        try {
+            ConnectionSource connectionSource = databaseHelperPodlaskieWeather.getConnectionSource();
+            DatabaseTableConfig<WeatherConditionEntity> tableConfig = DatabaseTableConfigUtil.fromClass(connectionSource, WeatherConditionEntity.class);
+            if (tableConfig != null) {
+                return new WeatherConditionEntityDAO(connectionSource, tableConfig);
+            } else {
+                return new WeatherConditionEntityDAO(connectionSource);
             }
         } catch (SQLException e) {
             if (BuildConfig.DEBUG) {

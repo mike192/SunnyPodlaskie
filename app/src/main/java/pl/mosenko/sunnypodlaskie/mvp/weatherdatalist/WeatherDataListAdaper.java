@@ -22,13 +22,13 @@ import static android.media.CamcorderProfile.get;
  * Created by syk on 15.05.17.
  */
 
-public class WeatherAdaper extends RecyclerView.Adapter<WeatherAdaper.WeatherViewHolder> {
+public class WeatherDataListAdaper extends RecyclerView.Adapter<WeatherDataListAdaper.WeatherViewHolder> {
 
     private java.util.List<WeatherDataEntity> mWeatherList;
     private Context mContext;
     private WeatherDataClickedListener mClickHandler;
 
-    public WeatherAdaper(Context context, WeatherDataClickedListener clickHandler) {
+    public WeatherDataListAdaper(Context context, WeatherDataClickedListener clickHandler) {
         this.mContext = context;
         this.mWeatherList = new ArrayList<WeatherDataEntity>();
         this.mClickHandler = clickHandler;

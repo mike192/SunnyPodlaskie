@@ -13,7 +13,7 @@ import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailsActivity;
 import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
 
-public class WeatherDataListActivity extends AppCompatActivity implements FragmentWeatherDataList.Callback {
+public class WeatherDataListActivity extends AppCompatActivity implements WeatherDataListFragment.Callback {
 
     private final String TAG = WeatherDataListActivity.class.getSimpleName();
     private boolean mTwoPane;

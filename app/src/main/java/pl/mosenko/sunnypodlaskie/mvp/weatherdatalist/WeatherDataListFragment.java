@@ -8,13 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
+import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -29,10 +28,10 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
  * Created by syk on 20.05.17.
  */
 
-public class FragmentWeatherDataList extends MvpLceFragment<View, java.util.List<WeatherDataEntity>, WeatherDataListView, WeatherDataListPresenter>
-        implements WeatherDataListView, SwipeRefreshLayout.OnRefreshListener, WeatherAdaper.WeatherDataClickedListener {
+public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract.View, WeatherDataListContract.Presenter>
+        implements WeatherDataListContract.View, SwipeRefreshLayout.OnRefreshListener, WeatherDataListAdaper.WeatherDataClickedListener {
 
-    private static final String TAG = FragmentWeatherDataList.class.getSimpleName();
+    private static final String TAG = WeatherDataListFragment.class.getSimpleName();
 
     @BindView(R.id.FragmentWeatherDataList_TextView_Empty)
     TextView mTextViewEmpty;
@@ -62,10 +61,10 @@ public class FragmentWeatherDataList extends MvpLceFragment<View, java.util.List
     private static final Callback sDummyCallback = (id) -> {};
     private Switcher mSwitcher;
     private Callback mCallback = sDummyCallback;
-    private WeatherAdaper mWeatherAdaper;
+    private WeatherDataListAdaper mWeatherDataListAdaper;
     private Unbinder mUnbinder;
 
-    public FragmentWeatherDataList() {
+    public WeatherDataListFragment() {
     }
 
     @Override
@@ -85,14 +84,14 @@ public class FragmentWeatherDataList extends MvpLceFragment<View, java.util.List
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflateFragmentLayout(inflater, container);
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        android.view.View rootView = inflateFragmentLayout(inflater, container);
         bindGraphicalComponents(rootView);
         return rootView;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureSwitcherView();
         customizeRecyclerView();
@@ -113,15 +112,15 @@ public class FragmentWeatherDataList extends MvpLceFragment<View, java.util.List
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mWeatherAdaper = new WeatherAdaper(getActivity(), this);
-        mRecyclerView.setAdapter(mWeatherAdaper);
+        mWeatherDataListAdaper = new WeatherDataListAdaper(getActivity(), this);
+        mRecyclerView.setAdapter(mWeatherDataListAdaper);
     }
 
-    private void bindGraphicalComponents(View rootView) {
+    private void bindGraphicalComponents(android.view.View rootView) {
         mUnbinder = ButterKnife.bind(this, rootView);
     }
 
-    private View inflateFragmentLayout(LayoutInflater inflater, @Nullable ViewGroup container) {
+    private android.view.View inflateFragmentLayout(LayoutInflater inflater, @Nullable ViewGroup container) {
         return inflater.inflate(R.layout.fragment_weather_data_list, container, false);
     }
 
@@ -167,7 +166,7 @@ public class FragmentWeatherDataList extends MvpLceFragment<View, java.util.List
 
     @Override
     public void setData(java.util.List<WeatherDataEntity> weatherDataEntityList) {
-        mWeatherAdaper.swapWeatherList(weatherDataEntityList);
+        mWeatherDataListAdaper.swapWeatherList(weatherDataEntityList);
     }
 
 
@@ -188,8 +187,8 @@ public class FragmentWeatherDataList extends MvpLceFragment<View, java.util.List
     }
 
     @Override
-    public WeatherDataListPresenter createPresenter() {
-        return null;
+    public WeatherDataListContract.Presenter createPresenter() {
+        return new WeatherDataListPresenterImpl();
     }
 
     @Override
@@ -224,11 +223,6 @@ public class FragmentWeatherDataList extends MvpLceFragment<View, java.util.List
     @Override
     public void loadData(boolean pullToRefresh) {
         getPresenter().loadData(pullToRefresh);
-    }
-
-    @Override
-    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return null; //not used
     }
 
     public interface Callback {

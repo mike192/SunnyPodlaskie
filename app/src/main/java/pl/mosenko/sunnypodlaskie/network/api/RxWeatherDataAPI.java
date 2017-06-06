@@ -1,9 +1,6 @@
 package pl.mosenko.sunnypodlaskie.network.api;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import pl.mosenko.sunnypodlaskie.network.dto.WeatherData;
 import pl.mosenko.sunnypodlaskie.util.APIKeyProvider;
 
@@ -20,21 +17,7 @@ public class RxWeatherDataAPI {
         this.apiKeyProvider = apiKeyProvider;
     }
 
-
-    public Disposable getCurrentWeatherData(final GetCurrentWeatherDataListCallback weatherListCallback) {
-        return weatherDataAPI.getCurrentWeatherData(apiKeyProvider.getDecodedAPIKey())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(p -> weatherListCallback.onDownloadWeatherDataSuccess(p), t -> weatherListCallback.onDownloadWeatherDataError(t));
-    }
-
     public Observable<WeatherData> getCurrentWeatherData() {
         return weatherDataAPI.getCurrentWeatherData(apiKeyProvider.getDecodedAPIKey());
-    }
-
-    public interface GetCurrentWeatherDataListCallback {
-        void onDownloadWeatherDataSuccess(WeatherData weatherDataList);
-
-        void onDownloadWeatherDataError(Throwable networkError);
     }
 }

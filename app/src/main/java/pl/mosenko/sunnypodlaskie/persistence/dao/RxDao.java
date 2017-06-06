@@ -18,7 +18,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.support.DatabaseResults;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

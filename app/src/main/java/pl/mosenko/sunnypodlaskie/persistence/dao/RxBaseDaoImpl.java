@@ -25,13 +25,13 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
-import pl.mosenko.sunnypodlaskie.persistence.entities.AbstractOrmLiteEntity;
+import pl.mosenko.sunnypodlaskie.persistence.entities.BaseOrmLiteEntity;
 
 /**
  * Created by syk on 17.05.17.
  */
 
-public abstract class RxBaseDaoImpl<DataType extends AbstractOrmLiteEntity, IdType> extends BaseDaoImpl<DataType, IdType> implements RxDao<DataType, IdType> {
+public abstract class RxBaseDaoImpl<DataType extends BaseOrmLiteEntity, IdType> extends BaseDaoImpl<DataType, IdType> implements RxDao<DataType, IdType> {
     protected RxBaseDaoImpl(Class<DataType> dataClass) throws SQLException {
         super(dataClass);
     }

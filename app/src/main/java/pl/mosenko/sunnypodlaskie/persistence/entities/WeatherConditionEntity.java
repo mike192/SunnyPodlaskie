@@ -11,13 +11,13 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 
 @DatabaseTable(tableName = WeatherConditionEntity.TABLE_NAME)
-public class WeatherConditionEntity {
+public class WeatherConditionEntity implements BaseOrmLiteEntity {
     public static final String TABLE_NAME = "weather_condition";
     public static final String COLUMN_DESCRIPTION = "description";
 
     @Expose
     @DatabaseField(id = true, columnName = BaseColumns._ID, canBeNull = false)
-    private Long id;
+    private Long _id;
     @Expose
     @DatabaseField(columnName = COLUMN_DESCRIPTION, canBeNull = false)
     private String description;
@@ -26,15 +26,15 @@ public class WeatherConditionEntity {
     }
 
     public WeatherConditionEntity(Long id) {
-        this.id = id;
+        this._id = id;
     }
 
     public Long getId() {
-        return id;
+        return _id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getDescription() {
@@ -48,7 +48,7 @@ public class WeatherConditionEntity {
     @Override
     public String toString() {
         return "WeatherConditionEntity{" +
-                "id=" + id +
+                "_id=" + _id +
                 ", description='" + description + '\'' +
                 '}';
     }
