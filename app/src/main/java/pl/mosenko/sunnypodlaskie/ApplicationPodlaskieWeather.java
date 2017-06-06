@@ -9,6 +9,7 @@ import pl.mosenko.sunnypodlaskie.di.component.DaggerDIComponent;
 import pl.mosenko.sunnypodlaskie.di.module.ContextModule;
 import pl.mosenko.sunnypodlaskie.di.module.DatabaseModule;
 import pl.mosenko.sunnypodlaskie.di.module.NetworkModule;
+import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
 
 
 /**
@@ -25,6 +26,11 @@ public class ApplicationPodlaskieWeather extends Application {
         initializeSharedApplication();
         setDefaultLocale();
         buildComponent();
+        setupAlarmOnCreateApp();
+    }
+
+    private void setupAlarmOnCreateApp() {
+        WeatherDataAlarmSyncUtil.setupAlarmOnCreateApp(getApplicationContext());
     }
 
     private void initializeSharedApplication() {

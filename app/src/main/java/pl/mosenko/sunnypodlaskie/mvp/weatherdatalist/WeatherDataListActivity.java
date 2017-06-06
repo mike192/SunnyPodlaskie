@@ -34,7 +34,6 @@ public class WeatherDataListActivity extends AppCompatActivity implements Weathe
     private void initializeActivity() {
         setContentView(R.layout.activity_weather_data_list);
         getSupportActionBar().setElevation(0f);
-        WeatherDataAlarmSyncUtil.startAlarmOnRunApp(this);
     }
 
     @Override

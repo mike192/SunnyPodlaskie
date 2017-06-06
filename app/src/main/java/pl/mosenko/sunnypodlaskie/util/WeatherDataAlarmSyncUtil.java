@@ -23,7 +23,7 @@ public class WeatherDataAlarmSyncUtil {
     private WeatherDataAlarmSyncUtil() {
     }
 
-    public static void startAlarmOnRunApp(@NonNull Context context) {
+    public static void setupAlarmOnCreateApp(@NonNull Context context) {
         if (!isAlarmScheduled(context)) {
             startAlarm(context);
         }

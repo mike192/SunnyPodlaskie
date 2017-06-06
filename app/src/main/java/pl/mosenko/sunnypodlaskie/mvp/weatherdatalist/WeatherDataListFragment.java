@@ -2,6 +2,7 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -169,7 +170,6 @@ public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract
         mWeatherDataListAdaper.swapWeatherList(weatherDataEntityList);
     }
 
-
     private void customizeSwipeRefreshLayout() {
         ButterKnife.apply(mSwipeRefreshLayouts, SET_SWIPE_REFRESH_LAYOUT_LISTENER, this);
         for (SwipeRefreshLayout swipeRefreshLayout : mSwipeRefreshLayouts) {
@@ -186,6 +186,7 @@ public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract
         loadData(true);
     }
 
+    @NonNull
     @Override
     public WeatherDataListContract.Presenter createPresenter() {
         return new WeatherDataListPresenterImpl();
