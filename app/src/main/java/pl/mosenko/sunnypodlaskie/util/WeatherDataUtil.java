@@ -115,7 +115,7 @@ public class WeatherDataUtil {
     }
 
     public static String getDetailsTitle(String city, Date receivingTime) {
-        DateFormat dateFormat = new SimpleDateFormat("dd MMMM HH:mm:ss ", Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("d MMMM HH:mm:ss ", Locale.getDefault());
         String formattedReceivingDate = dateFormat.format(receivingTime);
         return city + ", " + formattedReceivingDate;
     }

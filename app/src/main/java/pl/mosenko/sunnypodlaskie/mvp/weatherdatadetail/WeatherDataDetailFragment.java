@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
 import javax.inject.Inject;
 
@@ -18,6 +21,7 @@ import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import pl.aprilapps.switcher.Switcher;
 import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather;
 import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.R;
@@ -25,15 +29,15 @@ import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.util.WeatherDataUtil;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Created by syk on 20.05.17.
  */
 
-public class WeatherDataDetailFragment extends Fragment {
+public class WeatherDataDetailFragment extends MvpFragment<WeatherDataDetailContract.View, WeatherDataDetailContract.Presenter> implements WeatherDataDetailContract.View {
     public static final String TAG = WeatherDataDetailFragment.class.getSimpleName();
     public static final String ARG_WEATHER_DATA_ID = "weather_data_id";
-    @Inject
-    WeatherDataEntityDAO weatherDataEntityDAO;
 
     @BindView(R.id.city_detail)
     TextView mCityDetailTV;
@@ -55,32 +59,13 @@ public class WeatherDataDetailFragment extends Fragment {
     TextView mSunset;
 
     private Unbinder mUnbinder;
-    private Long weatherDataId;
-    private CompositeDisposable mCompositeDisposable;
 
     public WeatherDataDetailFragment() {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        injectFields();
-        initializeCompositeDisposable();
-        setWeatherDataIdFromFragmentArguments();
-    }
-
-    private void initializeCompositeDisposable() {
-        mCompositeDisposable = new CompositeDisposable();
-    }
-
-    private void setWeatherDataIdFromFragmentArguments() {
-        if (getArguments().containsKey(ARG_WEATHER_DATA_ID)) {
-            weatherDataId = getArguments().getLong(ARG_WEATHER_DATA_ID);
-        }
-    }
-
-    private void injectFields() {
-        ApplicationPodlaskieWeather.sharedApplication().getDIComponent().inject(this);
+    public WeatherDataDetailContract.Presenter createPresenter() {
+        return new WeatherDataDetailPresenterImpl();
     }
 
     @Nullable
@@ -88,56 +73,47 @@ public class WeatherDataDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflateFragment(inflater, container);
         bindGraphicalComponents(rootView);
-        fillGraphicalComponents();
         return rootView;
-    }
-
-    private void fillGraphicalComponents() {
-        if (weatherDataId != null) {
-            weatherDataEntityDAO.rxQueryForId(weatherDataId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(p -> fillGraphicalComponents(p), e -> logError(e));
-        }
-    }
-
-    private void fillGraphicalComponents(WeatherDataEntity weatherDataEntity) {
-        mCityDetailTV.setText(WeatherDataUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime()));
-        mTemperatureTV.setText(WeatherDataUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
-        mWeatherDescriptionTV.setText(weatherDataEntity.getWeatherCondition().getDescription());
-        int iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey());
-        mIconDetailIV.setImageResource(iconResource);
-        mPressure.setText(WeatherDataUtil.getFormattedPressure(weatherDataEntity.getPressure()));
-        mWindDetails.setText(WeatherDataUtil.getFormattedWindDetails(weatherDataEntity.getWindSpeed(), weatherDataEntity.getWindDegree()));
-        mHumidityDetail.setText(WeatherDataUtil.getFormattedHumidity(weatherDataEntity.getHumidity()));
-        mSunrise.setText(WeatherDataUtil.getFormattedTime(weatherDataEntity.getSunrise()));
-        mSunset.setText(WeatherDataUtil.getFormattedTime(weatherDataEntity.getSunset()));
-    }
-
-    private void logError(Throwable throwable) {
-        if (BuildConfig.DEBUG) {
-            Log.e(TAG, throwable.getMessage(), throwable);
-        }
-        Log.e(TAG, throwable.getMessage());
-    }
-
-    private void bindGraphicalComponents(View rootView) {
-        mUnbinder = ButterKnife.bind(this, rootView);
     }
 
     private View inflateFragment(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_weather_data_details, container, false);
     }
 
+    private void bindGraphicalComponents(View rootView) {
+        mUnbinder = ButterKnife.bind(this, rootView);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getPresenter().onViewCreated(getArguments());
+    }
+
+    @Override
+    public void loadData(WeatherDataDetailPresentationModel weatherDataDetailPresentationModel) {
+        mCityDetailTV.setText(weatherDataDetailPresentationModel.getTitleDetails());
+        mTemperatureTV.setText(weatherDataDetailPresentationModel.getTemperature());
+        mWeatherDescriptionTV.setText(weatherDataDetailPresentationModel.getDescription());
+        mIconDetailIV.setImageResource(weatherDataDetailPresentationModel.getGetIconResource());
+        mPressure.setText(weatherDataDetailPresentationModel.getPressure());
+        mWindDetails.setText(weatherDataDetailPresentationModel.getWindDetails());
+        mHumidityDetail.setText(weatherDataDetailPresentationModel.getHumidity());
+        mSunrise.setText(weatherDataDetailPresentationModel.getSunrise());
+        mSunset.setText(weatherDataDetailPresentationModel.getSunset());
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+        if (BuildConfig.DEBUG) {
+            Log.e(TAG, throwable.getMessage(), throwable);
+        }
+        Toast.makeText(getContext(), R.string.weather_details_error_message, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mCompositeDisposable.dispose();
     }
 }

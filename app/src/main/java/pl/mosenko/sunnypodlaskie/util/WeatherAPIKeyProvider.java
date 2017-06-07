@@ -6,7 +6,7 @@ import android.util.Base64;
  * Created by syk on 11.05.17.
  */
 
-public class APIKeyProvider {
+public class WeatherAPIKeyProvider {
     static {
         System.loadLibrary("api_keys");
     }

@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.R;
 
 /**
@@ -74,9 +75,10 @@ public class PreferenceWeatherUtil {
             Date syncTimeDate = simpleTimeFormat.parse(syncTimeString);
             return isValidTime(syncTimeString) ? syncTimeDate : null;
         } catch (ParseException e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, e.getMessage(), e);
+            }
         }
-
         return null;
     }
 

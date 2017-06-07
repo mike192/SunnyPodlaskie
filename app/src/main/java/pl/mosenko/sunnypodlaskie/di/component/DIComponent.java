@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import pl.mosenko.sunnypodlaskie.di.module.RepositoryModule;
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailPresenterImpl;
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity;
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment;
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment;
@@ -20,9 +21,7 @@ import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
 @Singleton
 @Component(modules = {NetworkModule.class, ContextModule.class, DatabaseModule.class, RepositoryModule.class})
 public interface DIComponent {
-    void inject(WeatherDataListActivity weatherDataListActivity);
-    void inject(WeatherDataListFragment weatherDataListFragment);
-    void inject(WeatherDataDetailFragment weatherDataDetailFragment);
     void inject(WeatherDataSyncJobService weatherDataSyncJobService);
     void inject(WeatherDataListPresenterImpl weatherDataListPresenter);
+    void inject(WeatherDataDetailPresenterImpl weatherDataDetailPresenter);
 }

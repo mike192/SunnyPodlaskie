@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import pl.mosenko.sunnypodlaskie.BuildConfig;
+
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
@@ -31,7 +33,9 @@ public class RawResourceUtil {
             reader.close();
             return sb.toString();
         } catch (IOException e) {
-            Log.e(TAG, "Exceptino during reading text from raw file.", e);
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, "Exceptino during reading text from raw file.", e);
+            }
         }
         return null;
     }

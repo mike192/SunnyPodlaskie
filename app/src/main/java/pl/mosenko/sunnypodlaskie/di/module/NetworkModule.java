@@ -12,7 +12,7 @@ import dagger.Provides;
 import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataAPI;
 import pl.mosenko.sunnypodlaskie.network.api.WeatherDataAPI;
-import pl.mosenko.sunnypodlaskie.util.APIKeyProvider;
+import pl.mosenko.sunnypodlaskie.util.WeatherAPIKeyProvider;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -41,13 +41,13 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public APIKeyProvider provideAPIKeyProvider() {
-        return new APIKeyProvider();
+    public WeatherAPIKeyProvider provideAPIKeyProvider() {
+        return new WeatherAPIKeyProvider();
     }
 
     @Provides
     @Singleton
-    public RxWeatherDataAPI provideRxWeatherDataAPI(WeatherDataAPI watherDataAPI, APIKeyProvider apiKeyProvider) {
+    public RxWeatherDataAPI provideRxWeatherDataAPI(WeatherDataAPI watherDataAPI, WeatherAPIKeyProvider apiKeyProvider) {
         return new RxWeatherDataAPI(watherDataAPI, apiKeyProvider);
     }
 

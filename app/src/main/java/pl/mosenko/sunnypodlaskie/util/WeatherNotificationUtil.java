@@ -58,7 +58,7 @@ public class WeatherNotificationUtil {
     }
 
     private static String getFormattedReceivingDate(Date receivingTime) {
-        SimpleDateFormat notificationDateFormat = new SimpleDateFormat("MMM, dd HH:mm:ss");
+        SimpleDateFormat notificationDateFormat = new SimpleDateFormat("MMM, d HH:mm:ss");
         return notificationDateFormat.format(receivingTime);
     }
 

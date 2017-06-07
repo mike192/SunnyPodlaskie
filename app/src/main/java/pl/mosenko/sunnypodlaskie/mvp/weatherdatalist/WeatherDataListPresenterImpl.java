@@ -15,6 +15,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather;
+import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository;
 
@@ -105,8 +106,8 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
 
     @Override
     public void onNextWeatherDataEntities(List<WeatherDataEntity> weatherDataEntityList, boolean isConnectedToInternet) {
-        for (WeatherDataEntity weatherDataEntity : weatherDataEntityList) {
-            Log.d(TAG, weatherDataEntity.toString());
+        if (BuildConfig.DEBUG) {
+            logFetchedData(weatherDataEntityList);
         }
         if (!isViewNotNullAttached()) {
             return;
@@ -119,6 +120,12 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
         }
         if (!isConnectedToInternet) {
             getView().showDataWithoutInternetUpdatedMessage();
+        }
+    }
+
+    private void logFetchedData(List<WeatherDataEntity> weatherDataEntityList) {
+        for (WeatherDataEntity weatherDataEntity : weatherDataEntityList) {
+            Log.d(TAG, weatherDataEntity.toString());
         }
     }
 
