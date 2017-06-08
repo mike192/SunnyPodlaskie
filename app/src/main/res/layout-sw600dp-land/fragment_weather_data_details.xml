@@ -7,15 +7,15 @@
     tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment">
 
     <include
-        android:id="@+id/primary_info"
-        layout="@layout/primary_weather_info"
+        android:id="@+id/WeatherDataDetailFragment_include_primary_info"
+        layout="@layout/primary_weather_details_info"
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:layout_weight=".45" />
 
     <include
-        android:id="@+id/extra_info"
-        layout="@layout/extra_weather_info"
+        android:id="@+id/WeatherDataDetailFragment_include_extra_info"
+        layout="@layout/extra_weather_details_info"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".55" />

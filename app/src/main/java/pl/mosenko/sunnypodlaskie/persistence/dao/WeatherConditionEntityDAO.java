@@ -13,6 +13,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
  */
 
 public class WeatherConditionEntityDAO extends AbstractBaseDaoImpl<WeatherConditionEntity, Long> {
+
     public WeatherConditionEntityDAO(Class<WeatherConditionEntity> dataClass) throws SQLException {
         super(dataClass);
     }

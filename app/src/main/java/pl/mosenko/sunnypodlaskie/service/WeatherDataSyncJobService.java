@@ -27,12 +27,12 @@ import static android.media.CamcorderProfile.get;
  */
 
 public class WeatherDataSyncJobService extends JobService implements WeatherDataRepository.Callback {
-    private static final String TAG = WeatherDataSyncJobService.class.getSimpleName();
 
+    private static final String TAG = WeatherDataSyncJobService.class.getSimpleName();
     @Inject
-    WeatherDataRepository mWeatherDataRepository;
-    private CompositeDisposable mRepositoryDisposable;
-    private JobParameters mJob;
+    WeatherDataRepository weatherDataRepository;
+    private CompositeDisposable repositoryDisposable;
+    private JobParameters job;
 
     @Override
     public void onCreate() {
@@ -42,14 +42,14 @@ public class WeatherDataSyncJobService extends JobService implements WeatherData
     }
 
     private void initializeCompositeDisposable() {
-        mRepositoryDisposable = new CompositeDisposable();
+        repositoryDisposable = new CompositeDisposable();
     }
 
     @Override
     public boolean onStartJob(JobParameters job) {
-        Disposable disposable = mWeatherDataRepository.loadCurrentWeatherData(true, this);
-        mRepositoryDisposable.add(disposable);
-        mJob = job;
+        Disposable disposable = weatherDataRepository.loadCurrentWeatherData(true, this);
+        repositoryDisposable.add(disposable);
+        this.job = job;
         return true;
     }
 
@@ -64,15 +64,15 @@ public class WeatherDataSyncJobService extends JobService implements WeatherData
     }
 
     private void safelyDisposeRepositorySubscription() {
-        if (mRepositoryDisposable != null && !mRepositoryDisposable.isDisposed()) {
-            mRepositoryDisposable.dispose();
+        if (repositoryDisposable != null && !repositoryDisposable.isDisposed()) {
+            repositoryDisposable.dispose();
         }
     }
 
     private void showNotification(List<WeatherDataEntity> weatherDataEntities) {
         Context context = getApplicationContext();
-        if (mJob != null) {
-            jobFinished(mJob, false);
+        if (job != null) {
+            jobFinished(job, false);
         }
         Date receivingTime = getWeatherDataReceivingTime(weatherDataEntities);
         if (PreferenceWeatherUtil.areNotificationsEnabled(context)) {

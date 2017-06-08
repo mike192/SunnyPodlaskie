@@ -3,7 +3,7 @@ package pl.mosenko.sunnypodlaskie.network.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Clouds {
+public class CloudsDto {
 
     @SerializedName("all")
     @Expose
@@ -13,14 +13,14 @@ public class Clouds {
      * No args constructor for use in serialization
      *
      */
-    public Clouds() {
+    public CloudsDto() {
     }
 
     /**
      *
      * @param all
      */
-    public Clouds(Integer all) {
+    public CloudsDto(Integer all) {
         super();
         this.all = all;
     }

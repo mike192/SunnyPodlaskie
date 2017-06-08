@@ -3,31 +3,31 @@ package pl.mosenko.sunnypodlaskie.network.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Wind {
+public class WindDto {
 
     @SerializedName("speed")
     @Expose
     private Double speed;
     @SerializedName("deg")
     @Expose
-    private Double deg;
+    private Double degree;
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public Wind() {
+    public WindDto() {
     }
 
     /**
      *
      * @param speed
-     * @param deg
+     * @param degree
      */
-    public Wind(Double speed, Double deg) {
+    public WindDto(Double speed, Double degree) {
         super();
         this.speed = speed;
-        this.deg = deg;
+        this.degree = degree;
     }
 
     public Double getSpeed() {
@@ -38,19 +38,19 @@ public class Wind {
         this.speed = speed;
     }
 
-    public Double getDeg() {
-        return deg;
+    public Double getDegree() {
+        return degree;
     }
 
-    public void setDeg(Double deg) {
-        this.deg = deg;
+    public void setDegree(Double degree) {
+        this.degree = degree;
     }
 
     @Override
     public String toString() {
-        return "Wind{" +
+        return "WindDto{" +
                 "speed=" + speed +
-                ", deg=" + deg +
+                ", degree=" + degree +
                 '}';
     }
 }

@@ -3,7 +3,7 @@ package pl.mosenko.sunnypodlaskie.network.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Sys {
+public class SysDto {
 
     @SerializedName("type")
     @Expose
@@ -28,7 +28,7 @@ public class Sys {
      * No args constructor for use in serialization
      *
      */
-    public Sys() {
+    public SysDto() {
     }
 
     /**
@@ -40,7 +40,7 @@ public class Sys {
      * @param type
      * @param country
      */
-    public Sys(Integer type, Integer id, Double message, String country, Long sunrise, Long sunset) {
+    public SysDto(Integer type, Integer id, Double message, String country, Long sunrise, Long sunset) {
         super();
         this.type = type;
         this.id = id;
@@ -100,7 +100,7 @@ public class Sys {
 
     @Override
     public String toString() {
-        return "Sys{" +
+        return "SysDto{" +
                 "type=" + type +
                 ", id=" + id +
                 ", message=" + message +

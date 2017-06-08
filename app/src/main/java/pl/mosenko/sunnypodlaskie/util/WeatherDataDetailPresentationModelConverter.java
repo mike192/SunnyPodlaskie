@@ -8,6 +8,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
  */
 
 public class WeatherDataDetailPresentationModelConverter {
+
     private WeatherDataDetailPresentationModelConverter() {
     }
 
@@ -16,7 +17,7 @@ public class WeatherDataDetailPresentationModelConverter {
         presentationModel.setTitleDetails(WeatherDataUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime()));
         presentationModel.setTemperature(WeatherDataUtil.getFormattedTemperature(weatherDataEntity.getTemperature()));
         presentationModel.setDescription(weatherDataEntity.getWeatherCondition().getDescription());
-        presentationModel.setGetIconResource(WeatherDataUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey()));
+        presentationModel.setIconResource(WeatherDataUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey()));
         presentationModel.setPressure(WeatherDataUtil.getFormattedPressure(weatherDataEntity.getPressure()));
         presentationModel.setWindDetails(WeatherDataUtil.getFormattedWindDetails(weatherDataEntity.getWindSpeed(), weatherDataEntity.getWindDegree()));
         presentationModel.setHumidity(WeatherDataUtil.getFormattedHumidity(weatherDataEntity.getHumidity()));

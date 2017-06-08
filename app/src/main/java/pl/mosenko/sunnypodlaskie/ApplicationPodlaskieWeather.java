@@ -17,7 +17,8 @@ import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
  */
 
 public class ApplicationPodlaskieWeather extends Application {
-    private static ApplicationPodlaskieWeather sSharedApplication;
+
+    private static ApplicationPodlaskieWeather sharedApplication;
     private DIComponent mDIComponent;
 
     @Override
@@ -34,7 +35,7 @@ public class ApplicationPodlaskieWeather extends Application {
     }
 
     private void initializeSharedApplication() {
-        sSharedApplication = this;
+        sharedApplication = this;
     }
 
     private void setDefaultLocale() {
@@ -52,11 +53,11 @@ public class ApplicationPodlaskieWeather extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        sSharedApplication = null;
+        sharedApplication = null;
     }
 
     public static ApplicationPodlaskieWeather sharedApplication() {
-        return sSharedApplication;
+        return sharedApplication;
     }
 
     public DIComponent getDIComponent() {

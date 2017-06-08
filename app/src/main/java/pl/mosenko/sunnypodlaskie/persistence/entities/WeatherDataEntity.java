@@ -143,4 +143,21 @@ public class WeatherDataEntity extends AbstractOrmLiteEntity {
     public void setSunset(Date sunset) {
         this.sunset = sunset;
     }
+
+    @Override
+    public String toString() {
+        return "WeatherDataEntity{" +
+                "city='" + city + '\'' +
+                ", receivingTime=" + receivingTime +
+                ", iconKey='" + iconKey + '\'' +
+                ", weatherCondition=" + weatherCondition +
+                ", temperature=" + temperature +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                ", windSpeed=" + windSpeed +
+                ", windDegree=" + windDegree +
+                ", sunrise=" + sunrise +
+                ", sunset=" + sunset +
+                '}';
+    }
 }

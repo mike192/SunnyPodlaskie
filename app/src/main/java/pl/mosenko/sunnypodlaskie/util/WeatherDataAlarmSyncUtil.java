@@ -17,6 +17,7 @@ import pl.mosenko.sunnypodlaskie.broadcastreceiver.AlarmWeatherSyncReceiver;
  */
 
 public class WeatherDataAlarmSyncUtil {
+
     private static final int ALARM_INTERVAL = (int) (int) TimeUnit.HOURS.toMillis(24);
     private static final int REQUEST_CODE = 1001;
 

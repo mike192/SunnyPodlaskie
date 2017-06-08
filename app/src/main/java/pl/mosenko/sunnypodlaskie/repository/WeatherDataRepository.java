@@ -21,27 +21,28 @@ import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter;
  */
 
 public class WeatherDataRepository {
+
     @Inject
-    RxWeatherDataAPI mRxWeatherDataAPI;
+    RxWeatherDataAPI rxWeatherDataAPI;
     @Inject
-    WeatherDataEntityDAO mWeatherDataEntityDAO;
+    WeatherDataEntityDAO weatherDataEntityDAO;
     @Inject
-    WeatherConditionEntityDAO mWeatherConditionEntities;
+    WeatherConditionEntityDAO weatherConditionEntities;
 
     public WeatherDataRepository(RxWeatherDataAPI rxWeatherDataAPI, WeatherDataEntityDAO weatherDataEntityDAO, WeatherConditionEntityDAO weatherConditionEntities) {
-        this.mRxWeatherDataAPI = rxWeatherDataAPI;
-        this.mWeatherDataEntityDAO = weatherDataEntityDAO;
-        this.mWeatherConditionEntities = weatherConditionEntities;
+        this.rxWeatherDataAPI = rxWeatherDataAPI;
+        this.weatherDataEntityDAO = weatherDataEntityDAO;
+        this.weatherConditionEntities = weatherConditionEntities;
     }
 
     public Disposable loadCurrentWeatherData(final boolean isConnectedToInternet, final Callback callback) {
        Observable<List<WeatherDataEntity>> weatherDataEntityObservable;
         if (isConnectedToInternet) {
-            weatherDataEntityObservable = mRxWeatherDataAPI.getCurrentWeatherData()
+            weatherDataEntityObservable = rxWeatherDataAPI.getCurrentWeatherData()
                     .map(WeatherDtoEntityConverter::convertToWeatherDataEntityList)
                     .doOnNext(this::cacheCurrentWeatherData);
         } else {
-            weatherDataEntityObservable = mWeatherDataEntityDAO.rxQueryForAll();
+            weatherDataEntityObservable = weatherDataEntityDAO.rxQueryForAll();
         }
         Disposable disposable = weatherDataEntityObservable
                 .subscribeOn(Schedulers.io())
@@ -52,10 +53,10 @@ public class WeatherDataRepository {
 
     @NonNull
     private void cacheCurrentWeatherData(List<WeatherDataEntity> weatherDataEntityList) throws java.sql.SQLException {
-        mWeatherDataEntityDAO.deleteBuilder().delete();
-        mWeatherDataEntityDAO.create(weatherDataEntityList);
+        weatherDataEntityDAO.deleteBuilder().delete();
+        weatherDataEntityDAO.create(weatherDataEntityList);
         for (WeatherDataEntity weatherEntity : weatherDataEntityList) {
-            mWeatherConditionEntities.refresh(weatherEntity.getWeatherCondition());
+            weatherConditionEntities.refresh(weatherEntity.getWeatherCondition());
         }
     }
 

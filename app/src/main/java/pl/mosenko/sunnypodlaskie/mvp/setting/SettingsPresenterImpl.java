@@ -14,28 +14,29 @@ import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
  */
 
 public class SettingsPresenterImpl extends MvpBasePresenter<SettingsContract.View> implements SettingsContract.Presenter, SharedPreferences.OnSharedPreferenceChangeListener {
-    private SharedPreferences mSharedPreferences;
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void setSharedPreferences(SharedPreferences sharedPreferences) {
-        this.mSharedPreferences = sharedPreferences;
+        this.sharedPreferences = sharedPreferences;
     }
 
     @Override
     public void onCreatePreferences() {
         if (isViewNotNullAttached()) {
-            getView().addInitialSyncTimeSummary(mSharedPreferences);
+            getView().addInitialSyncTimeSummary(sharedPreferences);
         }
     }
 
     @Override
     public void onStart() {
-        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onStop() {
-        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override

@@ -24,15 +24,14 @@ import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository;
  */
 
 public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataListContract.View> implements WeatherDataListContract.Presenter, WeatherDataRepository.Callback {
+
     private static final String TAG = WeatherDataListPresenterImpl.class.getSimpleName();
-
     @Inject
-    WeatherDataRepository mWeatherDataRepository;
+    WeatherDataRepository weatherDataRepository;
     @Inject
-    MerlinsBeard mMerlinsBeard;
-
-    private CompositeDisposable mRepositoryDisposable;
-    private Disposable mInternetSubscription;
+    MerlinsBeard merlinsBeard;
+    private CompositeDisposable repositoryDisposable;
+    private Disposable internetSubscription;
 
 
     public WeatherDataListPresenterImpl() {
@@ -45,7 +44,7 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
     }
 
     private void initializeCompositeDisposable() {
-        mRepositoryDisposable = new CompositeDisposable();
+        repositoryDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -54,7 +53,7 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
     }
 
     private void observeInternetConnectivity() {
-        mInternetSubscription = ReactiveNetwork.observeInternetConnectivity()
+        internetSubscription = ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isConnectedToInternet -> {
@@ -68,14 +67,14 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
     }
 
     private void safelyDisposeInternetSubscription() {
-        if (mInternetSubscription != null && mInternetSubscription.isDisposed()) {
-            mInternetSubscription.dispose();
+        if (internetSubscription != null && internetSubscription.isDisposed()) {
+            internetSubscription.dispose();
         }
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-      loadData(pullToRefresh, mMerlinsBeard.isConnected());
+      loadData(pullToRefresh, merlinsBeard.isConnected());
     }
 
     private void loadData(boolean pullToRefresh, boolean isConnectedToInternet) {
@@ -88,13 +87,13 @@ public class WeatherDataListPresenterImpl extends MvpBasePresenter<WeatherDataLi
     }
 
     private void loadCurrentWeatherData(boolean isConnectedToInternet) {
-        Disposable disposable = mWeatherDataRepository.loadCurrentWeatherData(isConnectedToInternet, this);
-        mRepositoryDisposable.add(disposable);
+        Disposable disposable = weatherDataRepository.loadCurrentWeatherData(isConnectedToInternet, this);
+        repositoryDisposable.add(disposable);
     }
 
     private void safelyDisposeRepositorySubscription() {
-        if (mRepositoryDisposable != null && mRepositoryDisposable.isDisposed()) {
-            mRepositoryDisposable.dispose();
+        if (repositoryDisposable != null && repositoryDisposable.isDisposed()) {
+            repositoryDisposable.dispose();
         }
     }
 

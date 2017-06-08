@@ -5,11 +5,11 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import pl.mosenko.sunnypodlaskie.network.dto.List;
-import pl.mosenko.sunnypodlaskie.network.dto.Weather;
-import pl.mosenko.sunnypodlaskie.network.dto.WeatherData;
+import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto;
+import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataListDto;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 
@@ -18,6 +18,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
  */
 
 public class WeatherDtoEntityConverter {
+
     private final static Map<String, String> CORRECT_NAMES_OF_CITIES = new HashMap<>();
     static {
         CORRECT_NAMES_OF_CITIES.put("Suwalki", "Suwałki");
@@ -33,25 +34,25 @@ public class WeatherDtoEntityConverter {
     private WeatherDtoEntityConverter() {
     }
 
-    private static WeatherDataEntity convertToWeatherDataEntity(List weatherInfo) {
+    private static WeatherDataEntity convertToWeatherDataEntity(WeatherDataListDto weatherInfo) {
         WeatherDataEntity weatherDataEntity = new WeatherDataEntity();
         weatherDataEntity.setReceivingTime(convertToDate(weatherInfo.getDt()));
-        weatherDataEntity.setIconKey(weatherInfo.getWeather().get(0).getIcon());
+        weatherDataEntity.setIconKey(weatherInfo.getWeatherDto().get(0).getIcon());
         weatherDataEntity.setCity(mapCityToCorrectCity(weatherInfo.getName()));
-        weatherDataEntity.setTemperature(weatherInfo.getMain().getTemp());
+        weatherDataEntity.setTemperature(weatherInfo.getMainDto().getTemperature());
         weatherDataEntity.setWeatherCondition(getWeatherConditionFromId(weatherInfo));
-        weatherDataEntity.setPressure(weatherInfo.getMain().getPressure());
-        weatherDataEntity.setHumidity(weatherInfo.getMain().getHumidity());
-        weatherDataEntity.setWindSpeed(weatherInfo.getWind().getSpeed());
-        weatherDataEntity.setWindDegree(weatherInfo.getWind().getDeg());
-        weatherDataEntity.setSunrise(convertToDate(weatherInfo.getSys().getSunrise()));
-        weatherDataEntity.setSunset(convertToDate(weatherInfo.getSys().getSunset()));
+        weatherDataEntity.setPressure(weatherInfo.getMainDto().getPressure());
+        weatherDataEntity.setHumidity(weatherInfo.getMainDto().getHumidity());
+        weatherDataEntity.setWindSpeed(weatherInfo.getWindDto().getSpeed());
+        weatherDataEntity.setWindDegree(weatherInfo.getWindDto().getDegree());
+        weatherDataEntity.setSunrise(convertToDate(weatherInfo.getSysDto().getSunrise()));
+        weatherDataEntity.setSunset(convertToDate(weatherInfo.getSysDto().getSunset()));
         return weatherDataEntity;
     }
 
     @NonNull
-    private static WeatherConditionEntity getWeatherConditionFromId(List weatherInfo) {
-        return new WeatherConditionEntity(Long.valueOf(weatherInfo.getWeather().get(0).getId()));
+    private static WeatherConditionEntity getWeatherConditionFromId(WeatherDataListDto weatherInfo) {
+        return new WeatherConditionEntity(Long.valueOf(weatherInfo.getWeatherDto().get(0).getId()));
     }
 
     private static String mapCityToCorrectCity(String name) {
@@ -59,10 +60,10 @@ public class WeatherDtoEntityConverter {
         return cityCorrectName != null ? cityCorrectName : name;
     }
 
-    public static java.util.List<WeatherDataEntity> convertToWeatherDataEntityList(WeatherData weatherData) {
-        java.util.List<List> weatherDataList = weatherData.getList();
-        java.util.List<WeatherDataEntity> weatherDataEntityList = new ArrayList<>(weatherDataList.size());
-        for (List weatherInfo : weatherDataList) {
+    public static List<WeatherDataEntity> convertToWeatherDataEntityList(WeatherDataDto weatherDataDto) {
+        List<WeatherDataListDto> weatherDataWeatherDataListDto = weatherDataDto.getWeatherDataListDto();
+        List<WeatherDataEntity> weatherDataEntityList = new ArrayList<>(weatherDataWeatherDataListDto.size());
+        for (WeatherDataListDto weatherInfo : weatherDataWeatherDataListDto) {
             WeatherDataEntity weatherDataEntity = convertToWeatherDataEntity(weatherInfo);
             weatherDataEntityList.add(weatherDataEntity);
         }

@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -34,27 +36,27 @@ public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract
 
     private static final String TAG = WeatherDataListFragment.class.getSimpleName();
 
-    @BindView(R.id.FragmentWeatherDataList_TextView_Empty)
-    TextView mTextViewEmpty;
-    @BindView(R.id.FragmentWeatherDataList_ProgressBar)
-    ProgressBar mProgressBarLoading;
-    @BindView(R.id.FragmentWeatherDataList_RecyclerView)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.WeatherDataListFragment_TextView_Empty)
+    TextView textViewEmpty;
+    @BindView(R.id.WeatherDataListFragment_ProgressBar)
+    ProgressBar progressBarLoading;
+    @BindView(R.id.WeatherDataListFragment_RecyclerView)
+    RecyclerView recyclerView;
     @BindView(R.id.FragmentWeatherDataList_TextView_Error)
-    TextView mTextViewError;
+    TextView textViewError;
 
-    @BindView(R.id.FragmentWeatherDataList_SwipeRefreshLayout_Empty)
-    SwipeRefreshLayout mSwipeRefreshLayoutEmpty;
-    @BindView(R.id.FragmentWeatherDataList_SwipeRefreshLayout_Error)
-    SwipeRefreshLayout mSwipeRefreshLayoutError;
+    @BindView(R.id.WeatherDataListFragment_SwipeRefreshLayout_Empty)
+    SwipeRefreshLayout swipeRefreshLayoutEmpty;
+    @BindView(R.id.WeatherDataListFragment_SwipeRefreshLayout_Error)
+    SwipeRefreshLayout swipeRefreshLayoutError;
     @BindView(R.id.FragmentWeatherDataList_SwipeRefreshLayout_Content)
-    SwipeRefreshLayout mSwipeRefreshLayoutContent;
+    SwipeRefreshLayout swipeRefreshLayoutContent;
     @BindViews({
-            R.id.FragmentWeatherDataList_SwipeRefreshLayout_Empty,
-            R.id.FragmentWeatherDataList_SwipeRefreshLayout_Error,
+            R.id.WeatherDataListFragment_SwipeRefreshLayout_Empty,
+            R.id.WeatherDataListFragment_SwipeRefreshLayout_Error,
             R.id.FragmentWeatherDataList_SwipeRefreshLayout_Content
     })
-    java.util.List<SwipeRefreshLayout> mSwipeRefreshLayouts;
+    List<SwipeRefreshLayout> swipeRefreshLayouts;
 
     static final ButterKnife.Setter<SwipeRefreshLayout, SwipeRefreshLayout.OnRefreshListener> SET_SWIPE_REFRESH_LAYOUT_LISTENER =
             (view, listener, index) -> view.setOnRefreshListener(listener);
@@ -101,20 +103,20 @@ public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract
 
     private void configureSwitcherView() {
         mSwitcher = new Switcher.Builder(getContext())
-                .addContentView(mSwipeRefreshLayoutContent)
-                .addEmptyView(mSwipeRefreshLayoutEmpty)
-                .addProgressView(mProgressBarLoading)
-                .addErrorView(mSwipeRefreshLayoutError)
+                .addContentView(swipeRefreshLayoutContent)
+                .addEmptyView(swipeRefreshLayoutEmpty)
+                .addProgressView(progressBarLoading)
+                .addErrorView(swipeRefreshLayoutError)
                 .build();
     }
 
     private void customizeRecyclerView() {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
         mWeatherDataListAdaper = new WeatherDataListAdaper(getActivity(), this);
-        mRecyclerView.setAdapter(mWeatherDataListAdaper);
+        recyclerView.setAdapter(mWeatherDataListAdaper);
     }
 
     private void bindGraphicalComponents(android.view.View rootView) {
@@ -127,7 +129,7 @@ public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract
 
     @Override
     public void showEmpty() {
-        ButterKnife.apply(mSwipeRefreshLayouts, STOP_REFRESHING);
+        ButterKnife.apply(swipeRefreshLayouts, STOP_REFRESHING);
         mSwitcher.showEmptyView();
     }
 
@@ -140,7 +142,7 @@ public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract
 
     @Override
     public void showContent() {
-        ButterKnife.apply(mSwipeRefreshLayouts, STOP_REFRESHING);
+        ButterKnife.apply(swipeRefreshLayouts, STOP_REFRESHING);
         mSwitcher.showContentView();
     }
 
@@ -160,19 +162,19 @@ public class WeatherDataListFragment extends MvpFragment<WeatherDataListContract
             Log.e(TAG, e.getMessage(), e);
         }
         if (pullToRefresh) {
-            ButterKnife.apply(mSwipeRefreshLayouts, STOP_REFRESHING);
+            ButterKnife.apply(swipeRefreshLayouts, STOP_REFRESHING);
         }
         mSwitcher.showErrorView();
 }
 
     @Override
-    public void setData(java.util.List<WeatherDataEntity> weatherDataEntityList) {
+    public void setData(List<WeatherDataEntity> weatherDataEntityList) {
         mWeatherDataListAdaper.swapWeatherList(weatherDataEntityList);
     }
 
     private void customizeSwipeRefreshLayout() {
-        ButterKnife.apply(mSwipeRefreshLayouts, SET_SWIPE_REFRESH_LAYOUT_LISTENER, this);
-        for (SwipeRefreshLayout swipeRefreshLayout : mSwipeRefreshLayouts) {
+        ButterKnife.apply(swipeRefreshLayouts, SET_SWIPE_REFRESH_LAYOUT_LISTENER, this);
+        for (SwipeRefreshLayout swipeRefreshLayout : swipeRefreshLayouts) {
             swipeRefreshLayout.setColorSchemeResources(
                     R.color.colorAccent,
                     R.color.activated,

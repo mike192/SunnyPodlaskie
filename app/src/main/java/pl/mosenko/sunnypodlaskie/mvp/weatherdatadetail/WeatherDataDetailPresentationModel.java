@@ -1,16 +1,15 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail;
 
-import pl.mosenko.sunnypodlaskie.util.WeatherDataUtil;
-
 /**
  * Created by syk on 06.06.17.
  */
 
 public class WeatherDataDetailPresentationModel {
+
     private String titleDetails;
     private String temperature;
     private String description;
-    private int getIconResource;
+    private int iconResource;
     private String pressure;
     private String windDetails;
     private String humidity;
@@ -41,12 +40,12 @@ public class WeatherDataDetailPresentationModel {
         this.description = description;
     }
 
-    public int getGetIconResource() {
-        return getIconResource;
+    public int getIconResource() {
+        return iconResource;
     }
 
-    public void setGetIconResource(int getIconResource) {
-        this.getIconResource = getIconResource;
+    public void setIconResource(int iconResource) {
+        this.iconResource = iconResource;
     }
 
     public String getPressure() {

@@ -18,6 +18,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
  */
 
 public class RawResourceUtil {
+
     private static final String TAG = RawResourceUtil.class.getSimpleName();
     private RawResourceUtil() {}
 
@@ -34,7 +35,7 @@ public class RawResourceUtil {
             return sb.toString();
         } catch (IOException e) {
             if (BuildConfig.DEBUG) {
-                Log.e(TAG, "Exceptino during reading text from raw file.", e);
+                Log.e(TAG, "Exception during reading text from the raw file.", e);
             }
         }
         return null;

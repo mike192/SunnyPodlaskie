@@ -6,10 +6,10 @@
     android:baselineAligned="false">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/master_list_fragment"
+        android:id="@+id/WeatherDataListFragment_fragment_tablet"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.FragmentWeatherDataList"
+        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment"
         android:layout_weight="1"
         />
 
@@ -19,7 +19,7 @@
         android:background="@android:color/darker_gray" />
 
     <FrameLayout
-        android:id="@+id/weather_details_container"
+        android:id="@+id/WeatherDataListFragment_FrameLayout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

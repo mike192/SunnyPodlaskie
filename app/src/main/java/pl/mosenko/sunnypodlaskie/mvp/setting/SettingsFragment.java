@@ -1,6 +1,5 @@
 package pl.mosenko.sunnypodlaskie.mvp.setting;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,16 +15,15 @@ import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegateImpl;
 import com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback;
 
 import pl.mosenko.sunnypodlaskie.R;
-import pl.mosenko.sunnypodlaskie.util.PreferenceWeatherUtil;
-import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
 
 /**
  * Created by syk on 23.05.17.
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener, MvpDelegateCallback<SettingsContract.View, SettingsContract.Presenter>, SettingsContract.View {
-    private SettingsContract.Presenter mPresenter;
-    private FragmentMvpDelegateImpl<SettingsContract.View, SettingsContract.Presenter> mFragmentDelegate = new FragmentMvpDelegateImpl<>(this, this, false, false);
+
+    private SettingsContract.Presenter presenter;
+    private FragmentMvpDelegateImpl<SettingsContract.View, SettingsContract.Presenter> fragmentDelegate = new FragmentMvpDelegateImpl<>(this, this, false, false);
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -35,19 +33,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     @Override
     public void onStart() {
         super.onStart();
-        mPresenter.onStart();
+        presenter.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mPresenter.onStop();
+        presenter.onStop();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mFragmentDelegate.onSaveInstanceState(outState);
+        fragmentDelegate.onSaveInstanceState(outState);
     }
 
     public void addInitialSyncTimeSummary(SharedPreferences sharedPreferences) {
@@ -70,15 +68,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mFragmentDelegate.onViewCreated(view, savedInstanceState);
-        mPresenter.setSharedPreferences(getPreferenceScreen().getSharedPreferences());
-        mPresenter.onCreatePreferences();
+        fragmentDelegate.onViewCreated(view, savedInstanceState);
+        presenter.setSharedPreferences(getPreferenceScreen().getSharedPreferences());
+        presenter.onCreatePreferences();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mFragmentDelegate.onDestroyView();
+        fragmentDelegate.onDestroyView();
     }
 
     @Override
@@ -99,12 +97,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     @Override
     public SettingsContract.Presenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
     public void setPresenter(SettingsContract.Presenter presenter) {
-        this.mPresenter = presenter;
+        this.presenter = presenter;
     }
 
     @Override

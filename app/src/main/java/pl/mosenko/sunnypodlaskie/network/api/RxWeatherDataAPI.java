@@ -1,7 +1,7 @@
 package pl.mosenko.sunnypodlaskie.network.api;
 
 import io.reactivex.Observable;
-import pl.mosenko.sunnypodlaskie.network.dto.WeatherData;
+import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto;
 import pl.mosenko.sunnypodlaskie.util.WeatherAPIKeyProvider;
 
 /**
@@ -9,6 +9,7 @@ import pl.mosenko.sunnypodlaskie.util.WeatherAPIKeyProvider;
  */
 
 public class RxWeatherDataAPI {
+
     private WeatherDataAPI weatherDataAPI;
     private WeatherAPIKeyProvider apiKeyProvider;
 
@@ -17,7 +18,7 @@ public class RxWeatherDataAPI {
         this.apiKeyProvider = apiKeyProvider;
     }
 
-    public Observable<WeatherData> getCurrentWeatherData() {
+    public Observable<WeatherDataDto> getCurrentWeatherData() {
         return weatherDataAPI.getCurrentWeatherData(apiKeyProvider.getDecodedAPIKey());
     }
 }

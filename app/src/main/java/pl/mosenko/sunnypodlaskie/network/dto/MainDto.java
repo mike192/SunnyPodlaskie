@@ -3,11 +3,11 @@ package pl.mosenko.sunnypodlaskie.network.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Main {
+public class MainDto {
 
     @SerializedName("temp")
     @Expose
-    private Double temp;
+    private Double temperature;
     @SerializedName("pressure")
     @Expose
     private Double pressure;
@@ -31,7 +31,7 @@ public class Main {
      * No args constructor for use in serialization
      *
      */
-    public Main() {
+    public MainDto() {
     }
 
     /**
@@ -41,12 +41,12 @@ public class Main {
      * @param pressure
      * @param grndLevel
      * @param tempMax
-     * @param temp
+     * @param temperature
      * @param tempMin
      */
-    public Main(Double temp, Double pressure, Integer humidity, Double tempMin, Double tempMax, Double seaLevel, Double grndLevel) {
+    public MainDto(Double temperature, Double pressure, Integer humidity, Double tempMin, Double tempMax, Double seaLevel, Double grndLevel) {
         super();
-        this.temp = temp;
+        this.temperature = temperature;
         this.pressure = pressure;
         this.humidity = humidity;
         this.tempMin = tempMin;
@@ -55,12 +55,12 @@ public class Main {
         this.grndLevel = grndLevel;
     }
 
-    public Double getTemp() {
-        return temp;
+    public Double getTemperature() {
+        return temperature;
     }
 
-    public void setTemp(Double temp) {
-        this.temp = temp;
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
     }
 
     public Double getPressure() {
@@ -113,8 +113,8 @@ public class Main {
 
     @Override
     public String toString() {
-        return "Main{" +
-                "temp=" + temp +
+        return "MainDto{" +
+                "temperature=" + temperature +
                 ", pressure=" + pressure +
                 ", humidity=" + humidity +
                 ", tempMin=" + tempMin +

@@ -12,6 +12,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
  */
 
 public interface WeatherDataListContract {
+
     interface View extends MvpLceView<List<WeatherDataEntity>> {
         void showEmpty();
 

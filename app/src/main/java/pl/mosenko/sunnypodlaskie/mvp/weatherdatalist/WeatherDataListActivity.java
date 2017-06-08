@@ -11,12 +11,10 @@ import pl.mosenko.sunnypodlaskie.R;
 import pl.mosenko.sunnypodlaskie.mvp.setting.SettingsActivity;
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment;
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailsActivity;
-import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil;
 
 public class WeatherDataListActivity extends AppCompatActivity implements WeatherDataListFragment.Callback {
 
-    private final String TAG = WeatherDataListActivity.class.getSimpleName();
-    private boolean mTwoPane;
+    private boolean twoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +24,8 @@ public class WeatherDataListActivity extends AppCompatActivity implements Weathe
     }
 
     private void setupTwoPane() {
-        if (findViewById(R.id.weather_details_container) != null) {
-            mTwoPane = true;
+        if (findViewById(R.id.WeatherDataListFragment_FrameLayout_container) != null) {
+            twoPane = true;
         }
     }
 
@@ -43,7 +41,7 @@ public class WeatherDataListActivity extends AppCompatActivity implements Weathe
 
     @Override
     public void onItemSelected(long weatherDataId) {
-        if (mTwoPane) {
+        if (twoPane) {
             replaceWeatherDataDetailsFragment(weatherDataId);
         } else {
             startWeatherDataDetailsActivity(weatherDataId);
@@ -62,7 +60,7 @@ public class WeatherDataListActivity extends AppCompatActivity implements Weathe
         WeatherDataDetailFragment fragment = new WeatherDataDetailFragment();
         fragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.weather_details_container, fragment)
+                .replace(R.id.WeatherDataListFragment_FrameLayout_container, fragment)
                 .commit();
     }
 
@@ -76,7 +74,7 @@ public class WeatherDataListActivity extends AppCompatActivity implements Weathe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.WeatherDataListActivity_action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }

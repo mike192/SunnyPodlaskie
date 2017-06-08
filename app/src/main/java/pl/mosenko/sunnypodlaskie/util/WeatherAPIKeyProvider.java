@@ -7,6 +7,7 @@ import android.util.Base64;
  */
 
 public class WeatherAPIKeyProvider {
+
     static {
         System.loadLibrary("api_keys");
     }

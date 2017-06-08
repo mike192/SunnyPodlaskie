@@ -20,6 +20,7 @@ import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
  */
 
 public class WeatherDataJobSyncUtils {
+
     private static final String WEATHER_DATA_SYNC_TAG = "weather_data_sync";
     private static final int SYNC_INTERVAL_SECONDS = 5;
     private static final int SYNC_FLEXTIME_SECONDS = (int) TimeUnit.HOURS.toSeconds(4);

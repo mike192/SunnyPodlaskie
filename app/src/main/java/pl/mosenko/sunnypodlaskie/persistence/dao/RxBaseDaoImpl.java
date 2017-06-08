@@ -32,6 +32,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.BaseOrmLiteEntity;
  */
 
 public abstract class RxBaseDaoImpl<DataType extends BaseOrmLiteEntity, IdType> extends BaseDaoImpl<DataType, IdType> implements RxDao<DataType, IdType> {
+
     protected RxBaseDaoImpl(Class<DataType> dataClass) throws SQLException {
         super(dataClass);
     }

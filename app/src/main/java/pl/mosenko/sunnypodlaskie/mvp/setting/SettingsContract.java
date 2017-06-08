@@ -11,6 +11,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
  */
 
 public interface SettingsContract {
+
     public interface View extends MvpView {
         void addInitialSyncTimeSummary(SharedPreferences sharedPreferences);
 
@@ -20,6 +21,7 @@ public interface SettingsContract {
 
         void showMessageBadSyncTimeFormat();
     }
+
     public interface Presenter extends MvpPresenter<View> {
 
         void setSharedPreferences(SharedPreferences sharedPreferences);

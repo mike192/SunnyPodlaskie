@@ -6,18 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.query.Raw;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -33,14 +27,15 @@ import pl.mosenko.sunnypodlaskie.util.RawResourceUtil;
  */
 
 public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
+
     private static final String TAG = DatabaseHelperPodlaskieWeather.class.getSimpleName();
     private static final String DATABASE_NAME = "weather_data.db";
-    private static final int DATABASE_VERSION = 8;
-    private Context mContext;
+    private static final int DATABASE_VERSION = 10;
+    private Context context;
 
     public DatabaseHelperPodlaskieWeather(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.mContext = context;
+        this.context = context;
     }
 
     @Override
@@ -58,7 +53,7 @@ public class DatabaseHelperPodlaskieWeather extends OrmLiteSqliteOpenHelper {
 
     private void addWeatherConditionsToDatabase(ConnectionSource connectionSource) throws SQLException {
         WeatherConditionEntityDAO weatherConditionEntities = new WeatherConditionEntityDAO(connectionSource);
-        String weatherConditionsJson = RawResourceUtil.readRawTextFile(mContext, R.raw.weather_conditions);
+        String weatherConditionsJson = RawResourceUtil.readRawTextFile(context, R.raw.weather_conditions);
         List<WeatherConditionEntity> conditionEntities = new Gson().fromJson(weatherConditionsJson, new TypeToken<List<WeatherConditionEntity>>(){}.getType());
         weatherConditionEntities.create(conditionEntities);
     }

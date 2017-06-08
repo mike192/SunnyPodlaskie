@@ -14,12 +14,14 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
  */
 
 public interface WeatherDataDetailContract {
+
     interface View extends MvpView {
 
         void loadData(WeatherDataDetailPresentationModel weatherDataDetailPresentationModel);
 
         void showError(Throwable throwable);
     }
+
     interface Presenter extends MvpPresenter<View> {
 
         void onViewCreated(Bundle savedInstanceState);

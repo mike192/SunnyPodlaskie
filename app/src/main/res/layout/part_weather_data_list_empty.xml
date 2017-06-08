@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/FragmentWeatherDataList_SwipeRefreshLayout_Empty"
+    android:id="@+id/WeatherDataListFragment_SwipeRefreshLayout_Empty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/fragment_weather_data_list">
@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/FragmentWeatherDataList_TextView_Empty"
+            android:id="@+id/WeatherDataListFragment_TextView_Empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

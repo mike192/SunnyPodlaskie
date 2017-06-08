@@ -3,7 +3,7 @@ package pl.mosenko.sunnypodlaskie.network.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Weather {
+public class WeatherDto {
 
     @SerializedName("id")
     @Expose
@@ -22,7 +22,7 @@ public class Weather {
      * No args constructor for use in serialization
      *
      */
-    public Weather() {
+    public WeatherDto() {
     }
 
     /**
@@ -32,7 +32,7 @@ public class Weather {
      * @param description
      * @param main
      */
-    public Weather(Integer id, String main, String description, String icon) {
+    public WeatherDto(Integer id, String main, String description, String icon) {
         super();
         this.id = id;
         this.main = main;
@@ -74,7 +74,7 @@ public class Weather {
 
     @Override
     public String toString() {
-        return "Weather{" +
+        return "WeatherDto{" +
                 "id=" + id +
                 ", main='" + main + '\'' +
                 ", description='" + description + '\'' +

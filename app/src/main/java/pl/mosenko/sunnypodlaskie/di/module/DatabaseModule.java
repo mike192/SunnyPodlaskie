@@ -26,6 +26,7 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 
 @Module
 public class DatabaseModule {
+
     private static final String TAG = DatabaseModule.class.getSimpleName();
 
     @Provides

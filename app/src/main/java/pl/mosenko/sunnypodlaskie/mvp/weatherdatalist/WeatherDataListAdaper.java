@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,26 +25,26 @@ import static android.media.CamcorderProfile.get;
 
 public class WeatherDataListAdaper extends RecyclerView.Adapter<WeatherDataListAdaper.WeatherViewHolder> {
 
-    private java.util.List<WeatherDataEntity> mWeatherList;
-    private Context mContext;
-    private WeatherDataClickedListener mClickHandler;
+    private List<WeatherDataEntity> weatherDataList;
+    private Context context;
+    private WeatherDataClickedListener clickHandler;
 
     public WeatherDataListAdaper(Context context, WeatherDataClickedListener clickHandler) {
-        this.mContext = context;
-        this.mWeatherList = new ArrayList<WeatherDataEntity>();
-        this.mClickHandler = clickHandler;
+        this.context = context;
+        this.weatherDataList = new ArrayList<>();
+        this.clickHandler = clickHandler;
     }
 
     @Override
     public WeatherViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-         View itemView = LayoutInflater.from(mContext).inflate(R.layout.weather_data_list_item, parent, false);
+         View itemView = LayoutInflater.from(context).inflate(R.layout.weather_data_list_item, parent, false);
         itemView.setFocusable(true);
         return new WeatherViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
-        WeatherDataEntity weatherInfo = mWeatherList.get(position);
+        WeatherDataEntity weatherInfo = weatherDataList.get(position);
         int iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherInfo.getIconKey());
         holder.weatherIcon.setImageResource(iconResource);
         holder.city.setText(weatherInfo.getCity());
@@ -53,11 +54,11 @@ public class WeatherDataListAdaper extends RecyclerView.Adapter<WeatherDataListA
 
     @Override
     public int getItemCount() {
-        return mWeatherList.size();
+        return weatherDataList.size();
     }
 
-    public void swapWeatherList(java.util.List<WeatherDataEntity> weatherList) {
-        this.mWeatherList = weatherList;
+    public void swapWeatherList(List<WeatherDataEntity> weatherList) {
+        this.weatherDataList = weatherList;
         notifyDataSetChanged();
     }
 
@@ -66,10 +67,10 @@ public class WeatherDataListAdaper extends RecyclerView.Adapter<WeatherDataListA
     }
 
     public class WeatherViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.icon_weather) ImageView weatherIcon;
-        @BindView(R.id.city) TextView city;
-        @BindView(R.id.weather_description) TextView weatherDescription;
-        @BindView(R.id.temperature) TextView temperature;
+        @BindView(R.id.WeatherDataListFragment_icon_weather) ImageView weatherIcon;
+        @BindView(R.id.WeatherDataListFragment_city) TextView city;
+        @BindView(R.id.WeatherDataListFragment_weather_description) TextView weatherDescription;
+        @BindView(R.id.WeatherDataListFragment_temperature) TextView temperature;
 
         public WeatherViewHolder(View itemView) {
             super(itemView);
@@ -80,8 +81,8 @@ public class WeatherDataListAdaper extends RecyclerView.Adapter<WeatherDataListA
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            WeatherDataEntity weatherDataEntity = mWeatherList.get(adapterPosition);
-            mClickHandler.onWeatherDataItemClick(weatherDataEntity.getId());
+            WeatherDataEntity weatherDataEntity = weatherDataList.get(adapterPosition);
+            clickHandler.onWeatherDataItemClick(weatherDataEntity.getId());
         }
     }
 }

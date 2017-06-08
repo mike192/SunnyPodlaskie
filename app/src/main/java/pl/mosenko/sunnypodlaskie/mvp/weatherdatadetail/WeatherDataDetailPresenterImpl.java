@@ -23,9 +23,10 @@ import static pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailF
  */
 
 public class WeatherDataDetailPresenterImpl extends MvpBasePresenter<WeatherDataDetailContract.View> implements  WeatherDataDetailContract.Presenter{
+
     @Inject
-    WeatherDataEntityDAO mWeatherDataEntityDAO;
-    private CompositeDisposable mCompositeDisposable;
+    WeatherDataEntityDAO weatherDataEntityDAO;
+    private CompositeDisposable compositeDisposable;
 
     public WeatherDataDetailPresenterImpl() {
         injectFields();
@@ -37,7 +38,7 @@ public class WeatherDataDetailPresenterImpl extends MvpBasePresenter<WeatherData
     }
 
     private void initializeCompositeDisposable() {
-        mCompositeDisposable = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -53,12 +54,12 @@ public class WeatherDataDetailPresenterImpl extends MvpBasePresenter<WeatherData
          return;
         }
         safelyDisposeRepositorySubscription();
-        Disposable disposable = mWeatherDataEntityDAO.rxQueryForId(weatherDataId)
+        Disposable disposable = weatherDataEntityDAO.rxQueryForId(weatherDataId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(this::formatWeatherDataEntityToDisplay)
                 .subscribe(getView()::loadData, getView()::showError);
-        mCompositeDisposable.add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     private boolean isViewNotNullAttached() {
@@ -76,8 +77,8 @@ public class WeatherDataDetailPresenterImpl extends MvpBasePresenter<WeatherData
     }
 
     private void safelyDisposeRepositorySubscription() {
-        if (mCompositeDisposable != null && mCompositeDisposable.isDisposed()) {
-            mCompositeDisposable.dispose();
+        if (compositeDisposable != null && compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
         }
     }
 }

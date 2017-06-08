@@ -21,7 +21,10 @@ import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncJobService;
 @Singleton
 @Component(modules = {NetworkModule.class, ContextModule.class, DatabaseModule.class, RepositoryModule.class})
 public interface DIComponent {
+
     void inject(WeatherDataSyncJobService weatherDataSyncJobService);
+
     void inject(WeatherDataListPresenterImpl weatherDataListPresenter);
+
     void inject(WeatherDataDetailPresenterImpl weatherDataDetailPresenter);
 }
