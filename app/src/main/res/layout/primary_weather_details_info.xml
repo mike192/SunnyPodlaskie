@@ -23,12 +23,14 @@
         android:id="@+id/WeatherDataDetailFragment_city_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/WeatherDataDetailFragment_weather_icon_detail"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="Białystok" />
+        tools:text="Białystok"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
 
     <ImageView
         android:id="@+id/WeatherDataDetailFragment_weather_icon_detail"
@@ -45,14 +47,14 @@
         android:id="@+id/WeatherDataDetailFragment_weather_description_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:textColor="@color/secondary_text"
         android:gravity="center"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintTop_toBottomOf="@+id/WeatherDataDetailFragment_weather_icon_detail"
-        tools:text="Słonecznie" />
+        tools:text="Słonecznie"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/WeatherDataDetailFragment_temperature_detail"

@@ -23,11 +23,12 @@
     <TextView
         android:id="@+id/WeatherDataDetailFragment_pressure_detail_label"
         style="@style/DetailLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/pressure_label"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintVertical_bias="0.33" />
 
     <TextView
@@ -38,17 +39,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/WeatherDataDetailFragment_pressure_detail_label"
+        app:layout_constraintBottom_toBottomOf="@+id/WeatherDataDetailFragment_pressure_detail_label"
         tools:text="1012hPa" />
 
     <TextView
         android:id="@+id/WeatherDataDetailFragment_wind_detail_label"
         style="@style/DetailLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/wind_label"
         app:layout_constraintBottom_toTopOf="@+id/WeatherDataDetailFragment_humidity_detail_label"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_pressure_detail_label"
+        app:layout_constraintRight_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintTop_toBottomOf="@+id/WeatherDataDetailFragment_pressure_detail_label" />
 
     <TextView
@@ -59,17 +61,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/WeatherDataDetailFragment_wind_detail_label"
+        app:layout_constraintBottom_toBottomOf="@+id/WeatherDataDetailFragment_wind_detail_label"
         tools:text="80 m/s NNE" />
 
     <TextView
         android:id="@+id/WeatherDataDetailFragment_humidity_detail_label"
         style="@style/DetailLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/humidity_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_wind_detail_label"
+        app:layout_constraintRight_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -80,17 +83,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/WeatherDataDetailFragment_humidity_detail_label"
+        app:layout_constraintBottom_toBottomOf="@+id/WeatherDataDetailFragment_humidity_detail_label"
         tools:text="30%" />
 
     <TextView
         android:id="@+id/WeatherDataDetailFragment_sunrise_detail_label"
         style="@style/DetailLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/sunrise_label"
         app:layout_constraintBottom_toTopOf="@+id/WeatherDataDetailFragment_sunset_detail_label"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_humidity_detail_label"
+        app:layout_constraintRight_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintTop_toBottomOf="@+id/WeatherDataDetailFragment_humidity_detail_label" />
 
     <TextView
@@ -101,17 +105,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/WeatherDataDetailFragment_sunrise_detail_label"
+        app:layout_constraintBottom_toBottomOf="@+id/WeatherDataDetailFragment_sunrise_detail_label"
         tools:text="6:34:02" />
 
     <TextView
         android:id="@+id/WeatherDataDetailFragment_sunset_detail_label"
         style="@style/DetailLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/sunset_label"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_sunrise_detail_label" />
+        app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_sunrise_detail_label"
+        app:layout_constraintRight_toLeftOf="@+id/WeatherDataDetailFragment_guideline"/>
 
     <TextView
         android:id="@+id/WeatherDataDetailFragment_sunset_detail"
@@ -121,6 +126,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/WeatherDataDetailFragment_guideline"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/WeatherDataDetailFragment_sunset_detail_label"
+        app:layout_constraintBottom_toBottomOf="@+id/WeatherDataDetailFragment_sunset_detail_label"
         tools:text="20:36:12" />
 </android.support.constraint.ConstraintLayout>

@@ -11,12 +11,12 @@
         layout="@layout/primary_weather_details_info"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight=".45" />
+        android:layout_weight=".48" />
 
     <include
         android:id="@+id/WeatherDataDetailFragment_include_extra_info"
         layout="@layout/extra_weather_details_info"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".55" />
+        android:layout_weight=".52" />
 </LinearLayout>
