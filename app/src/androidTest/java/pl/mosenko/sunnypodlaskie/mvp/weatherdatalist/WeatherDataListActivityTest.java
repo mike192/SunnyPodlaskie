@@ -15,7 +15,6 @@ import java.util.Collection;
 
 import pl.mosenko.sunnypodlaskie.R;
 import pl.mosenko.sunnypodlaskie.mvp.setting.SettingsActivity;
-import testutils.TrampolineSchedulerRule;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -32,9 +31,6 @@ public class WeatherDataListActivityTest {
     @Rule
     public ActivityTestRule<WeatherDataListActivity> listActivityActivityTestRule =
             new ActivityTestRule<WeatherDataListActivity>(WeatherDataListActivity.class);
-
-    @Rule
-    public TrampolineSchedulerRule trampolineSchedulerRule = new TrampolineSchedulerRule();
 
     @Test
     public void clickOnSetting_shouldStartSettingActivity() {

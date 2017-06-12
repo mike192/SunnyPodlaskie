@@ -1,7 +1,6 @@
 package pl.mosenko.sunnypodlaskie.repository;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
 import junit.framework.Assert;
@@ -13,24 +12,18 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataAPI;
 import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherConditionEntityDAO;
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO;
-import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity;
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity;
 import pl.mosenko.sunnypodlaskie.util.RawResourceUtil;
-import testutils.TrampolineSchedulerRule;
+import pl.mosenko.sunnypodlaskie.testutils.TrampolineSchedulerRule;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

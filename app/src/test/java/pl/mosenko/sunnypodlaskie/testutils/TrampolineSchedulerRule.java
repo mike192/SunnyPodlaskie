@@ -1,4 +1,4 @@
-package testutils;
+package pl.mosenko.sunnypodlaskie.testutils;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
