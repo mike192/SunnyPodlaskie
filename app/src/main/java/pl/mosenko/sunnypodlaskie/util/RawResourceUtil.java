@@ -24,6 +24,10 @@ public class RawResourceUtil {
 
     public static String readRawTextFile(@NonNull Context context, @NonNull int resId) {
         InputStream inputStream = context.getResources().openRawResource(resId);
+        return readTextFromInputStream(inputStream);
+    }
+
+    public static String readTextFromInputStream(InputStream inputStream) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder sb = new StringBuilder();

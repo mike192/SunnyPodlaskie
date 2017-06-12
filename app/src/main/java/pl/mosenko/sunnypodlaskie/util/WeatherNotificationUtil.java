@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity;
 import pl.mosenko.sunnypodlaskie.R;
@@ -58,7 +59,7 @@ public class WeatherNotificationUtil {
     }
 
     private static String getFormattedReceivingDate(Date receivingTime) {
-        SimpleDateFormat notificationDateFormat = new SimpleDateFormat("MMM, d HH:mm:ss");
+        SimpleDateFormat notificationDateFormat = new SimpleDateFormat("MMM, d HH:mm:ss", Locale.getDefault());
         return notificationDateFormat.format(receivingTime);
     }
 

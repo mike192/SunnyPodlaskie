@@ -1,7 +1,5 @@
 package pl.mosenko.sunnypodlaskie.util;
 
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,8 +8,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import pl.mosenko.sunnypodlaskie.R;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by syk on 15.05.17.
@@ -78,11 +74,11 @@ public class WeatherDataUtil {
     }
 
     public static String getFormattedWindDetails(Double windSpeed, Double windDegree) {
-        String windDegreeDescription = converWindDegreeToTextDescription(windDegree);
+        String windDegreeDescription = convertWindDegreeToTextDescription(windDegree);
         return String.valueOf(windSpeed) + WIND_SPEED_UNIT + ", " + windDegreeDescription;
     }
 
-    private static String converWindDegreeToTextDescription(Double windDegree) {
+    private static String convertWindDegreeToTextDescription(Double windDegree) {
         if (windDegree == null) return "";
         if (windDegree > 337.5) return "N";
         if (windDegree > 292.5) return "NW";
