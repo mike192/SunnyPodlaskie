@@ -17,3 +17,14 @@ The application use MVP architecture and:
 To test was used:
 * Espresso
 * JUnit
+* Mockito
+
+# Overview:
+* **Main Activity** <br />
+![Main_Activity](https://lh5.googleusercontent.com/cmg6LWKOZ1bOTmweDrzhMw9suEhyC9-_-gWe8gJPlcLfarWEUMJ5lrWIwra0U6jyBB9OUWYAsepgXf0=w1366-h654-rw)
+
+* **Detail Activity** <br />
+![Detail Activity](https://lh6.googleusercontent.com/OEUb6scoBb1p4cH3vTy7dmF0qKHcbAqn34eg_vfqPzpsOvMna7DJRq5m9lu1mh33xTA6wYxPhizxRGI=w1366-h654-rw)
+
+* **Master Detail Activity** (tablet layout) <br />
+![Master Detail Activity](https://lh6.googleusercontent.com/Ac0MnbgnpuMoWMVpIW64NQiAEoyOtFDHd-Y9fkMtXw-BUDx7s-fEuuMdC0lC_P0OKnvgMtqISALM1no=w1366-h605)
