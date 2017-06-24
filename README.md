@@ -21,10 +21,10 @@ To test was used:
 
 # Overview:
 * **Main Activity** <br />
-![Main_Activity](https://lh5.googleusercontent.com/cmg6LWKOZ1bOTmweDrzhMw9suEhyC9-_-gWe8gJPlcLfarWEUMJ5lrWIwra0U6jyBB9OUWYAsepgXf0=w1366-h654-rw)
+![Main_Activity](https://user-images.githubusercontent.com/6349242/27512235-5af7460e-593a-11e7-9e7d-6c200a2ae19d.png)
 
 * **Detail Activity** <br />
-![Detail Activity](https://lh6.googleusercontent.com/OEUb6scoBb1p4cH3vTy7dmF0qKHcbAqn34eg_vfqPzpsOvMna7DJRq5m9lu1mh33xTA6wYxPhizxRGI=w1366-h654-rw)
+![Detail Activity](https://user-images.githubusercontent.com/6349242/27512236-5af7ab8a-593a-11e7-83fb-934a406b9831.png)
 
 * **Master Detail Activity** (tablet layout) <br />
-![Master Detail Activity](https://lh6.googleusercontent.com/Ac0MnbgnpuMoWMVpIW64NQiAEoyOtFDHd-Y9fkMtXw-BUDx7s-fEuuMdC0lC_P0OKnvgMtqISALM1no=w1366-h605)
+![Master Detail Activity](https://user-images.githubusercontent.com/6349242/27512234-5af6daa2-593a-11e7-98a8-179cd562cf65.png)
