@@ -15,6 +15,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.grantland.widget.AutofitTextView;
 import pl.mosenko.sunnypodlaskie.BuildConfig;
 import pl.mosenko.sunnypodlaskie.R;
 
@@ -36,15 +37,15 @@ public class WeatherDataDetailFragment extends MvpFragment<WeatherDataDetailCont
     @BindView(R.id.WeatherDataDetailFragment_weather_description_detail)
     TextView mWeatherDescriptionTV;
     @BindView(R.id.WeatherDataDetailFragment_pressure_detail)
-    TextView mPressure;
+    AutofitTextView mPressure;
     @BindView(R.id.WeatherDataDetailFragment_wind_detail)
-    TextView mWindDetails;
+    AutofitTextView mWindDetails;
     @BindView(R.id.WeatherDataDetailFragment_humidity_detail)
-    TextView mHumidityDetail;
+    AutofitTextView mHumidityDetail;
     @BindView(R.id.WeatherDataDetailFragment_sunrise_detail)
-    TextView mSunrise;
+    AutofitTextView mSunrise;
     @BindView(R.id.WeatherDataDetailFragment_sunset_detail)
-    TextView mSunset;
+    AutofitTextView mSunset;
 
     private Unbinder unbinder;
 
