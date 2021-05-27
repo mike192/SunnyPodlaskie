@@ -1,0 +1,91 @@
+package pl.mosenko.sunnypodlaskie.mvp.setting
+
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.support.v7.preference.EditTextPreference
+import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
+import android.view.View
+import android.widget.Toast
+import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegateImpl
+import com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback
+import pl.mosenko.sunnypodlaskie.R
+
+/**
+ * Created by syk on 23.05.17.
+ */
+class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener, MvpDelegateCallback<SettingsContract.View?, SettingsContract.Presenter?>, SettingsContract.View {
+    private var presenter: SettingsContract.Presenter? = null
+    private val fragmentDelegate: FragmentMvpDelegateImpl<SettingsContract.View?, SettingsContract.Presenter?>? = FragmentMvpDelegateImpl(this, this, false, false)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.pref_general)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        fragmentDelegate.onSaveInstanceState(outState)
+    }
+
+    override fun addInitialSyncTimeSummary(sharedPreferences: SharedPreferences?) {
+        val preferenceScreen = preferenceScreen
+        val count = preferenceScreen.preferenceCount
+        for (i in 0 until count) {
+            val preference = preferenceScreen.getPreference(i)
+            if (preference is EditTextPreference) {
+                addSyncTimePreferenceSummary(sharedPreferences, preference.getKey())
+                preference.setOnPreferenceChangeListener(this)
+            }
+        }
+    }
+
+    override fun addSyncTimePreferenceSummary(sharedPreferences: SharedPreferences?, key: String?) {
+        val preference = findPreference(key)
+        preference.summary = sharedPreferences.getString(key, getString(R.string.pref_sync_time_default))
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fragmentDelegate.onViewCreated(view, savedInstanceState)
+        presenter.setSharedPreferences(preferenceScreen.sharedPreferences)
+        presenter.onCreatePreferences()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentDelegate.onDestroyView()
+    }
+
+    override fun showMessageBadSyncTimeFormat() {
+        Toast.makeText(context, R.string.bad_sync_time_format_message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+        return getPresenter().validateNewSyncTime(newValue.toString())
+    }
+
+    override fun createPresenter(): SettingsContract.Presenter {
+        return SettingsPresenterImpl()
+    }
+
+    override fun getPresenter(): SettingsContract.Presenter? {
+        return presenter
+    }
+
+    override fun setPresenter(presenter: SettingsContract.Presenter?) {
+        this.presenter = presenter
+    }
+
+    override fun getMvpView(): SettingsContract.View? {
+        return this
+    }
+}
