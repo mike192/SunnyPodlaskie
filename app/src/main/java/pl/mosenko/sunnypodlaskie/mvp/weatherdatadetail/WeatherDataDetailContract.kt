@@ -9,11 +9,11 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
  */
 interface WeatherDataDetailContract {
     interface View : MvpView {
-        open fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel?)
-        open fun showError(throwable: Throwable?)
+        fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel)
+        fun showError(throwable: Throwable)
     }
 
-    interface Presenter : MvpPresenter<View?> {
-        open fun onViewCreated(savedInstanceState: Bundle?)
+    interface Presenter : MvpPresenter<View> {
+        fun onViewCreated(savedInstanceState: Bundle)
     }
 }

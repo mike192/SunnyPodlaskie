@@ -30,33 +30,34 @@ class WeatherDataRepositoryTest {
     var trampolineSchedulerRule: TrampolineSchedulerRule? = TrampolineSchedulerRule()
 
     @Mock
-    var rxWeatherDataAPI: RxWeatherDataAPI? = null
+    lateinit var rxWeatherDataAPI: RxWeatherDataAPI
 
     @Mock
-    var weatherDataEntityDAO: WeatherDataEntityDAO? = null
+    lateinit var weatherDataEntityDAO: WeatherDataEntityDAO
 
     @Mock
-    var weatherConditionEntities: WeatherConditionEntityDAO? = null
+    lateinit var weatherConditionEntities: WeatherConditionEntityDAO
 
     @InjectMocks
-    var weatherDataRepository: WeatherDataRepository? = null
+    lateinit var weatherDataRepository: WeatherDataRepository
+
     @Test
     @Throws(Exception::class)
     fun loadCurrentWeatherData_ShouldCallOnNext() {
         val onNextCalled = AtomicBoolean(false)
         val callback: WeatherDataRepository.Callback = object : WeatherDataRepository.Callback {
-            override fun onNextWeatherDataEntities(weatherDataEntityList: MutableList<WeatherDataEntity?>?, isConnectedToInternet: Boolean) {
+            override fun onNextWeatherDataEntities(weatherDataEntityList: MutableList<WeatherDataEntity>, isConnectedToInternet: Boolean) {
                 onNextCalled.set(true)
             }
 
-            override fun onError(throwable: Throwable?) {
+            override fun onError(throwable: Throwable) {
                 onNextCalled.set(false)
             }
         }
         Mockito.`when`(rxWeatherDataAPI.getCurrentWeatherData()).thenReturn(
                 Observable.just(getTestWeatherDataDto())
         )
-        Mockito.`when`(weatherDataEntityDAO.deleteBuilder()).thenReturn(Mockito.mock(DeleteBuilder::class.java))
+        Mockito.`when`(weatherDataEntityDAO.deleteBuilder()).thenReturn(Mockito.mock(DeleteBuilder::class.java) as DeleteBuilder<WeatherDataEntity, Long>?)
         Mockito.`when`<Int?>(weatherDataEntityDAO.create(Mockito.mock(MutableList::class.java))).thenReturn(1)
         weatherDataRepository.loadCurrentWeatherData(true, callback)
         Assert.assertTrue(onNextCalled.get())
@@ -64,7 +65,7 @@ class WeatherDataRepositoryTest {
 
     private fun getTestWeatherDataDto(): WeatherDataDto? {
         val gson = Gson()
-        val inJson = this.javaClass.classLoader.getResourceAsStream("test_weather_data.json")
+        val inJson = this.javaClass.classLoader?.getResourceAsStream("test_weather_data.json")
         val json = RawResourceUtil.readTextFromInputStream(inJson)
         return gson.fromJson(json, WeatherDataDto::class.java)
     }
@@ -74,11 +75,11 @@ class WeatherDataRepositoryTest {
     fun loadCurrentWeatherData_ShouldCallOnError() {
         val onNextCalled = AtomicBoolean(false)
         val callback: WeatherDataRepository.Callback = object : WeatherDataRepository.Callback {
-            override fun onNextWeatherDataEntities(weatherDataEntityList: MutableList<WeatherDataEntity?>?, isConnectedToInternet: Boolean) {
+            override fun onNextWeatherDataEntities(weatherDataEntityList: MutableList<WeatherDataEntity>, isConnectedToInternet: Boolean) {
                 onNextCalled.set(true)
             }
 
-            override fun onError(throwable: Throwable?) {
+            override fun onError(throwable: Throwable) {
                 onNextCalled.set(false)
             }
         }

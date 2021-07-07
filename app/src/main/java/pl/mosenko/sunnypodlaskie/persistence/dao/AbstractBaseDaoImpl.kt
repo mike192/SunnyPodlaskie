@@ -7,8 +7,8 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.BaseOrmLiteEntity
 /**
  * Created by syk on 18.05.17.
  */
-abstract class AbstractBaseDaoImpl<DataType : BaseOrmLiteEntity?, IdType> : RxBaseDaoImpl<DataType?, Long?>, OrmLiteEnityDAO<DataType?> {
-    protected constructor(dataClass: Class<DataType?>?) : super(dataClass) {}
-    protected constructor(connectionSource: ConnectionSource?, dataClass: Class<DataType?>?) : super(connectionSource, dataClass) {}
-    protected constructor(connectionSource: ConnectionSource?, tableConfig: DatabaseTableConfig<DataType?>?) : super(connectionSource, tableConfig) {}
+abstract class AbstractBaseDaoImpl<DataType : BaseOrmLiteEntity, IdType> : RxBaseDaoImpl<DataType, Long>, OrmLiteEnityDAO<DataType> {
+    protected constructor(dataClass: Class<DataType>) : super(dataClass)
+    protected constructor(connectionSource: ConnectionSource, dataClass: Class<DataType>) : super(connectionSource, dataClass)
+    protected constructor(connectionSource: ConnectionSource, tableConfig: DatabaseTableConfig<DataType>) : super(connectionSource, tableConfig)
 }

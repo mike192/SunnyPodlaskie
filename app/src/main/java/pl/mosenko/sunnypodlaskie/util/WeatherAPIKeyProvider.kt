@@ -13,7 +13,7 @@ class WeatherAPIKeyProvider {
     }
 
     private external fun getEncodedAPIKey(): String?
-    fun getDecodedAPIKey(): String? {
-        return String(Base64.decode(getEncodedAPIKey().toByteArray(), Base64.DEFAULT))
+    fun getDecodedAPIKey(): String {
+        return String(Base64.decode(getEncodedAPIKey()!!.toByteArray(), Base64.DEFAULT))
     }
 }

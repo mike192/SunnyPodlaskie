@@ -2,10 +2,6 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,56 +9,60 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import butterknife.BindView
 import butterknife.BindViews
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
+import org.koin.android.ext.android.inject
 import pl.aprilapps.switcher.Switcher
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailContract
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListAdaper.WeatherDataClickedListener
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 
 /**
  * Created by syk on 20.05.17.
  */
-class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, WeatherDataListContract.Presenter?>(), WeatherDataListContract.View, OnRefreshListener, WeatherDataClickedListener {
-    @kotlin.jvm.JvmField
+class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View, WeatherDataListContract.Presenter>(), WeatherDataListContract.View, OnRefreshListener, WeatherDataClickedListener {
+
     @BindView(R.id.WeatherDataListFragment_TextView_Empty)
-    var textViewEmpty: TextView? = null
+    lateinit var textViewEmpty: TextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataListFragment_ProgressBar)
-    var progressBarLoading: ProgressBar? = null
+    lateinit var progressBarLoading: ProgressBar
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataListFragment_RecyclerView)
-    var recyclerView: RecyclerView? = null
+    lateinit var recyclerView: RecyclerView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.FragmentWeatherDataList_TextView_Error)
-    var textViewError: TextView? = null
+    lateinit var textViewError: TextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataListFragment_SwipeRefreshLayout_Empty)
-    var swipeRefreshLayoutEmpty: SwipeRefreshLayout? = null
+    lateinit var swipeRefreshLayoutEmpty: SwipeRefreshLayout
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataListFragment_SwipeRefreshLayout_Error)
-    var swipeRefreshLayoutError: SwipeRefreshLayout? = null
+    lateinit var swipeRefreshLayoutError: SwipeRefreshLayout
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.FragmentWeatherDataList_SwipeRefreshLayout_Content)
-    var swipeRefreshLayoutContent: SwipeRefreshLayout? = null
+    lateinit var swipeRefreshLayoutContent: SwipeRefreshLayout
 
-    @kotlin.jvm.JvmField
     @BindViews(R.id.WeatherDataListFragment_SwipeRefreshLayout_Empty, R.id.WeatherDataListFragment_SwipeRefreshLayout_Error, R.id.FragmentWeatherDataList_SwipeRefreshLayout_Content)
-    var swipeRefreshLayouts: MutableList<SwipeRefreshLayout?>? = null
-    private var mSwitcher: Switcher? = null
+
+    lateinit var swipeRefreshLayouts: MutableList<SwipeRefreshLayout>
+    lateinit var mSwitcher: Switcher
+    lateinit var mWeatherDataListAdaper: WeatherDataListAdaper
+    private lateinit var mUnbinder: Unbinder
+
+    private val fragmentPresenter: WeatherDataListContract.Presenter by inject()
+
     private var mCallback = sDummyCallback
-    private var mWeatherDataListAdaper: WeatherDataListAdaper? = null
-    private var mUnbinder: Unbinder? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tryToInitializeCallbackField(activity)
@@ -70,20 +70,20 @@ class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, Weath
 
     private fun tryToInitializeCallbackField(context: Context?) {
         mCallback = try {
-            context as Callback?
+            context as Callback
         } catch (e: ClassCastException) {
             throw ClassCastException(context.toString()
                     + " must implement Callback")
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val rootView = inflateFragmentLayout(inflater, container)
         bindGraphicalComponents(rootView)
         return rootView
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureSwitcherView()
         customizeRecyclerView()
@@ -91,7 +91,7 @@ class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, Weath
     }
 
     private fun configureSwitcherView() {
-        mSwitcher = Builder(context)
+        mSwitcher = Switcher.Builder(requireContext())
                 .addContentView(swipeRefreshLayoutContent)
                 .addEmptyView(swipeRefreshLayoutEmpty)
                 .addProgressView(progressBarLoading)
@@ -101,24 +101,31 @@ class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, Weath
 
     private fun customizeRecyclerView() {
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        recyclerView.setLayoutManager(layoutManager)
+        recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         mWeatherDataListAdaper = WeatherDataListAdaper(activity, this)
-        recyclerView.setAdapter(mWeatherDataListAdaper)
+        recyclerView.adapter = mWeatherDataListAdaper
     }
 
-    private fun bindGraphicalComponents(rootView: View?) {
+    private fun bindGraphicalComponents(rootView: View) {
         mUnbinder = ButterKnife.bind(this, rootView)
     }
 
-    private fun inflateFragmentLayout(inflater: LayoutInflater?, container: ViewGroup?): View? {
+    private fun inflateFragmentLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         return inflater.inflate(R.layout.fragment_weather_data_list, container, false)
     }
 
     override fun showEmpty() {
-        ButterKnife.apply(swipeRefreshLayouts, STOP_REFRESHING)
+        stopRefreshLayouts()
         mSwitcher.showEmptyView()
     }
+
+    private fun stopRefreshLayouts() {
+        swipeRefreshLayouts.forEach {
+            it.isRefreshing = false
+        }
+    }
+
 
     override fun showLoading(pullToRefresh: Boolean) {
         if (!pullToRefresh) {
@@ -127,11 +134,11 @@ class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, Weath
     }
 
     override fun showContent() {
-        ButterKnife.apply(swipeRefreshLayouts, STOP_REFRESHING)
+        stopRefreshLayouts()
         mSwitcher.showContentView()
     }
 
-    override fun showError(throwable: Throwable?) {
+    override fun showError(throwable: Throwable) {
         showError(throwable, true)
     }
 
@@ -139,22 +146,22 @@ class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, Weath
         Toast.makeText(activity, R.string.message_no_connection, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showError(e: Throwable?, pullToRefresh: Boolean) {
+    override fun showError(e: Throwable, pullToRefresh: Boolean) {
         if (BuildConfig.DEBUG) {
             Log.e(TAG, e.message, e)
         }
         if (pullToRefresh) {
-            ButterKnife.apply(swipeRefreshLayouts, STOP_REFRESHING)
+            stopRefreshLayouts()
         }
         mSwitcher.showErrorView()
     }
 
-    override fun setData(weatherDataEntityList: MutableList<WeatherDataEntity?>?) {
+    override fun setData(weatherDataEntityList: MutableList<WeatherDataEntity>) {
         mWeatherDataListAdaper.swapWeatherList(weatherDataEntityList)
     }
 
     private fun customizeSwipeRefreshLayout() {
-        ButterKnife.apply(swipeRefreshLayouts, SET_SWIPE_REFRESH_LAYOUT_LISTENER, this)
+        setSwipeRefreshLayoutListener()
         for (swipeRefreshLayout in swipeRefreshLayouts) {
             swipeRefreshLayout.setColorSchemeResources(
                     R.color.colorAccent,
@@ -164,12 +171,18 @@ class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, Weath
         }
     }
 
+    private fun setSwipeRefreshLayoutListener() {
+        swipeRefreshLayouts.forEach {
+            it.setOnRefreshListener(this)
+        }
+    }
+
     override fun onRefresh() {
         loadData(true)
     }
 
     override fun createPresenter(): WeatherDataListContract.Presenter {
-        return WeatherDataListPresenterImpl()
+        return fragmentPresenter
     }
 
     override fun onWeatherDataItemClick(id: Long) {
@@ -201,13 +214,15 @@ class WeatherDataListFragment : MvpFragment<WeatherDataListContract.View?, Weath
     }
 
     interface Callback {
-        open fun onItemSelected(weatherDataId: Long)
+        fun onItemSelected(weatherDataId: Long)
     }
 
     companion object {
         private val TAG = WeatherDataListFragment::class.java.simpleName
-        val SET_SWIPE_REFRESH_LAYOUT_LISTENER: ButterKnife.Setter<SwipeRefreshLayout?, OnRefreshListener?>? = ButterKnife.Setter { view: SwipeRefreshLayout?, listener: OnRefreshListener?, index: Int -> view.setOnRefreshListener(listener) }
-        val STOP_REFRESHING: ButterKnife.Action<SwipeRefreshLayout?>? = ButterKnife.Action { view: SwipeRefreshLayout?, index: Int -> view.setRefreshing(false) }
-        private val sDummyCallback: Callback? = Callback { id: Long -> }
+        private val sDummyCallback: Callback = object : Callback {
+            override fun onItemSelected(weatherDataId: Long) {
+
+            }
+        }
     }
 }

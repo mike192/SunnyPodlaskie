@@ -8,32 +8,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
-import javax.inject.Inject
 
 /**
  * Created by syk on 03.06.17.
  */
-class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.View?>(), WeatherDataListContract.Presenter, WeatherDataRepository.Callback {
-    @kotlin.jvm.JvmField
-    @Inject
-    var weatherDataRepository: WeatherDataRepository? = null
+class WeatherDataListPresenterImpl(
+        var weatherDataRepository: WeatherDataRepository,
+        var merlinsBeard: MerlinsBeard
+) : MvpBasePresenter<WeatherDataListContract.View>(), WeatherDataListContract.Presenter, WeatherDataRepository.Callback {
 
-    @kotlin.jvm.JvmField
-    @Inject
-    var merlinsBeard: MerlinsBeard? = null
-    private var repositoryDisposable: CompositeDisposable? = null
+    private var repositoryDisposable: CompositeDisposable = CompositeDisposable()
     private var internetSubscription: Disposable? = null
-    private fun injectFields() {
-        ApplicationPodlaskieWeather.Companion.sharedApplication().getDIComponent().inject(this)
-    }
-
-    private fun initializeCompositeDisposable() {
-        repositoryDisposable = CompositeDisposable()
-    }
 
     override fun onResume() {
         observeInternetConnectivity()
@@ -43,7 +31,7 @@ class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.Vi
         internetSubscription = ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { isConnectedToInternet: Boolean? -> loadData(false, isConnectedToInternet) }
+                .subscribe { isConnectedToInternet: Boolean -> loadData(false, isConnectedToInternet) }
     }
 
     override fun onPause() {
@@ -51,13 +39,13 @@ class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.Vi
     }
 
     private fun safelyDisposeInternetSubscription() {
-        if (internetSubscription != null && internetSubscription.isDisposed()) {
-            internetSubscription.dispose()
+        if (internetSubscription?.isDisposed == true) {
+            internetSubscription!!.dispose()
         }
     }
 
     override fun loadData(pullToRefresh: Boolean) {
-        loadData(pullToRefresh, merlinsBeard.isConnected())
+        loadData(pullToRefresh, merlinsBeard.isConnected)
     }
 
     private fun loadData(pullToRefresh: Boolean, isConnectedToInternet: Boolean) {
@@ -75,7 +63,7 @@ class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.Vi
     }
 
     private fun safelyDisposeRepositorySubscription() {
-        if (repositoryDisposable != null && repositoryDisposable.isDisposed()) {
+        if (repositoryDisposable.isDisposed) {
             repositoryDisposable.dispose()
         }
     }
@@ -85,7 +73,7 @@ class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.Vi
         safelyDisposeRepositorySubscription()
     }
 
-    override fun onNextWeatherDataEntities(weatherDataEntityList: MutableList<WeatherDataEntity?>?, isConnectedToInternet: Boolean) {
+    override fun onNextWeatherDataEntities(weatherDataEntityList: MutableList<WeatherDataEntity>, isConnectedToInternet: Boolean) {
         if (BuildConfig.DEBUG) {
             logFetchedData(weatherDataEntityList)
         }
@@ -93,7 +81,7 @@ class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.Vi
             return
         }
         view.setData(weatherDataEntityList)
-        if (weatherDataEntityList == null || weatherDataEntityList.isEmpty()) {
+        if (weatherDataEntityList.isEmpty()) {
             view.showEmpty()
         } else {
             view.showContent()
@@ -103,13 +91,13 @@ class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.Vi
         }
     }
 
-    private fun logFetchedData(weatherDataEntityList: MutableList<WeatherDataEntity?>?) {
+    private fun logFetchedData(weatherDataEntityList: MutableList<WeatherDataEntity>) {
         for (weatherDataEntity in weatherDataEntityList) {
             Log.d(TAG, weatherDataEntity.toString())
         }
     }
 
-    override fun onError(throwable: Throwable?) {
+    override fun onError(throwable: Throwable) {
         if (isViewNotNullAttached()) {
             view.showError(throwable)
         }
@@ -121,10 +109,5 @@ class WeatherDataListPresenterImpl : MvpBasePresenter<WeatherDataListContract.Vi
 
     companion object {
         private val TAG = WeatherDataListPresenterImpl::class.java.simpleName
-    }
-
-    init {
-        injectFields()
-        initializeCompositeDisposable()
     }
 }

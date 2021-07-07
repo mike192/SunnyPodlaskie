@@ -2,9 +2,9 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.NavUtils
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity
 
@@ -12,6 +12,7 @@ import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity
  * Created by syk on 20.05.17.
  */
 class WeatherDataDetailsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather_data_details)
@@ -34,10 +35,10 @@ class WeatherDataDetailsActivity : AppCompatActivity() {
                 .commit()
     }
 
-    private fun getFragmentArgument(): Bundle? {
+    private fun getFragmentArgument(): Bundle {
         val arguments = Bundle()
-        val weatherDataId = intent.getLongExtra(WeatherDataDetailFragment.Companion.ARG_WEATHER_DATA_ID, 0)
-        arguments.putLong(WeatherDataDetailFragment.Companion.ARG_WEATHER_DATA_ID, weatherDataId)
+        val weatherDataId = intent.getLongExtra(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID, 0)
+        arguments.putLong(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID, weatherDataId)
         return arguments
     }
 
@@ -47,7 +48,7 @@ class WeatherDataDetailsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item.getItemId()
+        val id = item?.itemId
         if (id == android.R.id.home) {
             NavUtils.navigateUpTo(this, Intent(this, WeatherDataListActivity::class.java))
             return true

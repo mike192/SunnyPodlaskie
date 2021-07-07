@@ -13,85 +13,82 @@ import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
 import me.grantland.widget.AutofitTextView
+import org.koin.android.ext.android.inject
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
 
 /**
  * Created by syk on 20.05.17.
  */
-class WeatherDataDetailFragment : MvpFragment<WeatherDataDetailContract.View?, WeatherDataDetailContract.Presenter?>(), WeatherDataDetailContract.View {
-    @kotlin.jvm.JvmField
+class WeatherDataDetailFragment : MvpFragment<WeatherDataDetailContract.View, WeatherDataDetailContract.Presenter>(), WeatherDataDetailContract.View {
+
     @BindView(R.id.WeatherDataDetailFragment_city_detail)
-    var mCityDetailTV: TextView? = null
+    lateinit var mCityDetailTV: TextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_weather_icon_detail)
-    var mIconDetailIV: ImageView? = null
+    lateinit var mIconDetailIV: ImageView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_temperature_detail)
-    var mTemperatureTV: TextView? = null
+    lateinit var mTemperatureTV: TextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_weather_description_detail)
-    var mWeatherDescriptionTV: TextView? = null
+    lateinit var mWeatherDescriptionTV: TextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_pressure_detail)
-    var mPressure: AutofitTextView? = null
+    lateinit var mPressure: AutofitTextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_wind_detail)
-    var mWindDetails: AutofitTextView? = null
+    lateinit var mWindDetails: AutofitTextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_humidity_detail)
-    var mHumidityDetail: AutofitTextView? = null
+    lateinit var mHumidityDetail: AutofitTextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_sunrise_detail)
-    var mSunrise: AutofitTextView? = null
+    lateinit var mSunrise: AutofitTextView
 
-    @kotlin.jvm.JvmField
     @BindView(R.id.WeatherDataDetailFragment_sunset_detail)
-    var mSunset: AutofitTextView? = null
+    lateinit var mSunset: AutofitTextView
+
     private var unbinder: Unbinder? = null
-    override fun createPresenter(): WeatherDataDetailContract.Presenter? {
-        return WeatherDataDetailPresenterImpl()
+
+    private val fragmentPresenter: WeatherDataDetailContract.Presenter by inject()
+
+    override fun createPresenter(): WeatherDataDetailContract.Presenter {
+        return fragmentPresenter
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflateFragment(inflater, container)
         bindGraphicalComponents(rootView)
         return rootView
     }
 
-    private fun inflateFragment(inflater: LayoutInflater?, container: ViewGroup?): View? {
+    private fun inflateFragment(inflater: LayoutInflater, container: ViewGroup?): View {
         return inflater.inflate(R.layout.fragment_weather_data_details, container, false)
     }
 
-    private fun bindGraphicalComponents(rootView: View?) {
+    private fun bindGraphicalComponents(rootView: View) {
         unbinder = ButterKnife.bind(this, rootView)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getPresenter().onViewCreated(arguments)
+        getPresenter().onViewCreated(requireArguments())
     }
 
-    override fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel?) {
-        mCityDetailTV.setText(weatherDataDetailPresentationModel.getTitleDetails())
-        mTemperatureTV.setText(weatherDataDetailPresentationModel.getTemperature())
-        mWeatherDescriptionTV.setText(weatherDataDetailPresentationModel.getDescription())
-        mIconDetailIV.setImageResource(weatherDataDetailPresentationModel.getIconResource())
-        mPressure.setText(weatherDataDetailPresentationModel.getPressure())
-        mWindDetails.setText(weatherDataDetailPresentationModel.getWindDetails())
-        mHumidityDetail.setText(weatherDataDetailPresentationModel.getHumidity())
-        mSunrise.setText(weatherDataDetailPresentationModel.getSunrise())
-        mSunset.setText(weatherDataDetailPresentationModel.getSunset())
+    override fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel) {
+        mCityDetailTV.text = weatherDataDetailPresentationModel.titleDetails
+        mTemperatureTV.text = weatherDataDetailPresentationModel.temperature
+        mWeatherDescriptionTV.text = weatherDataDetailPresentationModel.description
+        mIconDetailIV.setImageResource(weatherDataDetailPresentationModel.iconResource)
+        mPressure.text = weatherDataDetailPresentationModel.pressure
+        mWindDetails.text = weatherDataDetailPresentationModel.windDetails
+        mHumidityDetail.text = weatherDataDetailPresentationModel.humidity
+        mSunrise.text = weatherDataDetailPresentationModel.sunrise
+        mSunset.text = weatherDataDetailPresentationModel.sunset
     }
 
-    override fun showError(throwable: Throwable?) {
+    override fun showError(throwable: Throwable) {
         if (BuildConfig.DEBUG) {
             Log.e(TAG, throwable.message, throwable)
         }
@@ -100,11 +97,11 @@ class WeatherDataDetailFragment : MvpFragment<WeatherDataDetailContract.View?, W
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unbinder.unbind()
+        unbinder?.unbind()
     }
 
     companion object {
-        val TAG = WeatherDataDetailFragment::class.java.simpleName
-        val ARG_WEATHER_DATA_ID: String? = "weather_data_id"
+        val TAG: String = WeatherDataDetailFragment::class.java.simpleName
+        const val ARG_WEATHER_DATA_ID: String = "weather_data_id"
     }
 }

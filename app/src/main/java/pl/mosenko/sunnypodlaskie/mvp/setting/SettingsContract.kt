@@ -10,17 +10,17 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
  */
 interface SettingsContract {
     interface View : MvpView {
-        open fun addInitialSyncTimeSummary(sharedPreferences: SharedPreferences?)
-        open fun getContext(): Context?
-        open fun addSyncTimePreferenceSummary(sharedPreferences: SharedPreferences?, key: String?)
-        open fun showMessageBadSyncTimeFormat()
+        fun addInitialSyncTimeSummary(sharedPreferences: SharedPreferences)
+        fun getContext(): Context?
+        fun addSyncTimePreferenceSummary(sharedPreferences: SharedPreferences, key: String)
+        fun showMessageBadSyncTimeFormat()
     }
 
-    interface Presenter : MvpPresenter<View?> {
-        open fun setSharedPreferences(sharedPreferences: SharedPreferences?)
-        open fun onCreatePreferences()
-        open fun onStart()
-        open fun onStop()
-        open fun validateNewSyncTime(syncTime: String?): Boolean
+    interface Presenter : MvpPresenter<View> {
+        fun setSharedPreferences(sharedPreferences: SharedPreferences)
+        fun onCreatePreferences()
+        fun onStart()
+        fun onStop()
+        fun validateNewSyncTime(syncTime: String): Boolean
     }
 }

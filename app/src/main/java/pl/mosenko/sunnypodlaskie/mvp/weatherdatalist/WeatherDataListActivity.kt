@@ -2,7 +2,7 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.*
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.mvp.setting.SettingsActivity
@@ -25,11 +25,7 @@ class WeatherDataListActivity : AppCompatActivity(), WeatherDataListFragment.Cal
 
     private fun initializeActivity() {
         setContentView(R.layout.activity_weather_data_list)
-        supportActionBar.setElevation(0f)
-    }
-
-    override fun onStop() {
-        super.onStop()
+        supportActionBar?.elevation = 0f
     }
 
     override fun onItemSelected(weatherDataId: Long) {
@@ -42,13 +38,13 @@ class WeatherDataListActivity : AppCompatActivity(), WeatherDataListFragment.Cal
 
     private fun startWeatherDataDetailsActivity(weatherDataId: Long) {
         val intent = Intent(this, WeatherDataDetailsActivity::class.java)
-        intent.putExtra(WeatherDataDetailFragment.Companion.ARG_WEATHER_DATA_ID, weatherDataId)
+        intent.putExtra(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID, weatherDataId)
         startActivity(intent)
     }
 
     private fun replaceWeatherDataDetailsFragment(weatherDataId: Long) {
         val arguments = Bundle()
-        arguments.putLong(WeatherDataDetailFragment.Companion.ARG_WEATHER_DATA_ID, weatherDataId)
+        arguments.putLong(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID, weatherDataId)
         val fragment = WeatherDataDetailFragment()
         fragment.arguments = arguments
         supportFragmentManager.beginTransaction()
@@ -63,7 +59,7 @@ class WeatherDataListActivity : AppCompatActivity(), WeatherDataListFragment.Cal
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item.getItemId()
+        val id = item?.itemId
         if (id == R.id.WeatherDataListActivity_action_settings) {
             startActivity(Intent(this, SettingsActivity::class.java))
             return true

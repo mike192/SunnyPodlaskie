@@ -12,8 +12,9 @@ import java.util.concurrent.TimeUnit
  * Created by syk on 26.05.17.
  */
 object WeatherDataAlarmSyncUtil {
-    private val ALARM_INTERVAL = TimeUnit.HOURS.toMillis(24) as Int as Int
+    private val ALARM_INTERVAL = TimeUnit.HOURS.toMillis(24)
     private const val REQUEST_CODE = 1001
+
     fun setupAlarmOnCreateApp(context: Context) {
         if (!isAlarmScheduled(context)) {
             startAlarm(context)
@@ -32,17 +33,17 @@ object WeatherDataAlarmSyncUtil {
         initializeSyncAlarm(context, pendingIntent, syncTimeDate)
     }
 
-    private fun initializeSyncAlarm(context: Context, pendingIntent: PendingIntent?, syncTimeDate: Date?) {
+    private fun initializeSyncAlarm(context: Context, pendingIntent: PendingIntent, syncTimeDate: Date) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, syncTimeDate.getTime(),
-                ALARM_INTERVAL.toLong(), pendingIntent)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, syncTimeDate.time,
+                ALARM_INTERVAL, pendingIntent)
     }
 
-    private fun getSyncDate(context: Context): Date? {
+    private fun getSyncDate(context: Context): Date {
         return PreferenceWeatherUtil.getSyncDate(context)
     }
 
-    private fun getPendingIntent(context: Context): PendingIntent? {
+    private fun getPendingIntent(context: Context): PendingIntent {
         val alarmIntent = Intent(context, AlarmWeatherSyncReceiver::class.java)
         return PendingIntent.getBroadcast(context, REQUEST_CODE, alarmIntent, 0)
     }

@@ -5,31 +5,26 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import pl.mosenko.sunnypodlaskie.ApplicationPodlaskieWeather
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import pl.mosenko.sunnypodlaskie.util.WeatherDataDetailPresentationModelConverter
-import javax.inject.Inject
 
 /**
  * Created by syk on 06.06.17.
  */
-class WeatherDataDetailPresenterImpl : MvpBasePresenter<WeatherDataDetailContract.View?>(), WeatherDataDetailContract.Presenter {
-    @kotlin.jvm.JvmField
-    @Inject
-    var weatherDataEntityDAO: WeatherDataEntityDAO? = null
+class WeatherDataDetailPresenterImpl(
+        var weatherDataEntityDAO: WeatherDataEntityDAO,
+) : MvpBasePresenter<WeatherDataDetailContract.View>(), WeatherDataDetailContract.Presenter {
+
     private var compositeDisposable: CompositeDisposable? = null
-    private fun injectFields() {
-        ApplicationPodlaskieWeather.Companion.sharedApplication().getDIComponent().inject(this)
-    }
 
     private fun initializeCompositeDisposable() {
         compositeDisposable = CompositeDisposable()
     }
 
-    override fun onViewCreated(savedInstanceState: Bundle?) {
-        if (savedInstanceState.containsKey(WeatherDataDetailFragment.Companion.ARG_WEATHER_DATA_ID)) {
-            val weatherDataId = savedInstanceState.getLong(WeatherDataDetailFragment.Companion.ARG_WEATHER_DATA_ID)
+    override fun onViewCreated(savedInstanceState: Bundle) {
+        if (savedInstanceState.containsKey(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID)) {
+            val weatherDataId = savedInstanceState.getLong(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID)
             queryForWeatherDataById(weatherDataId)
         }
     }
@@ -42,16 +37,16 @@ class WeatherDataDetailPresenterImpl : MvpBasePresenter<WeatherDataDetailContrac
         val disposable = weatherDataEntityDAO.rxQueryForId(weatherDataId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map { weatherDataEntity: WeatherDataEntity? -> formatWeatherDataEntityToDisplay(weatherDataEntity) }
-                .subscribe({ weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel? -> view.loadData(weatherDataDetailPresentationModel) }) { throwable: Throwable? -> view.showError(throwable) }
-        compositeDisposable.add(disposable)
+                .map { weatherDataEntity: WeatherDataEntity -> formatWeatherDataEntityToDisplay(weatherDataEntity) }
+                .subscribe({ weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel -> view.loadData(weatherDataDetailPresentationModel) }) { throwable: Throwable -> view.showError(throwable) }
+        compositeDisposable?.add(disposable)
     }
 
     private fun isViewNotNullAttached(): Boolean {
         return view != null && isViewAttached
     }
 
-    private fun formatWeatherDataEntityToDisplay(weatherDataEntity: WeatherDataEntity?): WeatherDataDetailPresentationModel? {
+    private fun formatWeatherDataEntityToDisplay(weatherDataEntity: WeatherDataEntity): WeatherDataDetailPresentationModel {
         return WeatherDataDetailPresentationModelConverter.convert(weatherDataEntity)
     }
 
@@ -61,13 +56,12 @@ class WeatherDataDetailPresenterImpl : MvpBasePresenter<WeatherDataDetailContrac
     }
 
     private fun safelyDisposeRepositorySubscription() {
-        if (compositeDisposable != null && compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose()
+        if (compositeDisposable?.isDisposed == true) {
+            compositeDisposable!!.dispose()
         }
     }
 
     init {
-        injectFields()
         initializeCompositeDisposable()
     }
 }

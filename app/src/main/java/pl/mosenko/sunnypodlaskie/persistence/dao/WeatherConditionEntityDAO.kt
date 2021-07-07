@@ -7,8 +7,8 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity
 /**
  * Created by syk on 06.06.17.
  */
-class WeatherConditionEntityDAO : AbstractBaseDaoImpl<WeatherConditionEntity?, Long?> {
-    constructor(dataClass: Class<WeatherConditionEntity?>?) : super(dataClass) {}
-    constructor(connectionSource: ConnectionSource?) : super(connectionSource, WeatherConditionEntity::class.java) {}
-    constructor(connectionSource: ConnectionSource?, tableConfig: DatabaseTableConfig<WeatherConditionEntity?>?) : super(connectionSource, tableConfig) {}
+class WeatherConditionEntityDAO : AbstractBaseDaoImpl<WeatherConditionEntity, Long> {
+    constructor(dataClass: Class<WeatherConditionEntity>) : super(dataClass)
+    constructor(connectionSource: ConnectionSource) : super(connectionSource, WeatherConditionEntity::class.java)
+    constructor(connectionSource: ConnectionSource, tableConfig: DatabaseTableConfig<WeatherConditionEntity>) : super(connectionSource, tableConfig)
 }

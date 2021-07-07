@@ -1,13 +1,13 @@
 package pl.mosenko.sunnypodlaskie.mvp.setting
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.Espresso
-import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.assertion.ViewAssertions
-import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
-import android.support.v7.widget.SwitchCompat
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.rule.ActivityTestRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.appcompat.widget.SwitchCompat
 import android.view.View
 import org.hamcrest.core.AllOf
 import org.junit.Rule

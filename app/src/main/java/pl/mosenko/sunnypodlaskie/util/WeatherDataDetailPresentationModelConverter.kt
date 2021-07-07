@@ -7,11 +7,12 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
  * Created by syk on 07.06.17.
  */
 object WeatherDataDetailPresentationModelConverter {
-    fun convert(weatherDataEntity: WeatherDataEntity?): WeatherDataDetailPresentationModel? {
+
+    fun convert(weatherDataEntity: WeatherDataEntity): WeatherDataDetailPresentationModel {
         val presentationModel = WeatherDataDetailPresentationModel()
         presentationModel.titleDetails = WeatherDataUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime())
         presentationModel.temperature = WeatherDataUtil.getFormattedTemperature(weatherDataEntity.getTemperature())
-        presentationModel.description = weatherDataEntity.getWeatherCondition().description
+        presentationModel.description = weatherDataEntity.getWeatherCondition().getDescription()
         presentationModel.iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey())
         presentationModel.pressure = WeatherDataUtil.getFormattedPressure(weatherDataEntity.getPressure())
         presentationModel.windDetails = WeatherDataUtil.getFormattedWindDetails(weatherDataEntity.getWindSpeed(), weatherDataEntity.getWindDegree())

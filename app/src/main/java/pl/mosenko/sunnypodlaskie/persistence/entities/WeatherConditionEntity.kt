@@ -48,7 +48,7 @@ class WeatherConditionEntity : BaseOrmLiteEntity {
     }
 
     companion object {
-        val TABLE_NAME: String? = "weather_condition"
-        val COLUMN_DESCRIPTION: String? = "description"
+        const val TABLE_NAME: String = "weather_condition"
+        const val COLUMN_DESCRIPTION: String = "description"
     }
 }

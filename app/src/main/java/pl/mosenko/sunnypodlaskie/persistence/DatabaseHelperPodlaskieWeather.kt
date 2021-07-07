@@ -19,8 +19,8 @@ import java.sql.SQLException
 /**
  * Created by syk on 16.05.17.
  */
-class DatabaseHelperPodlaskieWeather(context: Context) : OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-    private val context: Context?
+class DatabaseHelperPodlaskieWeather(private val context: Context) : OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
     override fun onCreate(database: SQLiteDatabase, connectionSource: ConnectionSource) {
         try {
             TableUtils.createTableIfNotExists(connectionSource, WeatherDataEntity::class.java)
@@ -34,7 +34,7 @@ class DatabaseHelperPodlaskieWeather(context: Context) : OrmLiteSqliteOpenHelper
     }
 
     @Throws(SQLException::class)
-    private fun addWeatherConditionsToDatabase(connectionSource: ConnectionSource?) {
+    private fun addWeatherConditionsToDatabase(connectionSource: ConnectionSource) {
         val weatherConditionEntities = WeatherConditionEntityDAO(connectionSource)
         val weatherConditionsJson = RawResourceUtil.readRawTextFile(context, R.raw.weather_conditions)
         val conditionEntities = Gson().fromJson<MutableList<WeatherConditionEntity?>?>(weatherConditionsJson, object : TypeToken<MutableList<WeatherConditionEntity?>?>() {}.type)
@@ -55,11 +55,7 @@ class DatabaseHelperPodlaskieWeather(context: Context) : OrmLiteSqliteOpenHelper
 
     companion object {
         private val TAG = DatabaseHelperPodlaskieWeather::class.java.simpleName
-        private val DATABASE_NAME: String? = "weather_data.db"
+        private const val DATABASE_NAME: String = "weather_data.db"
         private const val DATABASE_VERSION = 10
-    }
-
-    init {
-        this.context = context
     }
 }

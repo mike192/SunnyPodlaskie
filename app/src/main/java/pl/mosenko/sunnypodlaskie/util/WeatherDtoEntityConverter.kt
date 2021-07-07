@@ -10,35 +10,36 @@ import java.util.*
  * Created by syk on 18.05.17.
  */
 object WeatherDtoEntityConverter {
-    private val CORRECT_NAMES_OF_CITIES: MutableMap<String?, String?>? = HashMap()
-    private fun convertToWeatherDataEntity(weatherInfo: WeatherDataListDto?): WeatherDataEntity? {
+    private val CORRECT_NAMES_OF_CITIES: MutableMap<String, String> = HashMap()
+
+    private fun convertToWeatherDataEntity(weatherInfo: WeatherDataListDto): WeatherDataEntity {
         val weatherDataEntity = WeatherDataEntity()
-        weatherDataEntity.receivingTime = convertToDate(weatherInfo.getDt())
-        weatherDataEntity.iconKey = weatherInfo.getWeatherDto()[0].icon
-        weatherDataEntity.city = mapCityToCorrectCity(weatherInfo.getName())
-        weatherDataEntity.temperature = weatherInfo.getMainDto().temperature
-        weatherDataEntity.weatherCondition = getWeatherConditionFromId(weatherInfo)
-        weatherDataEntity.pressure = weatherInfo.getMainDto().pressure
-        weatherDataEntity.humidity = weatherInfo.getMainDto().humidity
-        weatherDataEntity.windSpeed = weatherInfo.getWindDto().speed
-        weatherDataEntity.windDegree = weatherInfo.getWindDto().degree
-        weatherDataEntity.sunrise = convertToDate(weatherInfo.getSysDto().sunrise)
-        weatherDataEntity.sunset = convertToDate(weatherInfo.getSysDto().sunset)
+        weatherDataEntity.setReceivingTime(convertToDate(weatherInfo.dt))
+        weatherDataEntity.setIconKey(weatherInfo.weatherDto[0].icon)
+        weatherDataEntity.setCity(mapCityToCorrectCity(weatherInfo.name))
+        weatherDataEntity.setTemperature(weatherInfo.mainDto.temperature)
+        weatherDataEntity.setWeatherCondition(getWeatherConditionFromId(weatherInfo))
+        weatherDataEntity.setPressure(weatherInfo.mainDto.pressure)
+        weatherDataEntity.setHumidity(weatherInfo.mainDto.humidity)
+        weatherDataEntity.setWindSpeed(weatherInfo.windDto.speed)
+        weatherDataEntity.setWindDegree(weatherInfo.windDto.degree)
+        weatherDataEntity.setSunrise(convertToDate(weatherInfo.sysDto.sunrise))
+        weatherDataEntity.setSunset(convertToDate(weatherInfo.sysDto.sunset))
         return weatherDataEntity
     }
 
-    private fun getWeatherConditionFromId(weatherInfo: WeatherDataListDto?): WeatherConditionEntity {
-        return WeatherConditionEntity(java.lang.Long.valueOf(weatherInfo.getWeatherDto()[0].id.toLong()))
+    private fun getWeatherConditionFromId(weatherInfo: WeatherDataListDto): WeatherConditionEntity {
+        return WeatherConditionEntity(java.lang.Long.valueOf(weatherInfo.weatherDto[0].id.toLong()))
     }
 
-    private fun mapCityToCorrectCity(name: String?): String? {
-        val cityCorrectName = CORRECT_NAMES_OF_CITIES.get(name)
+    private fun mapCityToCorrectCity(name: String): String {
+        val cityCorrectName = CORRECT_NAMES_OF_CITIES[name]
         return cityCorrectName ?: name
     }
 
-    fun convertToWeatherDataEntityList(weatherDataDto: WeatherDataDto?): MutableList<WeatherDataEntity?>? {
-        val weatherDataWeatherDataListDto = weatherDataDto.getWeatherDataListDto()
-        val weatherDataEntityList: MutableList<WeatherDataEntity?> = ArrayList(weatherDataWeatherDataListDto.size)
+    fun convertToWeatherDataEntityList(weatherDataDto: WeatherDataDto): MutableList<WeatherDataEntity> {
+        val weatherDataWeatherDataListDto = weatherDataDto.weatherDataListDto
+        val weatherDataEntityList: MutableList<WeatherDataEntity> = ArrayList(weatherDataWeatherDataListDto.size)
         for (weatherInfo in weatherDataWeatherDataListDto) {
             val weatherDataEntity = convertToWeatherDataEntity(weatherInfo)
             weatherDataEntityList.add(weatherDataEntity)
@@ -46,7 +47,7 @@ object WeatherDtoEntityConverter {
         return weatherDataEntityList
     }
 
-    private fun convertToDate(unixTimestamp: Long?): Date? {
+    private fun convertToDate(unixTimestamp: Long): Date {
         return Date(unixTimestamp * 1000)
     }
 

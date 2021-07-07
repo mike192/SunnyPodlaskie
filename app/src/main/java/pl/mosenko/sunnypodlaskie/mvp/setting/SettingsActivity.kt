@@ -1,8 +1,8 @@
 package pl.mosenko.sunnypodlaskie.mvp.setting
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import pl.mosenko.sunnypodlaskie.R
 
 /**
@@ -12,11 +12,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        supportActionBar.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item.getItemId()
+        val id = item?.itemId
         if (id == android.R.id.home) {
             onBackPressed()
             return true

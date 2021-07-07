@@ -10,9 +10,11 @@ import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil
 /**
  * Created by syk on 08.06.17.
  */
-class SettingsPresenterImpl : MvpBasePresenter<SettingsContract.View?>(), SettingsContract.Presenter, OnSharedPreferenceChangeListener {
-    private var sharedPreferences: SharedPreferences? = null
-    override fun setSharedPreferences(sharedPreferences: SharedPreferences?) {
+class SettingsPresenterImpl : MvpBasePresenter<SettingsContract.View>(), SettingsContract.Presenter, OnSharedPreferenceChangeListener {
+
+    private lateinit var sharedPreferences: SharedPreferences
+
+    override fun setSharedPreferences(sharedPreferences: SharedPreferences) {
         this.sharedPreferences = sharedPreferences
     }
 
@@ -30,7 +32,7 @@ class SettingsPresenterImpl : MvpBasePresenter<SettingsContract.View?>(), Settin
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun validateNewSyncTime(syncTime: String?): Boolean {
+    override fun validateNewSyncTime(syncTime: String): Boolean {
         if (PreferenceWeatherUtil.parseSyncTimeToPartiallyDate(syncTime) == null) {
             if (isViewNotNullAttached()) {
                 view.showMessageBadSyncTimeFormat()
@@ -40,11 +42,11 @@ class SettingsPresenterImpl : MvpBasePresenter<SettingsContract.View?>(), Settin
         return true
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (!isViewAttached) {
             return
         }
-        val context = view.getContext()
+        val context = view.getContext()!!
         val changedSyncTime = key == context.getString(R.string.pref_sync_time_key)
         if (changedSyncTime) {
             view.addSyncTimePreferenceSummary(sharedPreferences, key)

@@ -8,15 +8,15 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
  * Created by syk on 06.06.17.
  */
 interface WeatherDataListContract {
-    interface View : MvpLceView<MutableList<WeatherDataEntity?>?> {
-        open fun showEmpty()
-        open fun showError(throwable: Throwable?)
-        open fun showDataWithoutInternetUpdatedMessage()
+    interface View : MvpLceView<MutableList<WeatherDataEntity>> {
+        fun showEmpty()
+        fun showError(throwable: Throwable)
+        fun showDataWithoutInternetUpdatedMessage()
     }
 
-    interface Presenter : MvpPresenter<View?> {
-        open fun loadData(pullToRefresh: Boolean)
-        open fun onResume()
-        open fun onPause()
+    interface Presenter : MvpPresenter<View> {
+        fun loadData(pullToRefresh: Boolean)
+        fun onResume()
+        fun onPause()
     }
 }

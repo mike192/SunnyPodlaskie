@@ -5,9 +5,9 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.support.v4.app.NotificationCompat
-import android.support.v4.app.TaskStackBuilder
-import android.support.v4.content.ContextCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.TaskStackBuilder
+import androidx.core.content.ContextCompat
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity
 import java.text.SimpleDateFormat
@@ -18,7 +18,8 @@ import java.util.*
  */
 object WeatherNotificationUtil {
     private const val WEATHER_NOTIFICATION_ID = 3011
-    fun notifyUserOfNewWeatherData(context: Context, receivingTime: Date?) {
+
+    fun notifyUserOfNewWeatherData(context: Context, receivingTime: Date) {
         val notification = buildNotification(context, receivingTime)
         notify(context, notification)
     }
@@ -28,7 +29,7 @@ object WeatherNotificationUtil {
         notificationManager.notify(WEATHER_NOTIFICATION_ID, notification)
     }
 
-    private fun buildNotification(context: Context, receivingTime: Date?): Notification {
+    private fun buildNotification(context: Context, receivingTime: Date): Notification {
         val notificationTitle = context.getString(R.string.notification_title)
         val notificationContentText = context.getString(R.string.notification_content_text)
         val receivingTimeFormatted = getFormattedReceivingDate(receivingTime)
@@ -50,7 +51,7 @@ object WeatherNotificationUtil {
         return taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    private fun getFormattedReceivingDate(receivingTime: Date?): String? {
+    private fun getFormattedReceivingDate(receivingTime: Date): String? {
         val notificationDateFormat = SimpleDateFormat("MMM, d HH:mm:ss", Locale.getDefault())
         return notificationDateFormat.format(receivingTime)
     }

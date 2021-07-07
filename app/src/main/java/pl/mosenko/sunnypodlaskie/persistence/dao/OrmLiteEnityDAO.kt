@@ -6,4 +6,4 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.BaseOrmLiteEntity
 /**
  * Created by syk on 17.05.17.
  */
-interface OrmLiteEnityDAO<DataType : BaseOrmLiteEntity?> : Dao<DataType?, Long?>
+interface OrmLiteEnityDAO<DataType : BaseOrmLiteEntity> : Dao<DataType, Long>
