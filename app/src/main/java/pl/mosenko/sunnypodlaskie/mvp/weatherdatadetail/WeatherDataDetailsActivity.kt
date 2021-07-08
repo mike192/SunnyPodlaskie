@@ -47,8 +47,8 @@ class WeatherDataDetailsActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item?.itemId
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
         if (id == android.R.id.home) {
             NavUtils.navigateUpTo(this, Intent(this, WeatherDataListActivity::class.java))
             return true

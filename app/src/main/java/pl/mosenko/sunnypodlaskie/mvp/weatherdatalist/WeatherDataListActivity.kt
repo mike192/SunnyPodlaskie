@@ -58,8 +58,8 @@ class WeatherDataListActivity : AppCompatActivity(), WeatherDataListFragment.Cal
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item?.itemId
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
         if (id == R.id.WeatherDataListActivity_action_settings) {
             startActivity(Intent(this, SettingsActivity::class.java))
             return true
