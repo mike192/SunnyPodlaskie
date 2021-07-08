@@ -7,7 +7,7 @@ import pl.mosenko.sunnypodlaskie.util.WeatherAPIKeyProvider
 /**
  * Created by syk on 13.05.17.
  */
-class RxWeatherDataAPI(private val weatherDataAPI: WeatherDataAPI, private val apiKeyProvider: WeatherAPIKeyProvider) {
+class RxWeatherDataApi(private val weatherDataAPI: WeatherDataAPI, private val apiKeyProvider: WeatherAPIKeyProvider) {
     fun getCurrentWeatherData(): Observable<WeatherDataDto> {
         return weatherDataAPI.getCurrentWeatherData(apiKeyProvider.getDecodedAPIKey())
     }

@@ -53,7 +53,7 @@ class WeatherDataSyncJobService : JobService(), WeatherDataRepository.Callback, 
 
     private fun getWeatherDataReceivingTime(weatherDataEntities: MutableList<WeatherDataEntity>): Date {
         if (weatherDataEntities.isNotEmpty()) {
-            return weatherDataEntities[0].getReceivingTime()
+            return weatherDataEntities[0].receivingTime
         }
         throw IllegalArgumentException("Downloaded weather data are incorrect.")
     }

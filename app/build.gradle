@@ -53,6 +53,11 @@ dependencies {
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlin_version}"
+    implementation "androidx.room:room-runtime:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
@@ -74,7 +79,6 @@ dependencies {
     implementation 'javax.annotation:jsr250-api:1.0'
     implementation 'com.jakewharton:butterknife:10.2.3'
     kapt 'com.jakewharton:butterknife-compiler:10.2.3'
-    implementation 'com.j256.ormlite:ormlite-android:5.0'
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'me.grantland:autofittextview:0.2.1'
 

@@ -2,10 +2,12 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail
 
 import android.os.Bundle
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDAO
+import kotlinx.coroutines.runBlocking
+import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import pl.mosenko.sunnypodlaskie.util.WeatherDataDetailPresentationModelConverter
 
@@ -13,7 +15,7 @@ import pl.mosenko.sunnypodlaskie.util.WeatherDataDetailPresentationModelConverte
  * Created by syk on 06.06.17.
  */
 class WeatherDataDetailPresenterImpl(
-        var weatherDataEntityDAO: WeatherDataEntityDAO,
+    var weatherDataEntityDao: WeatherDataEntityDao,
 ) : MvpBasePresenter<WeatherDataDetailContract.View>(), WeatherDataDetailContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable? = null
@@ -34,7 +36,12 @@ class WeatherDataDetailPresenterImpl(
             return
         }
         safelyDisposeRepositorySubscription()
-        val disposable = weatherDataEntityDAO.rxQueryForId(weatherDataId)
+        val disposable =
+            Observable.fromCallable {
+                runBlocking {
+                    weatherDataEntityDao.getWeatherDataById(weatherDataId)
+                }
+            }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { weatherDataEntity: WeatherDataEntity -> formatWeatherDataEntityToDisplay(weatherDataEntity) }

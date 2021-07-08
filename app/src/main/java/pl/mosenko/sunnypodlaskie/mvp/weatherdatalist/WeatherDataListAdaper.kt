@@ -19,23 +19,27 @@ import java.util.*
 /**
  * Created by syk on 15.05.17.
  */
-class WeatherDataListAdaper(private val context: Context?, val clickHandler: WeatherDataClickedListener) : RecyclerView.Adapter<WeatherViewHolder>() {
+class WeatherDataListAdaper(
+    private val context: Context?,
+    val clickHandler: WeatherDataClickedListener
+) : RecyclerView.Adapter<WeatherViewHolder>() {
 
     private var weatherDataList: MutableList<WeatherDataEntity> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.weather_data_list_item, parent, false)
+        val itemView =
+            LayoutInflater.from(context).inflate(R.layout.weather_data_list_item, parent, false)
         itemView.isFocusable = true
         return WeatherViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         val weatherInfo = weatherDataList.get(position)
-        val iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherInfo.getIconKey())
+        val iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherInfo.iconKey)
         holder.weatherIcon.setImageResource(iconResource)
-        holder.city.setText(weatherInfo.getCity())
-        holder.temperature.setText(WeatherDataUtil.getFormattedTemperature(weatherInfo.getTemperature()))
-        holder.weatherDescription.setText(weatherInfo.getWeatherCondition().getDescription())
+        holder.city.text = weatherInfo.city
+        holder.temperature.text = WeatherDataUtil.getFormattedTemperature(weatherInfo.temperature)
+        holder.weatherDescription.setText(weatherInfo.weatherCondition?.description)
     }
 
     override fun getItemCount(): Int {
@@ -67,7 +71,7 @@ class WeatherDataListAdaper(private val context: Context?, val clickHandler: Wea
         override fun onClick(v: View) {
             val adapterPosition = adapterPosition
             val weatherDataEntity = weatherDataList.get(adapterPosition)
-            clickHandler.onWeatherDataItemClick(weatherDataEntity.getId()!!)
+            clickHandler.onWeatherDataItemClick(weatherDataEntity.id!!)
         }
 
         init {

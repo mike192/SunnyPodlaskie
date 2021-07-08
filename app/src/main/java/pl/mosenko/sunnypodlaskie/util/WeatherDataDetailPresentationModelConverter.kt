@@ -10,15 +10,15 @@ object WeatherDataDetailPresentationModelConverter {
 
     fun convert(weatherDataEntity: WeatherDataEntity): WeatherDataDetailPresentationModel {
         val presentationModel = WeatherDataDetailPresentationModel()
-        presentationModel.titleDetails = WeatherDataUtil.getDetailsTitle(weatherDataEntity.getCity(), weatherDataEntity.getReceivingTime())
-        presentationModel.temperature = WeatherDataUtil.getFormattedTemperature(weatherDataEntity.getTemperature())
-        presentationModel.description = weatherDataEntity.getWeatherCondition().getDescription()
-        presentationModel.iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherDataEntity.getIconKey())
-        presentationModel.pressure = WeatherDataUtil.getFormattedPressure(weatherDataEntity.getPressure())
-        presentationModel.windDetails = WeatherDataUtil.getFormattedWindDetails(weatherDataEntity.getWindSpeed(), weatherDataEntity.getWindDegree())
-        presentationModel.humidity = WeatherDataUtil.getFormattedHumidity(weatherDataEntity.getHumidity())
-        presentationModel.sunrise = WeatherDataUtil.getFormattedTime(weatherDataEntity.getSunrise())
-        presentationModel.sunset = WeatherDataUtil.getFormattedTime(weatherDataEntity.getSunset())
+        presentationModel.titleDetails = WeatherDataUtil.getDetailsTitle(weatherDataEntity.city, weatherDataEntity.receivingTime)
+        presentationModel.temperature = WeatherDataUtil.getFormattedTemperature(weatherDataEntity.temperature)
+        presentationModel.description = weatherDataEntity.weatherCondition?.description
+        presentationModel.iconResource = WeatherDataUtil.getWeatherIconResourceByCode(weatherDataEntity.iconKey)
+        presentationModel.pressure = WeatherDataUtil.getFormattedPressure(weatherDataEntity.pressure)
+        presentationModel.windDetails = WeatherDataUtil.getFormattedWindDetails(weatherDataEntity.windSpeed, weatherDataEntity.windDegree)
+        presentationModel.humidity = WeatherDataUtil.getFormattedHumidity(weatherDataEntity.humidity)
+        presentationModel.sunrise = WeatherDataUtil.getFormattedTime(weatherDataEntity.sunrise)
+        presentationModel.sunset = WeatherDataUtil.getFormattedTime(weatherDataEntity.sunset)
         return presentationModel
     }
 }
