@@ -85,7 +85,6 @@ dependencies {
     implementation 'com.github.jkwiecien:Switcher:2.1.5'
     implementation 'javax.annotation:jsr250-api:1.0'
     implementation 'androidx.annotation:annotation:1.2.0'
-    implementation 'me.grantland:autofittextview:0.2.1'
 
     androidTestImplementation 'androidx.annotation:annotation:1.2.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {

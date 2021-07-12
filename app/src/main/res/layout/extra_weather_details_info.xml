@@ -31,11 +31,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.33" />
 
-    <me.grantland.widget.AutofitTextView
+    <TextView
         android:id="@+id/tv_pressure_detail"
         style="@style/ExtraWeatherMeasurement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/tv_pressure_detail_label"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
@@ -53,11 +54,12 @@
         app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
         app:layout_constraintTop_toBottomOf="@+id/tv_pressure_detail_label" />
 
-    <me.grantland.widget.AutofitTextView
+    <TextView
         android:id="@+id/tv_wind_detail"
         style="@style/ExtraWeatherMeasurement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/tv_wind_detail_label"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
@@ -75,11 +77,12 @@
         app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <me.grantland.widget.AutofitTextView
+    <TextView
         android:id="@+id/tv_humidity_detail"
         style="@style/ExtraWeatherMeasurement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/tv_humidity_detail_label"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
@@ -97,11 +100,12 @@
         app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
         app:layout_constraintTop_toBottomOf="@+id/tv_humidity_detail_label" />
 
-    <me.grantland.widget.AutofitTextView
+    <TextView
         android:id="@+id/tv_sunrise_detail"
         style="@style/ExtraWeatherMeasurement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/tv_sunrise_detail_label"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
@@ -118,11 +122,12 @@
         app:layout_constraintLeft_toLeftOf="@+id/tv_sunrise_detail_label"
         app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline" />
 
-    <me.grantland.widget.AutofitTextView
+    <TextView
         android:id="@+id/tv_sunset_detail"
         style="@style/ExtraWeatherMeasurement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/tv_sunset_detail_label"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
