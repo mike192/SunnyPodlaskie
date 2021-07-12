@@ -4,16 +4,22 @@
     android:layout_height="match_parent">
 
     <ProgressBar
-        android:id="@+id/WeatherDataListFragment_ProgressBar"
+        android:id="@+id/pb_loading"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_gravity="center"
-        android:indeterminate="true"/>
+        android:indeterminate="true" />
 
-    <include layout="@layout/part_weather_data_list_content" />
+    <include
+        android:id="@+id/inc_content"
+        layout="@layout/part_weather_data_list_content" />
 
-    <include layout="@layout/part_weather_data_list_empty" />
+    <include
+        android:id="@+id/inc_empty"
+        layout="@layout/part_weather_data_list_empty" />
 
-    <include layout="@layout/part_weather_data_list_error" />
+    <include
+        android:id="@+id/inc_error"
+        layout="@layout/part_weather_data_list_error" />
 
 </FrameLayout>

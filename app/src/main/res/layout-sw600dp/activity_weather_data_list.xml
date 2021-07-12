@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:orientation="horizontal">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/WeatherDataListFragment_fragment_tablet"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
+    <fragment
         android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment"
-        android:layout_weight="1"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <View
         android:layout_width="1dp"
@@ -19,9 +17,8 @@
         android:background="@android:color/darker_gray" />
 
     <FrameLayout
-        android:id="@+id/WeatherDataListFragment_FrameLayout_container"
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
 </LinearLayout>

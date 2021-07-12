@@ -5,51 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.hannesdorfmann.mosby3.mvp.MvpFragment
-import me.grantland.widget.AutofitTextView
 import org.koin.android.ext.android.inject
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
+import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataDetailsBinding
 
 /**
  * Created by syk on 20.05.17.
  */
-class WeatherDataDetailFragment : MvpFragment<WeatherDataDetailContract.View, WeatherDataDetailContract.Presenter>(), WeatherDataDetailContract.View {
+class WeatherDataDetailFragment :
+    MvpFragment<WeatherDataDetailContract.View, WeatherDataDetailContract.Presenter>(),
+    WeatherDataDetailContract.View {
 
-    @BindView(R.id.WeatherDataDetailFragment_city_detail)
-    lateinit var mCityDetailTV: TextView
-
-    @BindView(R.id.WeatherDataDetailFragment_weather_icon_detail)
-    lateinit var mIconDetailIV: ImageView
-
-    @BindView(R.id.WeatherDataDetailFragment_temperature_detail)
-    lateinit var mTemperatureTV: TextView
-
-    @BindView(R.id.WeatherDataDetailFragment_weather_description_detail)
-    lateinit var mWeatherDescriptionTV: TextView
-
-    @BindView(R.id.WeatherDataDetailFragment_pressure_detail)
-    lateinit var mPressure: AutofitTextView
-
-    @BindView(R.id.WeatherDataDetailFragment_wind_detail)
-    lateinit var mWindDetails: AutofitTextView
-
-    @BindView(R.id.WeatherDataDetailFragment_humidity_detail)
-    lateinit var mHumidityDetail: AutofitTextView
-
-    @BindView(R.id.WeatherDataDetailFragment_sunrise_detail)
-    lateinit var mSunrise: AutofitTextView
-
-    @BindView(R.id.WeatherDataDetailFragment_sunset_detail)
-    lateinit var mSunset: AutofitTextView
-
-    private var unbinder: Unbinder? = null
+    private var _binding: FragmentWeatherDataDetailsBinding? = null
+    private val binding get() = _binding!!
 
     private val fragmentPresenter: WeatherDataDetailContract.Presenter by inject()
 
@@ -57,18 +28,13 @@ class WeatherDataDetailFragment : MvpFragment<WeatherDataDetailContract.View, We
         return fragmentPresenter
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflateFragment(inflater, container)
-        bindGraphicalComponents(rootView)
-        return rootView
-    }
-
-    private fun inflateFragment(inflater: LayoutInflater, container: ViewGroup?): View {
-        return inflater.inflate(R.layout.fragment_weather_data_details, container, false)
-    }
-
-    private fun bindGraphicalComponents(rootView: View) {
-        unbinder = ButterKnife.bind(this, rootView)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWeatherDataDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,15 +43,19 @@ class WeatherDataDetailFragment : MvpFragment<WeatherDataDetailContract.View, We
     }
 
     override fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel) {
-        mCityDetailTV.text = weatherDataDetailPresentationModel.titleDetails
-        mTemperatureTV.text = weatherDataDetailPresentationModel.temperature
-        mWeatherDescriptionTV.text = weatherDataDetailPresentationModel.description
-        mIconDetailIV.setImageResource(weatherDataDetailPresentationModel.iconResource)
-        mPressure.text = weatherDataDetailPresentationModel.pressure
-        mWindDetails.text = weatherDataDetailPresentationModel.windDetails
-        mHumidityDetail.text = weatherDataDetailPresentationModel.humidity
-        mSunrise.text = weatherDataDetailPresentationModel.sunrise
-        mSunset.text = weatherDataDetailPresentationModel.sunset
+        binding.incPrimaryInfo.apply {
+            tvCityDetail.text = weatherDataDetailPresentationModel.titleDetails
+            tvTemperatureDetail.text = weatherDataDetailPresentationModel.temperature
+            tvWeatherDescriptionDetail.text = weatherDataDetailPresentationModel.description
+            ivWeatherIconDetail.setImageResource(weatherDataDetailPresentationModel.iconResource)
+        }
+        binding.incExtraInfo.apply {
+            tvPressureDetail.text = weatherDataDetailPresentationModel.pressure
+            tvWindDetail.text = weatherDataDetailPresentationModel.windDetails
+            tvHumidityDetail.text = weatherDataDetailPresentationModel.humidity
+            tvSunriseDetail.text = weatherDataDetailPresentationModel.sunrise
+            tvSunsetDetail.text = weatherDataDetailPresentationModel.sunset
+        }
     }
 
     override fun showError(throwable: Throwable) {
@@ -97,7 +67,7 @@ class WeatherDataDetailFragment : MvpFragment<WeatherDataDetailContract.View, We
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unbinder?.unbind()
+        _binding = null
     }
 
     companion object {

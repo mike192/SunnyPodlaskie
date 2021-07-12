@@ -31,7 +31,7 @@ class WeatherDataDetailsActivity : AppCompatActivity() {
         val weatherDataDetailFragment = WeatherDataDetailFragment()
         weatherDataDetailFragment.arguments = arguments
         supportFragmentManager.beginTransaction()
-                .add(R.id.weather_data_details_container, weatherDataDetailFragment)
+                .add(R.id.ll_weather_data_details_container, weatherDataDetailFragment)
                 .commit()
     }
 

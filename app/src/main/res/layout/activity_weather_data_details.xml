@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/weather_data_details_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_weather_data_details_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailsActivity"
-    android:orientation="vertical">
-</LinearLayout>
+    android:orientation="vertical"
+    tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailsActivity" />

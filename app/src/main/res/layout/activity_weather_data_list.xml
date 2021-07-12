@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/WeatherDataListFragment_fragment_tablet"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
     android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment"
-    />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

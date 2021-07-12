@@ -18,7 +18,7 @@ class WeatherDataListActivity : AppCompatActivity(), WeatherDataListFragment.Cal
     }
 
     private fun setupTwoPane() {
-        if (findViewById<View?>(R.id.WeatherDataListFragment_FrameLayout_container) != null) {
+        if (findViewById<View?>(R.id.fl_container) != null) {
             twoPane = true
         }
     }
@@ -48,7 +48,7 @@ class WeatherDataListActivity : AppCompatActivity(), WeatherDataListFragment.Cal
         val fragment = WeatherDataDetailFragment()
         fragment.arguments = arguments
         supportFragmentManager.beginTransaction()
-                .replace(R.id.WeatherDataListFragment_FrameLayout_container, fragment)
+                .replace(R.id.fl_container, fragment)
                 .commit()
     }
 

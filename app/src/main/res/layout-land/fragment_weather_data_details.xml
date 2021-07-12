@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment">
+    android:orientation="horizontal"
+    tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment"
+    android:baselineAligned="true">
 
     <include
-        android:id="@+id/WeatherDataDetailFragment_include_primary_info"
+        android:id="@+id/inc_primary_info"
         layout="@layout/primary_weather_details_info"
-        android:layout_height="match_parent"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <include
-        android:id="@+id/WeatherDataDetailFragment_include_extra_info"
+        android:id="@+id/inc_extra_info"
         layout="@layout/extra_weather_details_info"
         android:layout_width="0dp"
         android:layout_height="match_parent"

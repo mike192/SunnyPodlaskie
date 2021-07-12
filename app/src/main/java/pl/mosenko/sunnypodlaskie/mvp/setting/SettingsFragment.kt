@@ -54,7 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     }
 
     override fun addSyncTimePreferenceSummary(sharedPreferences: SharedPreferences, key: String) {
-        val preference = findPreference(key)
+        val preference: Preference = findPreference(key)
         preference.summary =
             sharedPreferences.getString(key, getString(R.string.pref_sync_time_default))
     }
