@@ -1,8 +1,8 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail
 
 import android.os.Bundle
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
-import com.hannesdorfmann.mosby3.mvp.MvpView
+import pl.mosenko.sunnypodlaskie.mvp.MvpPresenter
+import pl.mosenko.sunnypodlaskie.mvp.MvpView
 
 /**
  * Created by syk on 06.06.17.

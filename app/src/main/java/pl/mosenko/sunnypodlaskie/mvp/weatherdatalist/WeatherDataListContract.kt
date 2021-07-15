@@ -1,14 +1,19 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView
+import pl.mosenko.sunnypodlaskie.mvp.MvpPresenter
+import pl.mosenko.sunnypodlaskie.mvp.MvpView
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 
 /**
  * Created by syk on 06.06.17.
  */
 interface WeatherDataListContract {
-    interface View : MvpLceView<MutableList<WeatherDataEntity>> {
+    interface View : MvpView {
+        fun showLoading(pullToRefresh: Boolean)
+        fun showContent()
+        fun showError(e: Throwable, pullToRefresh: Boolean)
+        fun setData(data: MutableList<WeatherDataEntity>)
+        fun loadData(pullToRefresh: Boolean)
         fun showEmpty()
         fun showError(throwable: Throwable)
         fun showDataWithoutInternetUpdatedMessage()

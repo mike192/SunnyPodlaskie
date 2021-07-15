@@ -7,8 +7,6 @@ import android.widget.Toast
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.hannesdorfmann.mosby3.mvp.delegate.FragmentMvpDelegateImpl
-import com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback
 import org.koin.android.ext.android.inject
 import pl.mosenko.sunnypodlaskie.R
 
@@ -16,11 +14,9 @@ import pl.mosenko.sunnypodlaskie.R
  * Created by syk on 23.05.17.
  */
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener,
-    MvpDelegateCallback<SettingsContract.View, SettingsContract.Presenter>, SettingsContract.View {
+    SettingsContract.View {
 
-    private val fragmentPresenter: SettingsContract.Presenter by inject()
-    private val fragmentDelegate: FragmentMvpDelegateImpl<SettingsContract.View, SettingsContract.Presenter> =
-        FragmentMvpDelegateImpl(this, this, false, false)
+    private val presenter: SettingsContract.Presenter by inject()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_general)
@@ -28,17 +24,16 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
     override fun onStart() {
         super.onStart()
-        fragmentPresenter.onStart()
+        presenter.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        fragmentPresenter.onStop()
+        presenter.onStop()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        fragmentDelegate.onSaveInstanceState(outState)
     }
 
     override fun addInitialSyncTimeSummary(sharedPreferences: SharedPreferences) {
@@ -61,14 +56,14 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentDelegate.onViewCreated(view, savedInstanceState)
+        presenter.attachView(this)
         presenter.setSharedPreferences(preferenceScreen.sharedPreferences)
         presenter.onCreatePreferences()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        fragmentDelegate.onDestroyView()
+        presenter.detachView()
     }
 
     override fun showMessageBadSyncTimeFormat() {
@@ -76,22 +71,6 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-        return fragmentPresenter.validateNewSyncTime(newValue.toString())
-    }
-
-    override fun createPresenter(): SettingsContract.Presenter {
-        return fragmentPresenter
-    }
-
-    override fun getMvpView(): SettingsContract.View {
-        return this
-    }
-
-    override fun getPresenter(): SettingsContract.Presenter {
-        return fragmentPresenter
-    }
-
-    override fun setPresenter(presenter: SettingsContract.Presenter?) {
-        // NOP
+        return presenter.validateNewSyncTime(newValue.toString())
     }
 }

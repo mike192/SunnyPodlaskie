@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.hannesdorfmann.mosby3.mvp.MvpFragment
+import androidx.fragment.app.Fragment
 import org.koin.android.ext.android.inject
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
@@ -15,18 +15,12 @@ import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataDetailsBinding
 /**
  * Created by syk on 20.05.17.
  */
-class WeatherDataDetailFragment :
-    MvpFragment<WeatherDataDetailContract.View, WeatherDataDetailContract.Presenter>(),
-    WeatherDataDetailContract.View {
+class WeatherDataDetailFragment : Fragment(), WeatherDataDetailContract.View {
 
     private var _binding: FragmentWeatherDataDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val fragmentPresenter: WeatherDataDetailContract.Presenter by inject()
-
-    override fun createPresenter(): WeatherDataDetailContract.Presenter {
-        return fragmentPresenter
-    }
+    private val presenter: WeatherDataDetailContract.Presenter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +33,8 @@ class WeatherDataDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getPresenter().onViewCreated(requireArguments())
+        presenter.attachView(this)
+        presenter.onViewCreated(requireArguments())
     }
 
     override fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel) {
@@ -67,6 +62,7 @@ class WeatherDataDetailFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        presenter.detachView()
         _binding = null
     }
 

@@ -2,8 +2,8 @@ package pl.mosenko.sunnypodlaskie.mvp.setting
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
-import com.hannesdorfmann.mosby3.mvp.MvpView
+import pl.mosenko.sunnypodlaskie.mvp.MvpPresenter
+import pl.mosenko.sunnypodlaskie.mvp.MvpView
 
 /**
  * Created by syk on 08.06.17.

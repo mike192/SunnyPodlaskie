@@ -1,12 +1,12 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail
 
 import android.os.Bundle
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.runBlocking
+import pl.mosenko.sunnypodlaskie.mvp.MvpBasePresenter
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import pl.mosenko.sunnypodlaskie.util.WeatherDataDetailPresentationModelConverter
@@ -20,13 +20,18 @@ class WeatherDataDetailPresenterImpl(
 
     private var compositeDisposable: CompositeDisposable? = null
 
+    init {
+        initializeCompositeDisposable()
+    }
+
     private fun initializeCompositeDisposable() {
         compositeDisposable = CompositeDisposable()
     }
 
     override fun onViewCreated(savedInstanceState: Bundle) {
         if (savedInstanceState.containsKey(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID)) {
-            val weatherDataId = savedInstanceState.getLong(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID)
+            val weatherDataId =
+                savedInstanceState.getLong(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID)
             queryForWeatherDataById(weatherDataId)
         }
     }
@@ -44,8 +49,16 @@ class WeatherDataDetailPresenterImpl(
             }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map { weatherDataEntity: WeatherDataEntity -> formatWeatherDataEntityToDisplay(weatherDataEntity) }
-                .subscribe({ weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel -> view.loadData(weatherDataDetailPresentationModel) }) { throwable: Throwable -> view.showError(throwable) }
+                .map { weatherDataEntity: WeatherDataEntity ->
+                    formatWeatherDataEntityToDisplay(
+                        weatherDataEntity
+                    )
+                }
+                .subscribe({ weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel ->
+                    view!!.loadData(
+                        weatherDataDetailPresentationModel
+                    )
+                }) { throwable: Throwable -> view!!.showError(throwable) }
         compositeDisposable?.add(disposable)
     }
 
@@ -57,8 +70,8 @@ class WeatherDataDetailPresenterImpl(
         return WeatherDataDetailPresentationModelConverter.convert(weatherDataEntity)
     }
 
-    override fun detachView(retainInstance: Boolean) {
-        super.detachView(retainInstance)
+    override fun detachView() {
+        super.detachView()
         safelyDisposeRepositorySubscription()
     }
 
@@ -66,9 +79,5 @@ class WeatherDataDetailPresenterImpl(
         if (compositeDisposable?.isDisposed == true) {
             compositeDisposable!!.dispose()
         }
-    }
-
-    init {
-        initializeCompositeDisposable()
     }
 }

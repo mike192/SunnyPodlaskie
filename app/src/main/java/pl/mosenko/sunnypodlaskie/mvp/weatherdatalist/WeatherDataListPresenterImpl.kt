@@ -2,13 +2,13 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 
 import android.util.Log
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import com.novoda.merlin.MerlinsBeard
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import pl.mosenko.sunnypodlaskie.BuildConfig
+import pl.mosenko.sunnypodlaskie.mvp.MvpBasePresenter
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
 
@@ -16,9 +16,10 @@ import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
  * Created by syk on 03.06.17.
  */
 class WeatherDataListPresenterImpl(
-        var weatherDataRepository: WeatherDataRepository,
-        var merlinsBeard: MerlinsBeard
-) : MvpBasePresenter<WeatherDataListContract.View>(), WeatherDataListContract.Presenter, WeatherDataRepository.Callback {
+    var weatherDataRepository: WeatherDataRepository,
+    var merlinsBeard: MerlinsBeard
+) : MvpBasePresenter<WeatherDataListContract.View>(), WeatherDataListContract.Presenter,
+    WeatherDataRepository.Callback {
 
     private var repositoryDisposable: CompositeDisposable = CompositeDisposable()
     private var internetSubscription: Disposable? = null
@@ -29,9 +30,9 @@ class WeatherDataListPresenterImpl(
 
     private fun observeInternetConnectivity() {
         internetSubscription = ReactiveNetwork.observeInternetConnectivity()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { isConnectedToInternet: Boolean -> loadData(false, isConnectedToInternet) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { isConnectedToInternet: Boolean -> loadData(false, isConnectedToInternet) }
     }
 
     override fun onPause() {
@@ -52,7 +53,7 @@ class WeatherDataListPresenterImpl(
         if (!isViewNotNullAttached()) {
             return
         }
-        view.showLoading(pullToRefresh)
+        view!!.showLoading(pullToRefresh)
         safelyDisposeRepositorySubscription()
         loadCurrentWeatherData(isConnectedToInternet)
     }
@@ -68,26 +69,29 @@ class WeatherDataListPresenterImpl(
         }
     }
 
-    override fun detachView(retainInstance: Boolean) {
-        super.detachView(retainInstance)
+    override fun detachView() {
+        super.detachView()
         safelyDisposeRepositorySubscription()
     }
 
-    override fun onNextWeatherDataEntities(weatherDataEntityList: MutableList<WeatherDataEntity>, isConnectedToInternet: Boolean) {
+    override fun onNextWeatherDataEntities(
+        weatherDataEntityList: MutableList<WeatherDataEntity>,
+        isConnectedToInternet: Boolean
+    ) {
         if (BuildConfig.DEBUG) {
             logFetchedData(weatherDataEntityList)
         }
         if (!isViewNotNullAttached()) {
             return
         }
-        view.setData(weatherDataEntityList)
+        view!!.setData(weatherDataEntityList)
         if (weatherDataEntityList.isEmpty()) {
-            view.showEmpty()
+            view!!.showEmpty()
         } else {
-            view.showContent()
+            view!!.showContent()
         }
         if (!isConnectedToInternet) {
-            view.showDataWithoutInternetUpdatedMessage()
+            view!!.showDataWithoutInternetUpdatedMessage()
         }
     }
 
@@ -99,7 +103,7 @@ class WeatherDataListPresenterImpl(
 
     override fun onError(throwable: Throwable) {
         if (isViewNotNullAttached()) {
-            view.showError(throwable)
+            view!!.showError(throwable)
         }
     }
 

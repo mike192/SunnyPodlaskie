@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.hannesdorfmann.mosby3.mvp.MvpFragment
 import org.koin.android.ext.android.inject
 import pl.aprilapps.switcher.Switcher
 import pl.mosenko.sunnypodlaskie.BuildConfig
@@ -23,10 +23,10 @@ import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
  * Created by syk on 20.05.17.
  */
 class WeatherDataListFragment :
-    MvpFragment<WeatherDataListContract.View, WeatherDataListContract.Presenter>(),
+    Fragment(),
     WeatherDataListContract.View, OnRefreshListener, WeatherDataClickedListener {
 
-    private val fragmentPresenter: WeatherDataListContract.Presenter by inject()
+    private val presenter: WeatherDataListContract.Presenter by inject()
 
     private var _binding: FragmentWeatherDataListBinding? = null
     private val binding get() = _binding!!
@@ -68,6 +68,7 @@ class WeatherDataListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.attachView(this)
         configureSwitcherView()
         customizeRecyclerView()
         customizeSwipeRefreshLayout()
@@ -134,8 +135,8 @@ class WeatherDataListFragment :
         switcher.showErrorView()
     }
 
-    override fun setData(weatherDataEntityList: MutableList<WeatherDataEntity>) {
-        weatherDataListAdaper.swapWeatherList(weatherDataEntityList)
+    override fun setData(data: MutableList<WeatherDataEntity>) {
+        weatherDataListAdaper.swapWeatherList(data)
     }
 
     private fun customizeSwipeRefreshLayout() {
@@ -160,10 +161,6 @@ class WeatherDataListFragment :
         loadData(true)
     }
 
-    override fun createPresenter(): WeatherDataListContract.Presenter {
-        return fragmentPresenter
-    }
-
     override fun onWeatherDataItemClick(id: Long) {
         callback.onItemSelected(id)
     }
@@ -175,21 +172,22 @@ class WeatherDataListFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        presenter.detachView()
         _binding = null
     }
 
     override fun onResume() {
         super.onResume()
-        getPresenter().onResume()
+        presenter.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        getPresenter().onPause()
+        presenter.onPause()
     }
 
     override fun loadData(pullToRefresh: Boolean) {
-        getPresenter().loadData(pullToRefresh)
+        presenter.loadData(pullToRefresh)
     }
 
     interface Callback {

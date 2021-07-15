@@ -25,7 +25,7 @@ class WeatherDataListActivityTest {
     var listActivityActivityTestRule: ActivityTestRule<WeatherDataListActivity?>? = ActivityTestRule(WeatherDataListActivity::class.java)
     @Test
     fun clickOnSetting_shouldStartSettingActivity() {
-        Espresso.onView(ViewMatchers.withId(R.id.WeatherDataListActivity_action_settings)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.action_settings)).perform(ViewActions.click())
         val activity = getActivityInstance()
         Assert.assertTrue(activity is SettingsActivity)
     }
