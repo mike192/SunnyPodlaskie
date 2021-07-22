@@ -1,13 +1,12 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
@@ -16,7 +15,9 @@ import pl.aprilapps.switcher.Switcher
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataListBinding
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListAdaper.WeatherDataClickedListener
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment.WeatherItemCallback
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 
 /**
@@ -27,29 +28,46 @@ class WeatherDataListFragment :
     WeatherDataListContract.View, OnRefreshListener, WeatherDataClickedListener {
 
     private val presenter: WeatherDataListContract.Presenter by inject()
+    private val isTablet by lazy { resources.getBoolean(R.bool.is_tablet) }
 
     private var _binding: FragmentWeatherDataListBinding? = null
     private val binding get() = _binding!!
 
+    private var weatherItemCallback: WeatherItemCallback? = null
+    private var navigationCallback: NavigationCallback? = null
     private lateinit var swipeRefreshLayouts: List<SwipeRefreshLayout>
     private lateinit var switcher: Switcher
     private lateinit var weatherDataListAdaper: WeatherDataListAdaper
 
-    private var callback = dummyCallback
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tryToInitializeCallbackField(activity)
+        tryToInitializeCallbackFields()
     }
 
-    private fun tryToInitializeCallbackField(context: Context?) {
-        callback = try {
-            context as Callback
+    private fun tryToInitializeCallbackFields() {
+        weatherItemCallback = try {
+            if (isTablet) {
+                WeatherItemCallback { weatherDataId: Long -> replaceWeatherDataDetailsFragment(weatherDataId) }
+            } else {
+                activity as WeatherItemCallback
+            }
         } catch (e: ClassCastException) {
-            throw ClassCastException(
-                context.toString()
-                        + " must implement Callback"
-            )
+            throw ClassCastException(context.toString() + " must implement ${WeatherItemCallback::class.simpleName}")
+        }
+        navigationCallback = try {
+            activity as NavigationCallback
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context.toString() + " must implement ${NavigationCallback::class.simpleName}")
+        }
+    }
+
+    private fun replaceWeatherDataDetailsFragment(weatherDataId: Long) {
+        val fragment = WeatherDataDetailFragment().apply {
+            arguments = bundleOf(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID to weatherDataId)
+        }
+
+        childFragmentManager.commit {
+            replace(R.id.fl_container, fragment)
         }
     }
 
@@ -68,6 +86,7 @@ class WeatherDataListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         presenter.attachView(this)
         configureSwitcherView()
         customizeRecyclerView()
@@ -91,7 +110,6 @@ class WeatherDataListFragment :
             weatherDataListAdaper = WeatherDataListAdaper(this)
             it.adapter = weatherDataListAdaper
         }
-
     }
 
     override fun showEmpty() {
@@ -104,7 +122,6 @@ class WeatherDataListFragment :
             it.isRefreshing = false
         }
     }
-
 
     override fun showLoading(pullToRefresh: Boolean) {
         if (!pullToRefresh) {
@@ -162,18 +179,18 @@ class WeatherDataListFragment :
     }
 
     override fun onWeatherDataItemClick(id: Long) {
-        callback.onItemSelected(id)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback = dummyCallback
+        weatherItemCallback?.onItemSelected(id)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.detachView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        weatherItemCallback = null
     }
 
     override fun onResume() {
@@ -190,16 +207,30 @@ class WeatherDataListFragment :
         presenter.loadData(pullToRefresh)
     }
 
-    interface Callback {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.action_settings) {
+            navigationCallback?.navigateToSettings()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun interface WeatherItemCallback {
         fun onItemSelected(weatherDataId: Long)
+    }
+
+    interface NavigationCallback {
+        fun navigateToSettings()
     }
 
     companion object {
         private val TAG = WeatherDataListFragment::class.java.simpleName
-        private val dummyCallback: Callback = object : Callback {
-            override fun onItemSelected(weatherDataId: Long) {
-
-            }
-        }
     }
 }

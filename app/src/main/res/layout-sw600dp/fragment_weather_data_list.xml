@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/l_weather_data_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:orientation="horizontal">
 
-    <fragment
-        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+        <include
+            android:id="@+id/inc_content"
+            layout="@layout/part_weather_data_list_content" />
+
+        <include
+            android:id="@+id/inc_empty"
+            layout="@layout/part_weather_data_list_empty" />
+
+        <include
+            android:id="@+id/inc_error"
+            layout="@layout/part_weather_data_list_error" />
+    </FrameLayout>
 
     <View
         android:layout_width="1dp"

@@ -2,6 +2,7 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 
 import android.util.Log
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
+import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.InternetObservingSettings
 import com.novoda.merlin.MerlinsBeard
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -11,6 +12,8 @@ import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.mvp.MvpBasePresenter
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
+import java.util.concurrent.TimeUnit
+
 
 /**
  * Created by syk on 03.06.17.
@@ -23,13 +26,18 @@ class WeatherDataListPresenterImpl(
 
     private var repositoryDisposable: CompositeDisposable = CompositeDisposable()
     private var internetSubscription: Disposable? = null
+    private val oneMinute: Long = TimeUnit.MINUTES.toMillis(1)
 
     override fun onResume() {
         observeInternetConnectivity()
     }
 
     private fun observeInternetConnectivity() {
-        internetSubscription = ReactiveNetwork.observeInternetConnectivity()
+        val settings = InternetObservingSettings.builder()
+            .interval(oneMinute.toInt())
+            .build()
+
+        internetSubscription = ReactiveNetwork.observeInternetConnectivity(settings)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { isConnectedToInternet: Boolean -> loadData(false, isConnectedToInternet) }

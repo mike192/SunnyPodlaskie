@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import pl.mosenko.sunnypodlaskie.R
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListActivity
+import pl.mosenko.sunnypodlaskie.mvp.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +45,7 @@ object WeatherNotificationUtil {
     }
 
     private fun getPendingIntent(context: Context): PendingIntent? {
-        val mainAcitivityIntent = Intent(context, WeatherDataListActivity::class.java)
+        val mainAcitivityIntent = Intent(context, MainActivity::class.java)
         val taskStackBuilder = TaskStackBuilder.create(context)
         taskStackBuilder.addNextIntent(mainAcitivityIntent)
         return taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)

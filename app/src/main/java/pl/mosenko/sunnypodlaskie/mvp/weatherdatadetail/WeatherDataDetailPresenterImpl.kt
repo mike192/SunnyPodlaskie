@@ -55,10 +55,11 @@ class WeatherDataDetailPresenterImpl(
                     )
                 }
                 .subscribe({ weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel ->
-                    view!!.loadData(
-                        weatherDataDetailPresentationModel
-                    )
-                }) { throwable: Throwable -> view!!.showError(throwable) }
+                    if (isViewNotNullAttached()) {
+                        view!!.loadData(weatherDataDetailPresentationModel)
+                    }
+                })
+                { throwable: Throwable -> view!!.showError(throwable) }
         compositeDisposable?.add(disposable)
     }
 
