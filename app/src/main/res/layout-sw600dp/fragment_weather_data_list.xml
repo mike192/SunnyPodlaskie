@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/l_weather_data_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,9 +37,11 @@
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray" />
 
-    <FrameLayout
-        android:id="@+id/fl_container"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        app:navGraph="@navigation/detail_navigation_graph" />
 </LinearLayout>

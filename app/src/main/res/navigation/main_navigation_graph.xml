@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/weatherDataListFragment">
+
+    <fragment
+        android:id="@+id/weatherDataListFragment"
+        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment"
+        android:label="WeatherDataListFragment" >
+        <action
+            android:id="@+id/navigateToSettingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/navigateToWeatherDataDetailFragment"
+            app:destination="@id/weatherDataDetailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="pl.mosenko.sunnypodlaskie.mvp.setting.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/weatherDataDetailFragment"
+        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment"
+        android:label="WeatherDataDetailFragment" >
+        <argument
+            android:name="weatherDataId"
+            app:argType="long" />
+    </fragment>
+</navigation>

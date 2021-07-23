@@ -1,6 +1,5 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail
 
-import android.os.Bundle
 import pl.mosenko.sunnypodlaskie.mvp.MvpPresenter
 import pl.mosenko.sunnypodlaskie.mvp.MvpView
 
@@ -14,6 +13,6 @@ interface WeatherDataDetailContract {
     }
 
     interface Presenter : MvpPresenter<View> {
-        fun onViewCreated(savedInstanceState: Bundle)
+        fun onViewCreated(weatherDataId: Long?)
     }
 }

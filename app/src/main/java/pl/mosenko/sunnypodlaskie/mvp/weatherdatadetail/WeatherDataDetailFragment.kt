@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import org.koin.android.ext.android.inject
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
@@ -17,6 +18,7 @@ import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataDetailsBinding
  */
 class WeatherDataDetailFragment : Fragment(), WeatherDataDetailContract.View {
 
+    private val args: WeatherDataDetailFragmentArgs by navArgs()
     private var _binding: FragmentWeatherDataDetailsBinding? = null
     private val binding get() = _binding!!
 
@@ -34,7 +36,11 @@ class WeatherDataDetailFragment : Fragment(), WeatherDataDetailContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.attachView(this)
-        presenter.onViewCreated(requireArguments())
+        if (arguments == null || requireArguments().isEmpty) {
+            presenter.onViewCreated(null)
+        } else {
+            presenter.onViewCreated(args.weatherDataId)
+        }
     }
 
     override fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel) {
@@ -68,6 +74,6 @@ class WeatherDataDetailFragment : Fragment(), WeatherDataDetailContract.View {
 
     companion object {
         val TAG: String = WeatherDataDetailFragment::class.java.simpleName
-        const val ARG_WEATHER_DATA_ID: String = "weather_data_id"
+        const val ARG_WEATHER_DATA_ID: String = "weatherDataId"
     }
 }

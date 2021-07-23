@@ -41,7 +41,7 @@ class WeatherDataListAdaper(
     }
 
     interface WeatherDataClickedListener {
-        fun onWeatherDataItemClick(id: Long)
+        fun onWeatherDataItemClick(weatherDataId: Long)
     }
 
     inner class WeatherViewHolder(private val itemBinding: WeatherDataListItemBinding) :

@@ -1,6 +1,5 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail
 
-import android.os.Bundle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -28,10 +27,8 @@ class WeatherDataDetailPresenterImpl(
         compositeDisposable = CompositeDisposable()
     }
 
-    override fun onViewCreated(savedInstanceState: Bundle) {
-        if (savedInstanceState.containsKey(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID)) {
-            val weatherDataId =
-                savedInstanceState.getLong(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID)
+    override fun onViewCreated(weatherDataId: Long?) {
+        if (weatherDataId != null) {
             queryForWeatherDataById(weatherDataId)
         }
     }

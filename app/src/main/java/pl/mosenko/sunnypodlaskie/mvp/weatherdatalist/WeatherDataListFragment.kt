@@ -6,7 +6,8 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
@@ -17,7 +18,6 @@ import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataListBinding
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListAdaper.WeatherDataClickedListener
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment.WeatherItemCallback
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 
 /**
@@ -33,43 +33,9 @@ class WeatherDataListFragment :
     private var _binding: FragmentWeatherDataListBinding? = null
     private val binding get() = _binding!!
 
-    private var weatherItemCallback: WeatherItemCallback? = null
-    private var navigationCallback: NavigationCallback? = null
     private lateinit var swipeRefreshLayouts: List<SwipeRefreshLayout>
     private lateinit var switcher: Switcher
     private lateinit var weatherDataListAdaper: WeatherDataListAdaper
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tryToInitializeCallbackFields()
-    }
-
-    private fun tryToInitializeCallbackFields() {
-        weatherItemCallback = try {
-            if (isTablet) {
-                WeatherItemCallback { weatherDataId: Long -> replaceWeatherDataDetailsFragment(weatherDataId) }
-            } else {
-                activity as WeatherItemCallback
-            }
-        } catch (e: ClassCastException) {
-            throw ClassCastException(context.toString() + " must implement ${WeatherItemCallback::class.simpleName}")
-        }
-        navigationCallback = try {
-            activity as NavigationCallback
-        } catch (e: ClassCastException) {
-            throw ClassCastException(context.toString() + " must implement ${NavigationCallback::class.simpleName}")
-        }
-    }
-
-    private fun replaceWeatherDataDetailsFragment(weatherDataId: Long) {
-        val fragment = WeatherDataDetailFragment().apply {
-            arguments = bundleOf(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID to weatherDataId)
-        }
-
-        childFragmentManager.commit {
-            replace(R.id.fl_container, fragment)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -178,19 +144,26 @@ class WeatherDataListFragment :
         loadData(true)
     }
 
-    override fun onWeatherDataItemClick(id: Long) {
-        weatherItemCallback?.onItemSelected(id)
+    override fun onWeatherDataItemClick(weatherDataId: Long) {
+        if (isTablet) {
+            val navHostFragment = childFragmentManager.findFragmentById(
+                R.id.fcv_container
+            ) as NavHostFragment
+            navHostFragment.navController.navigate(
+                R.id.weatherDataDetailFragmentTablet,
+                bundleOf(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID to weatherDataId)
+            )
+        } else {
+            Navigation.findNavController(binding.root).navigate(
+                WeatherDataListFragmentDirections.navigateToWeatherDataDetailFragment(weatherDataId)
+            )
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.detachView()
         _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        weatherItemCallback = null
     }
 
     override fun onResume() {
@@ -216,18 +189,10 @@ class WeatherDataListFragment :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.action_settings) {
-            navigationCallback?.navigateToSettings()
+            Navigation.findNavController(binding.root).navigate(R.id.navigateToSettingsFragment)
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    fun interface WeatherItemCallback {
-        fun onItemSelected(weatherDataId: Long)
-    }
-
-    interface NavigationCallback {
-        fun navigateToSettings()
     }
 
     companion object {
