@@ -27,4 +27,7 @@ interface WeatherDataEntityDao {
 
     @Query("SELECT * FROM weather_data where id = :weatherDataId")
     suspend fun getWeatherDataById(weatherDataId: Long): WeatherDataEntity
+
+    @Query("SELECT * FROM weather_data where city = :city")
+    fun observeWeatherDataByCityName(city: String): LiveData<WeatherDataEntity>
 }

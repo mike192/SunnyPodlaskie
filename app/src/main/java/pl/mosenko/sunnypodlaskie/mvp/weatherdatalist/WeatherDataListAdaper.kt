@@ -41,7 +41,7 @@ class WeatherDataListAdaper(
     }
 
     interface WeatherDataClickedListener {
-        fun onWeatherDataItemClick(weatherDataId: Long)
+        fun onWeatherDataItemClick(city: String)
     }
 
     inner class WeatherViewHolder(private val itemBinding: WeatherDataListItemBinding) :
@@ -62,7 +62,7 @@ class WeatherDataListAdaper(
 
         override fun onClick(v: View) {
             val weatherDataEntity = weatherDataList[bindingAdapterPosition]
-            clickHandler.onWeatherDataItemClick(weatherDataEntity.id!!)
+            clickHandler.onWeatherDataItemClick(weatherDataEntity.city)
         }
     }
 }

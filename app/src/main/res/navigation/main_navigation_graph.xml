@@ -28,7 +28,7 @@
         android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment"
         android:label="WeatherDataDetailFragment" >
         <argument
-            android:name="weatherDataId"
-            app:argType="long" />
+            android:name="city"
+            app:argType="string" />
     </fragment>
 </navigation>

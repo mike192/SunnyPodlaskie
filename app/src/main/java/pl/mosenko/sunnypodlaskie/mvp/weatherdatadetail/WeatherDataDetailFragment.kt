@@ -5,24 +5,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import org.koin.android.ext.android.inject
+import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataDetailsBinding
+import pl.mosenko.sunnypodlaskie.mvp.EventObserver
 
 /**
  * Created by syk on 20.05.17.
  */
-class WeatherDataDetailFragment : Fragment(), WeatherDataDetailContract.View {
+class WeatherDataDetailFragment : Fragment() {
 
     private val args: WeatherDataDetailFragmentArgs by navArgs()
     private var _binding: FragmentWeatherDataDetailsBinding? = null
     private val binding get() = _binding!!
-
-    private val presenter: WeatherDataDetailContract.Presenter by inject()
+    val viewModel: WeatherDataDetailViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,15 +35,33 @@ class WeatherDataDetailFragment : Fragment(), WeatherDataDetailContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.attachView(this)
         if (arguments == null || requireArguments().isEmpty) {
-            presenter.onViewCreated(null)
+            viewModel.loadWeatherDataDetails(null)
         } else {
-            presenter.onViewCreated(args.weatherDataId)
+            viewModel.loadWeatherDataDetails(args.city)
         }
+        setupObservers()
     }
 
-    override fun loadData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel) {
+    private fun setupObservers() {
+        viewModel.weatherDataDetails.observe(viewLifecycleOwner, {
+            if (it != null) {
+                showData(it)
+            }
+        })
+        viewModel.errorEvent.observe(viewLifecycleOwner, EventObserver {
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, it.message, it)
+            }
+            Snackbar.make(
+                binding.root,
+                R.string.weather_details_error_message,
+                Snackbar.LENGTH_LONG
+            ).show()
+        })
+    }
+
+    private fun showData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel) {
         binding.incPrimaryInfo.apply {
             tvCityDetail.text = weatherDataDetailPresentationModel.titleDetails
             tvTemperatureDetail.text = weatherDataDetailPresentationModel.temperature
@@ -59,21 +77,13 @@ class WeatherDataDetailFragment : Fragment(), WeatherDataDetailContract.View {
         }
     }
 
-    override fun showError(throwable: Throwable) {
-        if (BuildConfig.DEBUG) {
-            Log.e(TAG, throwable.message, throwable)
-        }
-        Toast.makeText(context, R.string.weather_details_error_message, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        presenter.detachView()
         _binding = null
     }
 
     companion object {
         val TAG: String = WeatherDataDetailFragment::class.java.simpleName
-        const val ARG_WEATHER_DATA_ID: String = "weatherDataId"
+        const val ARG_WEATHER_DATA_CITY: String = "weatherDataId"
     }
 }

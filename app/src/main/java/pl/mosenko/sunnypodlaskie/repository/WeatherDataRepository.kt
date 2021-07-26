@@ -1,5 +1,7 @@
 package pl.mosenko.sunnypodlaskie.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import androidx.room.withTransaction
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,6 +13,7 @@ import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto
 import pl.mosenko.sunnypodlaskie.persistence.WeatherDataDatabase
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
+import pl.mosenko.sunnypodlaskie.repository.Result.Success
 import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter
 import java.sql.SQLException
 
@@ -64,6 +67,12 @@ class WeatherDataRepository(
                 }
                 return@withTransaction savedWeatherDataList
             }
+        }
+    }
+
+    fun observeWeatherDataByCity(city: String): LiveData<Result<WeatherDataEntity>> {
+        return weatherDataEntityDao.observeWeatherDataByCityName(city).map {
+            Success(it)
         }
     }
 

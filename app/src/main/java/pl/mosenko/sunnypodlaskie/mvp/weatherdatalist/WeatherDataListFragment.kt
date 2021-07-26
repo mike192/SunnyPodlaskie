@@ -144,18 +144,18 @@ class WeatherDataListFragment :
         loadData(true)
     }
 
-    override fun onWeatherDataItemClick(weatherDataId: Long) {
+    override fun onWeatherDataItemClick(city: String) {
         if (isTablet) {
             val navHostFragment = childFragmentManager.findFragmentById(
                 R.id.fcv_container
             ) as NavHostFragment
             navHostFragment.navController.navigate(
                 R.id.weatherDataDetailFragmentTablet,
-                bundleOf(WeatherDataDetailFragment.ARG_WEATHER_DATA_ID to weatherDataId)
+                bundleOf(WeatherDataDetailFragment.ARG_WEATHER_DATA_CITY to city)
             )
         } else {
             Navigation.findNavController(binding.root).navigate(
-                WeatherDataListFragmentDirections.navigateToWeatherDataDetailFragment(weatherDataId)
+                WeatherDataListFragmentDirections.navigateToWeatherDataDetailFragment(city)
             )
         }
     }
