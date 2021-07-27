@@ -9,10 +9,13 @@ import java.util.*
  * Created by syk on 15.05.17.
  */
 object WeatherDataUtil {
-    private val PRESSURE_UNIT: String? = "hPa"
-    private val TEMPERATURE_UNIT: String? = "\u00b0"
-    private val WIND_SPEED_UNIT: String? = "m/s"
-    fun getWeatherIconResourceByCode(code: String?): Int {
+    private const val PRESSURE_UNIT: String = "hPa"
+    private const val TEMPERATURE_UNIT: String = "\u00b0"
+    private const val WIND_SPEED_UNIT: String = "m/s"
+    private const val HUMIDITY_MARK: String = "%"
+    const val DEFAULT_PLACEHOLDER: String = "-"
+
+    fun getWeatherIconResourceByCode(code: String): Int {
         return when (code) {
             "01d" -> R.drawable.art_01d
             "02d" -> R.drawable.art_02d
@@ -36,20 +39,20 @@ object WeatherDataUtil {
         }
     }
 
-    fun getFormattedTemperature(temperature: Double?): String? {
+    fun getFormattedTemperature(temperature: Double?): String {
         return String.format("%2.1f", temperature) + TEMPERATURE_UNIT
     }
 
-    fun getFormattedPressure(pressure: Double?): String? {
-        return pressure.toString() + PRESSURE_UNIT
+    fun getFormattedPressure(pressure: Double?): String {
+        return "${pressure ?: DEFAULT_PLACEHOLDER} $PRESSURE_UNIT"
     }
 
-    fun getFormattedWindDetails(windSpeed: Double?, windDegree: Double?): String? {
+    fun getFormattedWindDetails(windSpeed: Double?, windDegree: Double?): String {
         val windDegreeDescription = convertWindDegreeToTextDescription(windDegree)
-        return windSpeed.toString() + WIND_SPEED_UNIT + ", " + windDegreeDescription
+        return "${windSpeed ?: DEFAULT_PLACEHOLDER} $WIND_SPEED_UNIT, $windDegreeDescription"
     }
 
-    private fun convertWindDegreeToTextDescription(windDegree: Double?): String? {
+    private fun convertWindDegreeToTextDescription(windDegree: Double?): String {
         if (windDegree == null) return ""
         if (windDegree > 337.5) return "N"
         if (windDegree > 292.5) return "NW"
@@ -61,16 +64,12 @@ object WeatherDataUtil {
         return if (windDegree > 22.5) "NE" else "N"
     }
 
-    fun getFormattedHumidity(humidity: Int?): String? {
-        val stringHumidity = humidity.toString()
-        return addPercentPostfix(stringHumidity)
-    }
-
-    private fun addPercentPostfix(string: String?): String? {
-        return "$string%"
+    fun getFormattedHumidity(humidity: Int?): String {
+        return "${humidity ?: DEFAULT_PLACEHOLDER} $HUMIDITY_MARK"
     }
 
     fun getFormattedTime(date: Date?): String? {
+        if (date == null) return DEFAULT_PLACEHOLDER
         val currentFormat: DateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         currentFormat.timeZone = TimeZone.getTimeZone(getCurrentTimeZone())
         return currentFormat.format(date)
@@ -81,7 +80,7 @@ object WeatherDataUtil {
         return timeZone.id
     }
 
-    fun getDetailsTitle(city: String?, receivingTime: Date?): String? {
+    fun getDetailsTitle(city: String, receivingTime: Date): String {
         val dateFormat: DateFormat = SimpleDateFormat("d MMMM HH:mm:ss ", Locale.getDefault())
         val formattedReceivingDate = dateFormat.format(receivingTime)
         return "$city, $formattedReceivingDate"

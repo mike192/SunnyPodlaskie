@@ -1,141 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_extra_weather_details"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/detail_accent_pane_background"
-    android:paddingStart="@dimen/weather_detail_horizontal_padding"
-    android:paddingLeft="@dimen/weather_detail_horizontal_padding"
-    android:paddingTop="@dimen/weather_detail_vertical_padding"
-    android:paddingEnd="@dimen/weather_detail_horizontal_padding"
-    android:paddingRight="@dimen/weather_detail_horizontal_padding"
-    android:paddingBottom="@dimen/weather_detail_horizontal_padding">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/g_weather_details_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.53" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_pressure_detail_label"
-        style="@style/DetailLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/pressure_label"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33" />
+        <variable
+            name="viewModel"
+            type="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_pressure_detail"
-        style="@style/ExtraWeatherMeasurement"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/default_placeholder"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_pressure_detail_label"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="1012hPa" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_extra_weather_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/detail_accent_pane_background"
+        android:paddingStart="@dimen/weather_detail_horizontal_padding"
+        android:paddingLeft="@dimen/weather_detail_horizontal_padding"
+        android:paddingTop="@dimen/weather_detail_vertical_padding"
+        android:paddingEnd="@dimen/weather_detail_horizontal_padding"
+        android:paddingRight="@dimen/weather_detail_horizontal_padding"
+        android:paddingBottom="@dimen/weather_detail_horizontal_padding">
 
-    <TextView
-        android:id="@+id/tv_wind_detail_label"
-        style="@style/DetailLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/wind_label"
-        app:layout_constraintBottom_toTopOf="@+id/tv_humidity_detail_label"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_pressure_detail_label"
-        app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pressure_detail_label" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/g_weather_details_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.53" />
 
-    <TextView
-        android:id="@+id/tv_wind_detail"
-        style="@style/ExtraWeatherMeasurement"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/default_placeholder"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_wind_detail_label"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="80 m/s NNE" />
+        <TextView
+            android:id="@+id/tv_pressure_detail_label"
+            style="@style/DetailLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/pressure_label"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.33" />
 
-    <TextView
-        android:id="@+id/tv_humidity_detail_label"
-        style="@style/DetailLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/humidity_label"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_wind_detail_label"
-        app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_pressure_detail"
+            style="@style/ExtraWeatherMeasurement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.weatherDataDetails.pressure ?? @string/default_placeholder}"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_pressure_detail_label"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="1012hPa" />
 
-    <TextView
-        android:id="@+id/tv_humidity_detail"
-        style="@style/ExtraWeatherMeasurement"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/default_placeholder"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_humidity_detail_label"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="30%" />
+        <TextView
+            android:id="@+id/tv_wind_detail_label"
+            style="@style/DetailLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/wind_label"
+            app:layout_constraintBottom_toTopOf="@+id/tv_humidity_detail_label"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_pressure_detail_label"
+            app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pressure_detail_label" />
 
-    <TextView
-        android:id="@+id/tv_sunrise_detail_label"
-        style="@style/DetailLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/sunrise_label"
-        app:layout_constraintBottom_toTopOf="@+id/tv_sunset_detail_label"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_humidity_detail_label"
-        app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/tv_humidity_detail_label" />
+        <TextView
+            android:id="@+id/tv_wind_detail"
+            style="@style/ExtraWeatherMeasurement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.weatherDataDetails.windDetails ?? @string/default_placeholder}"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_wind_detail_label"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="80 m/s NNE" />
 
-    <TextView
-        android:id="@+id/tv_sunrise_detail"
-        style="@style/ExtraWeatherMeasurement"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/default_placeholder"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_sunrise_detail_label"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="6:34:02" />
+        <TextView
+            android:id="@+id/tv_humidity_detail_label"
+            style="@style/DetailLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/humidity_label"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_wind_detail_label"
+            app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_sunset_detail_label"
-        style="@style/DetailLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/sunset_label"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_sunrise_detail_label"
-        app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline" />
+        <TextView
+            android:id="@+id/tv_humidity_detail"
+            style="@style/ExtraWeatherMeasurement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.weatherDataDetails.humidity ?? @string/default_placeholder}"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_humidity_detail_label"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="30%" />
 
-    <TextView
-        android:id="@+id/tv_sunset_detail"
-        style="@style/ExtraWeatherMeasurement"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/default_placeholder"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_sunset_detail_label"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="20:36:12" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_sunrise_detail_label"
+            style="@style/DetailLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sunrise_label"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sunset_detail_label"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_humidity_detail_label"
+            app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/tv_humidity_detail_label" />
+
+        <TextView
+            android:id="@+id/tv_sunrise_detail"
+            style="@style/ExtraWeatherMeasurement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.weatherDataDetails.sunrise ?? @string/default_placeholder}"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sunrise_detail_label"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="6:34:02" />
+
+        <TextView
+            android:id="@+id/tv_sunset_detail_label"
+            style="@style/DetailLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sunset_label"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_sunrise_detail_label"
+            app:layout_constraintRight_toLeftOf="@+id/g_weather_details_guideline" />
+
+        <TextView
+            android:id="@+id/tv_sunset_detail"
+            style="@style/ExtraWeatherMeasurement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.weatherDataDetails.sunset ?? @string/default_placeholder}"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sunset_detail_label"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/g_weather_details_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="20:36:12" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

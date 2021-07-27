@@ -3,7 +3,6 @@ package pl.mosenko.sunnypodlaskie.util
 import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto
 import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataListDto
 import pl.mosenko.sunnypodlaskie.persistence.converters.WeatherConditionEntityConverter
-import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import java.util.*
 
@@ -39,8 +38,8 @@ object WeatherDtoEntityConverter {
             sunset = convertToDate(weatherInfo.sysDto.sunset)
         )
 
-    private fun getWeatherConditionFromId(weatherInfo: WeatherDataListDto)
-    = WeatherConditionEntityConverter.fromWeatherConditionId(weatherInfo.weatherDto[0].id)
+    private fun getWeatherConditionFromId(weatherInfo: WeatherDataListDto) =
+        WeatherConditionEntityConverter.fromWeatherConditionId(weatherInfo.weatherDto[0].id)
 
     private fun mapCityToCorrectCity(name: String): String {
         val cityCorrectName = CORRECT_NAMES_OF_CITIES[name]
@@ -58,7 +57,5 @@ object WeatherDtoEntityConverter {
         return weatherDataEntityList
     }
 
-    private fun convertToDate(unixTimestamp: Long): Date {
-        return Date(unixTimestamp * 1000)
-    }
+    private fun convertToDate(unixTimestamp: Long) = Date(unixTimestamp * 1000)
 }

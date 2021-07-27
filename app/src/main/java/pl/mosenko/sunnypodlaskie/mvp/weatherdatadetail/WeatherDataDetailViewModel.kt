@@ -7,7 +7,6 @@ import pl.mosenko.sunnypodlaskie.repository.Result
 import pl.mosenko.sunnypodlaskie.repository.Result.Error
 import pl.mosenko.sunnypodlaskie.repository.Result.Success
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
-import pl.mosenko.sunnypodlaskie.util.WeatherDataDetailPresentationModelConverter
 
 class WeatherDataDetailViewModel(
     val repository: WeatherDataRepository
@@ -25,12 +24,16 @@ class WeatherDataDetailViewModel(
     val weatherDataDetails: LiveData<WeatherDataDetailPresentationModel?> = _weatherDataDetails
 
     private fun convertResult(result: Result<WeatherDataEntity>): WeatherDataDetailPresentationModel? {
-        return if (result is Success) {
-            WeatherDataDetailPresentationModelConverter.convert(result.data)
-        } else if (result is Error) {
-            showErrorMessage(result.exception)
-            null
-        } else null
+        return when (result) {
+            is Success -> {
+                WeatherDataDetailPresentationModel(result.data)
+            }
+            is Error -> {
+                showErrorMessage(result.exception)
+                null
+            }
+            else -> null
+        }
     }
 
     fun loadWeatherDataDetails(city: String?) {

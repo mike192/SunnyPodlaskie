@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_weather_data_details"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment"
-    android:baselineAligned="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include
-        android:id="@+id/inc_primary_info"
-        layout="@layout/primary_weather_details_info"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+    <data>
 
-    <include
-        android:id="@+id/inc_extra_info"
-        layout="@layout/extra_weather_details_info"
-        android:layout_width="0dp"
+        <variable
+            name="viewModel"
+            type="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_weather_data_details"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
-</LinearLayout>
+        android:baselineAligned="true"
+        android:orientation="horizontal"
+        tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment">
+
+        <include
+            android:id="@+id/inc_primary_info"
+            layout="@layout/primary_weather_details_info"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            bind:viewModel="@{viewModel}" />
+
+        <include
+            android:id="@+id/inc_extra_info"
+            layout="@layout/extra_weather_details_info"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            bind:viewModel="@{viewModel}" />
+    </LinearLayout>
+</layout>

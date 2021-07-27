@@ -30,6 +30,8 @@ class WeatherDataDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWeatherDataDetailsBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -44,11 +46,6 @@ class WeatherDataDetailFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.weatherDataDetails.observe(viewLifecycleOwner, {
-            if (it != null) {
-                showData(it)
-            }
-        })
         viewModel.errorEvent.observe(viewLifecycleOwner, EventObserver {
             if (BuildConfig.DEBUG) {
                 Log.e(TAG, it.message, it)
@@ -61,22 +58,6 @@ class WeatherDataDetailFragment : Fragment() {
         })
     }
 
-    private fun showData(weatherDataDetailPresentationModel: WeatherDataDetailPresentationModel) {
-        binding.incPrimaryInfo.apply {
-            tvCityDetail.text = weatherDataDetailPresentationModel.titleDetails
-            tvTemperatureDetail.text = weatherDataDetailPresentationModel.temperature
-            tvWeatherDescriptionDetail.text = weatherDataDetailPresentationModel.description
-            ivWeatherIconDetail.setImageResource(weatherDataDetailPresentationModel.iconResource)
-        }
-        binding.incExtraInfo.apply {
-            tvPressureDetail.text = weatherDataDetailPresentationModel.pressure
-            tvWindDetail.text = weatherDataDetailPresentationModel.windDetails
-            tvHumidityDetail.text = weatherDataDetailPresentationModel.humidity
-            tvSunriseDetail.text = weatherDataDetailPresentationModel.sunrise
-            tvSunsetDetail.text = weatherDataDetailPresentationModel.sunset
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -84,6 +65,6 @@ class WeatherDataDetailFragment : Fragment() {
 
     companion object {
         val TAG: String = WeatherDataDetailFragment::class.java.simpleName
-        const val ARG_WEATHER_DATA_CITY: String = "weatherDataId"
+        const val ARG_WEATHER_DATA_CITY: String = "city"
     }
 }
