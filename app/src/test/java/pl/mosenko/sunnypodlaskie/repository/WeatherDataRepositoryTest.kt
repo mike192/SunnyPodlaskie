@@ -10,7 +10,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnit
-import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataApi
+import pl.mosenko.sunnypodlaskie.network.api.DefaultWeatherDataApi
 import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherConditionEntityDAO
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
@@ -30,7 +30,7 @@ class WeatherDataRepositoryTest {
     var trampolineSchedulerRule: TrampolineSchedulerRule? = TrampolineSchedulerRule()
 
     @Mock
-    lateinit var rxWeatherDataApi: RxWeatherDataApi
+    lateinit var defaultWeatherDataApi: DefaultWeatherDataApi
 
     @Mock
     lateinit var weatherDataEntityDao: WeatherDataEntityDao
@@ -54,7 +54,7 @@ class WeatherDataRepositoryTest {
                 onNextCalled.set(false)
             }
         }
-        Mockito.`when`(rxWeatherDataApi.getCurrentWeatherData()).thenReturn(
+        Mockito.`when`(defaultWeatherDataApi.getCurrentWeatherData()).thenReturn(
                 Observable.just(getTestWeatherDataDto())
         )
         Mockito.`when`(weatherDataEntityDao.deleteBuilder()).thenReturn(Mockito.mock(DeleteBuilder::class.java) as DeleteBuilder<WeatherDataEntity, Long>?)
@@ -83,7 +83,7 @@ class WeatherDataRepositoryTest {
                 onNextCalled.set(false)
             }
         }
-        Mockito.`when`(rxWeatherDataApi.getCurrentWeatherData()).thenReturn(
+        Mockito.`when`(defaultWeatherDataApi.getCurrentWeatherData()).thenReturn(
                 Observable.empty()
         )
         Mockito.`when`(weatherDataEntityDao.deleteBuilder()).thenReturn(Mockito.mock(DeleteBuilder::class.java))

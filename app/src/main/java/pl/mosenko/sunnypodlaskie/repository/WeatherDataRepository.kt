@@ -1,87 +1,51 @@
 package pl.mosenko.sunnypodlaskie.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import androidx.room.withTransaction
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.runBlocking
-import pl.mosenko.sunnypodlaskie.network.api.RxWeatherDataApi
-import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto
+import kotlinx.coroutines.Dispatchers
+import pl.mosenko.sunnypodlaskie.network.api.DefaultWeatherDataApi
 import pl.mosenko.sunnypodlaskie.persistence.WeatherDataDatabase
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
-import pl.mosenko.sunnypodlaskie.repository.Result.Success
+import pl.mosenko.sunnypodlaskie.repository.Result.*
 import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter
-import java.sql.SQLException
 
 /**
  * Created by syk on 03.06.17.
  */
 class WeatherDataRepository(
-    var database: WeatherDataDatabase,
-    var rxWeatherDataApi: RxWeatherDataApi,
-    var weatherDataEntityDao: WeatherDataEntityDao
+    private var database: WeatherDataDatabase,
+    private var defaultWeatherDataApi: DefaultWeatherDataApi,
+    private var weatherDataEntityDao: WeatherDataEntityDao,
 ) {
 
-    fun loadCurrentWeatherData(isConnectedToInternet: Boolean, callback: Callback): Disposable {
-        val weatherDataEntityObservable: Observable<MutableList<WeatherDataEntity>> =
-            if (isConnectedToInternet) {
-                rxWeatherDataApi.getCurrentWeatherData()
-                    .map { obj: WeatherDataDto ->
-                        WeatherDtoEntityConverter.convertToWeatherDataEntityList(obj)
+    fun loadWeatherData(forceUpdate: Boolean) =
+        liveData(Dispatchers.IO) {
+            emit(Loading)
+            try {
+                val weatherDataList: List<WeatherDataEntity> = if (forceUpdate) {
+                    val currentWeatherData = defaultWeatherDataApi.getCurrentWeatherData()
+                    val weatherDataEntityList =
+                        WeatherDtoEntityConverter.convertToWeatherDataEntityList(currentWeatherData)
+                    database.withTransaction {
+                        weatherDataEntityDao.clearAllWeatherData()
+                        weatherDataEntityDao.insertAll(weatherDataEntityList)
                     }
-                    .doOnNext { weatherDataEntityList: MutableList<WeatherDataEntity> ->
-                        cacheCurrentWeatherData(weatherDataEntityList)
-                    }
-            } else {
-                Observable.fromCallable {
-                    runBlocking {
-                        weatherDataEntityDao.getAllWeatherData().toMutableList()
-                    }
+                    weatherDataEntityList
+                } else {
+                    weatherDataEntityDao.getAllWeatherData() ?: emptyList()
                 }
-            }
-        return weatherDataEntityObservable
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ weatherData: MutableList<WeatherDataEntity> ->
-                callback.onNextWeatherDataEntities(
-                    weatherData,
-                    isConnectedToInternet
-                )
-            }) { throwable: Throwable -> callback.onError(throwable) }
-    }
-
-    @Throws(SQLException::class)
-    private fun cacheCurrentWeatherData(weatherDataEntityList: MutableList<WeatherDataEntity>): MutableList<WeatherDataEntity> {
-        return runBlocking {
-            database.withTransaction {
-                weatherDataEntityDao.clearAllWeatherData()
-                weatherDataEntityDao.insertAll(weatherDataEntityList)
-                val savedWeatherDataList = weatherDataEntityDao.getAllWeatherData().toMutableList()
-                weatherDataEntityList.forEach { fetchedEntity ->
-                    val savedEntity = savedWeatherDataList.find { it.city == fetchedEntity.city }
-                    fetchedEntity.id = savedEntity!!.id
-                }
-                return@withTransaction savedWeatherDataList
+                emit(Success(weatherDataList))
+            } catch (throwable: Throwable) {
+                emit(Error(throwable))
             }
         }
-    }
 
     fun observeWeatherDataByCity(city: String): LiveData<Result<WeatherDataEntity>> {
         return weatherDataEntityDao.observeWeatherDataByCityName(city).map {
             Success(it)
         }
-    }
-
-    interface Callback {
-        fun onNextWeatherDataEntities(
-            weatherDataEntityList: MutableList<WeatherDataEntity>,
-            isConnectedToInternet: Boolean
-        )
-
-        fun onError(throwable: Throwable)
     }
 }

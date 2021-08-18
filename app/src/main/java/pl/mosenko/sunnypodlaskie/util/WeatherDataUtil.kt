@@ -15,6 +15,7 @@ object WeatherDataUtil {
     private const val HUMIDITY_MARK: String = "%"
     const val DEFAULT_PLACEHOLDER: String = "-"
 
+    @JvmStatic
     fun getWeatherIconResourceByCode(code: String): Int {
         return when (code) {
             "01d" -> R.drawable.art_01d
@@ -39,6 +40,7 @@ object WeatherDataUtil {
         }
     }
 
+    @JvmStatic
     fun getFormattedTemperature(temperature: Double?): String {
         return String.format("%2.1f", temperature) + TEMPERATURE_UNIT
     }

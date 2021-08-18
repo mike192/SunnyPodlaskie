@@ -3,39 +3,37 @@ package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import org.koin.android.ext.android.inject
-import pl.aprilapps.switcher.Switcher
+import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataListBinding
+import pl.mosenko.sunnypodlaskie.mvp.EventObserver
 import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListAdaper.WeatherDataClickedListener
+import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListAdapter.WeatherDataClickedListener
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
+import pl.mosenko.sunnypodlaskie.repository.Result
 
 /**
  * Created by syk on 20.05.17.
  */
 class WeatherDataListFragment :
-    Fragment(),
-    WeatherDataListContract.View, OnRefreshListener, WeatherDataClickedListener {
+    Fragment(), OnRefreshListener, WeatherDataClickedListener {
 
-    private val presenter: WeatherDataListContract.Presenter by inject()
+    val viewModel: WeatherDataListViewModel by viewModel()
     private val isTablet by lazy { resources.getBoolean(R.bool.is_tablet) }
 
     private var _binding: FragmentWeatherDataListBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var swipeRefreshLayouts: List<SwipeRefreshLayout>
-    private lateinit var switcher: Switcher
-    private lateinit var weatherDataListAdaper: WeatherDataListAdaper
+    private lateinit var weatherDataListAdapter: WeatherDataListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,29 +41,41 @@ class WeatherDataListFragment :
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWeatherDataListBinding.inflate(inflater, container, false)
-        swipeRefreshLayouts = listOf(
-            binding.incContent.srlContent, binding.incEmpty.srlEmpty,
-            binding.incError.srlError
-        )
+        showEmpty()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        presenter.attachView(this)
-        configureSwitcherView()
         customizeRecyclerView()
         customizeSwipeRefreshLayout()
+        setupObservers()
+        viewModel.loadWeatherData(true)
     }
 
-    private fun configureSwitcherView() {
-        switcher = Switcher.Builder(requireContext())
-            .addContentView(binding.incContent.srlContent)
-            .addEmptyView(binding.incEmpty.srlEmpty)
-            .addProgressView(binding.pbLoading)
-            .addErrorView(binding.incError.srlError)
-            .build()
+    private fun setupObservers() {
+        viewModel.weatherDataList.observe(viewLifecycleOwner, {
+            when (it) {
+                is Result.Success -> {
+                    if (it.data.isEmpty()) {
+                        showEmpty()
+                    } else {
+                        showContent(it.data)
+                    }
+                }
+                is Result.Error -> {
+                    showError(it.throwable)
+                }
+                is Result.Loading -> {
+                    showLoading()
+                }
+            }
+        })
+        viewModel.snackbarMessage.observe(viewLifecycleOwner, EventObserver {
+            stopRefreshLayouts()
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+        })
     }
 
     private fun customizeRecyclerView() {
@@ -73,75 +83,59 @@ class WeatherDataListFragment :
         binding.incContent.rvContent.let {
             it.layoutManager = layoutManager
             it.setHasFixedSize(true)
-            weatherDataListAdaper = WeatherDataListAdaper(this)
-            it.adapter = weatherDataListAdaper
+            weatherDataListAdapter = WeatherDataListAdapter(this)
+            it.adapter = weatherDataListAdapter
         }
     }
 
-    override fun showEmpty() {
+    private fun showEmpty() {
         stopRefreshLayouts()
-        switcher.showEmptyView()
+        configureViews(DataListViewsConfiguration.EMPTY)
+    }
+
+    private fun configureViews(configuration: DataListViewsConfiguration) {
+        if (!configuration.loading) {
+            binding.incContent.rvContent.isVisible = configuration.content
+            binding.incContent.tvEmpty.isVisible = configuration.empty
+            binding.incContent.tvErrorMessage.isVisible = configuration.error
+        }
+        binding.incContent.srlContent.isRefreshing = configuration.loading
     }
 
     private fun stopRefreshLayouts() {
-        swipeRefreshLayouts.forEach {
-            it.isRefreshing = false
-        }
+        binding.incContent.srlContent.isRefreshing = false
     }
 
-    override fun showLoading(pullToRefresh: Boolean) {
-        if (!pullToRefresh) {
-            switcher.showProgressView()
-        }
+    private fun showLoading() {
+        configureViews(DataListViewsConfiguration.LOADING)
     }
 
-    override fun showContent() {
+    private fun showContent(data: List<WeatherDataEntity>) {
+        weatherDataListAdapter.swapWeatherList(data)
         stopRefreshLayouts()
-        switcher.showContentView()
+        configureViews(DataListViewsConfiguration.CONTENT)
     }
 
-    override fun showError(throwable: Throwable) {
-        showError(throwable, true)
-    }
-
-    override fun showDataWithoutInternetUpdatedMessage() {
-        Toast.makeText(activity, R.string.message_no_connection, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showError(e: Throwable, pullToRefresh: Boolean) {
+    private fun showError(e: Throwable) {
         if (BuildConfig.DEBUG) {
             Log.e(TAG, e.message, e)
         }
-        if (pullToRefresh) {
-            stopRefreshLayouts()
-        }
-        switcher.showErrorView()
-    }
-
-    override fun setData(data: MutableList<WeatherDataEntity>) {
-        weatherDataListAdaper.swapWeatherList(data)
+        stopRefreshLayouts()
+        configureViews(DataListViewsConfiguration.ERROR)
     }
 
     private fun customizeSwipeRefreshLayout() {
-        setSwipeRefreshLayoutListener()
-        for (swipeRefreshLayout in swipeRefreshLayouts) {
-            swipeRefreshLayout.setColorSchemeResources(
-                R.color.colorAccent,
-                R.color.activated,
-                R.color.colorPrimary,
-                R.color.colorPrimaryDark
-            )
-        }
-    }
-
-    private fun setSwipeRefreshLayoutListener() {
-        swipeRefreshLayouts.forEach {
-            it.setOnRefreshListener(this)
-        }
+        binding.incContent.srlContent.setOnRefreshListener(this)
+        binding.incContent.srlContent.setColorSchemeResources(
+            R.color.colorAccent,
+            R.color.activated,
+            R.color.colorPrimary,
+            R.color.colorPrimaryDark
+        )
     }
 
     override fun onRefresh() {
-        loadData(true)
+        viewModel.loadWeatherData(true)
     }
 
     override fun onWeatherDataItemClick(city: String) {
@@ -162,22 +156,7 @@ class WeatherDataListFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        presenter.detachView()
         _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        presenter.onPause()
-    }
-
-    override fun loadData(pullToRefresh: Boolean) {
-        presenter.loadData(pullToRefresh)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

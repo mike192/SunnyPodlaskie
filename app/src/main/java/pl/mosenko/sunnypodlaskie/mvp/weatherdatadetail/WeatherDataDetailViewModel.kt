@@ -9,7 +9,7 @@ import pl.mosenko.sunnypodlaskie.repository.Result.Success
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
 
 class WeatherDataDetailViewModel(
-    val repository: WeatherDataRepository
+    private val repository: WeatherDataRepository
 ) : ViewModel() {
 
     private val _city = MutableLiveData<String>()
@@ -29,7 +29,7 @@ class WeatherDataDetailViewModel(
                 WeatherDataDetailPresentationModel(result.data)
             }
             is Error -> {
-                showErrorMessage(result.exception)
+                showErrorMessage(result.throwable)
                 null
             }
             else -> null

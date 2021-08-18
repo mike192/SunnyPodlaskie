@@ -1,69 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/touch_selector"
-    android:focusable="true"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingLeft="@dimen/list_item_padding_horizontal"
-    android:paddingTop="@dimen/list_item_padding_vertical"
-    android:paddingRight="@dimen/list_item_padding_horizontal"
-    android:paddingBottom="@dimen/list_item_padding_vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/iv_icon_weather"
-        android:layout_width="@dimen/list_icon"
-        android:layout_height="@dimen/list_icon"
-        app:layout_constraintBottom_toTopOf="@+id/g_list_item_guideline"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/g_list_item_guideline"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/art_01d" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_city"
-        android:layout_width="wrap_content"
+        <import type="pl.mosenko.sunnypodlaskie.util.WeatherDataUtil" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="weatherData"
+            type="pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_item_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/list_item_date_start_margin"
-        android:layout_marginLeft="@dimen/list_item_date_left_margin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        app:layout_constraintBottom_toTopOf="@+id/g_list_item_guideline"
-        app:layout_constraintLeft_toRightOf="@id/iv_icon_weather"
-        tools:text="Białystok" />
+        android:background="@drawable/touch_selector"
+        android:focusable="true"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:onClick="@{() -> clickListener.onClick(clItemLayout)}"
+        android:paddingLeft="@dimen/list_item_padding_horizontal"
+        android:paddingTop="@dimen/list_item_padding_vertical"
+        android:paddingRight="@dimen/list_item_padding_horizontal"
+        android:paddingBottom="@dimen/list_item_padding_vertical">
 
-    <TextView
-        android:id="@+id/tv_weather_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/list_item_date_left_margin"
-        android:layout_marginLeft="@dimen/list_item_date_left_margin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/secondary_text"
-        app:layout_constraintLeft_toRightOf="@+id/iv_icon_weather"
-        app:layout_constraintTop_toTopOf="@+id/g_list_item_guideline"
-        tools:text="Słonecznie" />
+        <ImageView
+            android:id="@+id/iv_icon_weather"
+            android:layout_width="@dimen/list_icon"
+            android:layout_height="@dimen/list_icon"
+            android:src="@{ContextCompat.getDrawable(context, WeatherDataUtil.getWeatherIconResourceByCode(weatherData.iconKey))}"
+            app:layout_constraintBottom_toTopOf="@+id/g_list_item_guideline"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/g_list_item_guideline"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/art_01d" />
 
-    <TextView
-        android:id="@+id/tv_temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/temperature_space"
-        android:layout_marginRight="@dimen/temperature_space"
-        android:fontFamily="sans-serif-light"
-        android:gravity="end"
-        android:textSize="@dimen/weather_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/g_list_item_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/g_list_item_guideline"
-        tools:text="19\u00b0" />
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_item_date_start_margin"
+            android:layout_marginLeft="@dimen/list_item_date_left_margin"
+            android:text="@{weatherData.city}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintBottom_toTopOf="@+id/g_list_item_guideline"
+            app:layout_constraintLeft_toRightOf="@id/iv_icon_weather"
+            tools:text="Białystok" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/g_list_item_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        <TextView
+            android:id="@+id/tv_weather_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_item_date_left_margin"
+            android:layout_marginLeft="@dimen/list_item_date_left_margin"
+            android:text="@{weatherData.weatherCondition.description}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/secondary_text"
+            app:layout_constraintLeft_toRightOf="@+id/iv_icon_weather"
+            app:layout_constraintTop_toTopOf="@+id/g_list_item_guideline"
+            tools:text="Słonecznie" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/temperature_space"
+            android:layout_marginRight="@dimen/temperature_space"
+            android:fontFamily="sans-serif-light"
+            android:gravity="end"
+            android:text="@{WeatherDataUtil.getFormattedTemperature(weatherData.temperature)}"
+            android:textSize="@dimen/weather_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/g_list_item_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/g_list_item_guideline"
+            tools:text="19\u00b0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/g_list_item_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
