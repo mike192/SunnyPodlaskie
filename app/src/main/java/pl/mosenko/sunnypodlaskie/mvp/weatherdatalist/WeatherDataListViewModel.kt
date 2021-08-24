@@ -1,10 +1,8 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatalist
 
 import androidx.databinding.Bindable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.mvp.Event
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
@@ -22,7 +20,7 @@ class WeatherDataListViewModel(
     val snackbarMessage: LiveData<Event<Int>> = _snackbarMessage
 
     private val _weatherDataList = _refreshList.switchMap {
-        repository.loadWeatherData(it)
+        repository.loadWeatherData(it).asLiveData(viewModelScope.coroutineContext + Dispatchers.IO)
     }
     val weatherDataList: LiveData<Result<List<WeatherDataEntity>>> = _weatherDataList
 

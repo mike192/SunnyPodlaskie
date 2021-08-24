@@ -21,4 +21,5 @@
     <string name="error_data">Wystąpił niespotykany błąd. Spróbuj odświeżyć bądź zrestartować aplikację.</string>
     <string name="weather_details_error_message">Wystąpił nieoczekiwany błąd. Przejdź do poprzedniego ekranu.</string>
     <string name="default_placeholder">-</string>
+    <string name="notification_channel_name">Pogodne podlaskie</string>
 </resources>

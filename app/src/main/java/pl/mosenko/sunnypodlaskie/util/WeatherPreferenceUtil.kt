@@ -8,28 +8,19 @@ import pl.mosenko.sunnypodlaskie.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.jvm.Throws
 
 /**
  * Created by syk on 26.05.17.
  */
-object PreferenceWeatherUtil {
-    private val TAG = PreferenceWeatherUtil::class.java.simpleName
+class WeatherPreferenceUtil(private val context: Context) {
+    private val TAG = WeatherPreferenceUtil::class.java.simpleName
 
-    fun areNotificationsEnabled(context: Context): Boolean {
-        val displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key)
-        val showNotificationsDefaultValue =
-            context.resources.getBoolean(R.bool.show_notifications_by_default)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        return sharedPreferences.getBoolean(displayNotificationsKey, showNotificationsDefaultValue)
-    }
-
-    fun getSyncDate(context: Context): Date {
-        val syncTimeString = getStringSyncTime(context)
+    fun getSyncDate(): Date {
+        val syncTimeString = getStringSyncTime()
         return parseSyncTime(syncTimeString)
     }
 
-    private fun getStringSyncTime(context: Context): String {
+    fun getStringSyncTime(): String {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         return if (sharedPreferences.contains(context.getString(R.string.pref_sync_time_key))) {
             sharedPreferences.getString(context.getString(R.string.pref_sync_time_key), "")!!

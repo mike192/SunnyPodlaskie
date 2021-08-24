@@ -9,18 +9,18 @@ import java.util.*
 /**
  * Created by syk on 18.05.17.
  */
-object WeatherDtoEntityConverter {
-    private val CORRECT_NAMES_OF_CITIES: MutableMap<String, String> = HashMap()
+class WeatherDtoEntityConverter {
+    private val polishNamesOfCities: MutableMap<String, String> = HashMap()
 
     init {
-        CORRECT_NAMES_OF_CITIES["Suwalki"] = "Suwałki"
-        CORRECT_NAMES_OF_CITIES["Augustow"] = "Augustów"
-        CORRECT_NAMES_OF_CITIES["Lomza"] = "Łomża"
-        CORRECT_NAMES_OF_CITIES["Monki"] = "Mońki"
-        CORRECT_NAMES_OF_CITIES["Sokolka"] = "Sokółka"
-        CORRECT_NAMES_OF_CITIES["Zambrow"] = "Zambrów"
-        CORRECT_NAMES_OF_CITIES["Hajnowka"] = "Hajnówka"
-        CORRECT_NAMES_OF_CITIES["Bialystok"] = "Białystok"
+        polishNamesOfCities["Suwalki"] = "Suwałki"
+        polishNamesOfCities["Augustow"] = "Augustów"
+        polishNamesOfCities["Lomza"] = "Łomża"
+        polishNamesOfCities["Monki"] = "Mońki"
+        polishNamesOfCities["Sokolka"] = "Sokółka"
+        polishNamesOfCities["Zambrow"] = "Zambrów"
+        polishNamesOfCities["Hajnowka"] = "Hajnówka"
+        polishNamesOfCities["Bialystok"] = "Białystok"
     }
 
     private fun convertToWeatherDataEntity(weatherInfo: WeatherDataListDto) =
@@ -42,7 +42,7 @@ object WeatherDtoEntityConverter {
         WeatherConditionEntityConverter.fromWeatherConditionId(weatherInfo.weatherDto[0].id)
 
     private fun mapCityToCorrectCity(name: String): String {
-        val cityCorrectName = CORRECT_NAMES_OF_CITIES[name]
+        val cityCorrectName = polishNamesOfCities[name]
         return cityCorrectName ?: name
     }
 

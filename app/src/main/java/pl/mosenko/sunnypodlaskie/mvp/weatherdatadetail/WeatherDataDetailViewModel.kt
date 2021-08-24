@@ -1,6 +1,7 @@
 package pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
 import pl.mosenko.sunnypodlaskie.mvp.Event
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 import pl.mosenko.sunnypodlaskie.repository.Result
@@ -18,7 +19,7 @@ class WeatherDataDetailViewModel(
     val errorEvent: LiveData<Event<Throwable>> = _errorEvent
 
     private val _weatherDataDetails = _city.switchMap {
-        repository.observeWeatherDataByCity(it)
+        repository.getWeatherDataByCity(it).asLiveData(viewModelScope.coroutineContext + Dispatchers.IO)
             .map { convertResult(it) }
     }
     val weatherDataDetails: LiveData<WeatherDataDetailPresentationModel?> = _weatherDataDetails

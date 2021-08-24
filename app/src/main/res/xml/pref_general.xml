@@ -7,16 +7,14 @@
     <SwitchPreferenceCompat
         android:defaultValue="@bool/show_notifications_by_default"
         android:key="@string/pref_enable_notifications_key"
-        android:title="@string/pref_enable_notifications_label"
-        android:summaryOn="@string/pref_enable_notifications_true"
         android:summaryOff="@string/pref_enable_notifications_false"
-        />
+        android:summaryOn="@string/pref_enable_notifications_true"
+        android:title="@string/pref_enable_notifications_label" />
 
     <EditTextPreference
-        android:key="@string/pref_sync_time_key"
         android:inputType="text"
-        android:title="@string/pref_sync_time_label"
+        android:key="@string/pref_sync_time_key"
         android:singleLine="true"
-        tools:text="@string/pref_sync_time_default"
-        />
+        android:title="@string/pref_sync_time_label"
+        tools:text="@string/pref_sync_time_default" />
 </PreferenceScreen>

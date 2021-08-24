@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
 
 /**
@@ -19,15 +20,9 @@ interface WeatherDataEntityDao {
     @Query("SELECT * FROM weather_data")
     suspend fun getAllWeatherData(): List<WeatherDataEntity>?
 
-    @Query("SELECT * FROM weather_data")
-    fun observerWeatherData(): LiveData<List<WeatherDataEntity>>
-
     @Query("DELETE FROM weather_data")
     suspend fun clearAllWeatherData()
 
-    @Query("SELECT * FROM weather_data where id = :weatherDataId")
-    suspend fun getWeatherDataById(weatherDataId: Long): WeatherDataEntity
-
     @Query("SELECT * FROM weather_data where city = :city")
-    fun observeWeatherDataByCityName(city: String): LiveData<WeatherDataEntity>
+    fun getWeatherDataByCityName(city: String): Flow<WeatherDataEntity>
 }

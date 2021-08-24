@@ -4,7 +4,6 @@ import androidx.multidex.MultiDexApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import pl.mosenko.sunnypodlaskie.di.appModules
-import pl.mosenko.sunnypodlaskie.util.WeatherDataAlarmSyncUtil
 import java.util.*
 
 /**
@@ -16,7 +15,6 @@ class ApplicationPodlaskieWeather : MultiDexApplication() {
         super.onCreate()
         initKoin()
         setDefaultLocale()
-        setupAlarmOnCreateApp()
     }
 
     private fun initKoin() {
@@ -24,10 +22,6 @@ class ApplicationPodlaskieWeather : MultiDexApplication() {
             androidContext(this@ApplicationPodlaskieWeather)
             modules(appModules)
         }
-    }
-
-    private fun setupAlarmOnCreateApp() {
-        WeatherDataAlarmSyncUtil.setupAlarmOnCreateApp(applicationContext)
     }
 
     private fun setDefaultLocale() {

@@ -1,10 +1,9 @@
 package pl.mosenko.sunnypodlaskie.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import androidx.room.withTransaction
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import pl.mosenko.sunnypodlaskie.network.api.DefaultWeatherDataApi
 import pl.mosenko.sunnypodlaskie.persistence.WeatherDataDatabase
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
@@ -19,16 +18,17 @@ class WeatherDataRepository(
     private var database: WeatherDataDatabase,
     private var defaultWeatherDataApi: DefaultWeatherDataApi,
     private var weatherDataEntityDao: WeatherDataEntityDao,
+    private var weatherDtoEntityConverter: WeatherDtoEntityConverter
 ) {
 
     fun loadWeatherData(forceUpdate: Boolean) =
-        liveData(Dispatchers.IO) {
+        flow {
             emit(Loading)
             try {
                 val weatherDataList: List<WeatherDataEntity> = if (forceUpdate) {
                     val currentWeatherData = defaultWeatherDataApi.getCurrentWeatherData()
                     val weatherDataEntityList =
-                        WeatherDtoEntityConverter.convertToWeatherDataEntityList(currentWeatherData)
+                        weatherDtoEntityConverter.convertToWeatherDataEntityList(currentWeatherData)
                     database.withTransaction {
                         weatherDataEntityDao.clearAllWeatherData()
                         weatherDataEntityDao.insertAll(weatherDataEntityList)
@@ -43,8 +43,8 @@ class WeatherDataRepository(
             }
         }
 
-    fun observeWeatherDataByCity(city: String): LiveData<Result<WeatherDataEntity>> {
-        return weatherDataEntityDao.observeWeatherDataByCityName(city).map {
+    fun getWeatherDataByCity(city: String): Flow<Result<WeatherDataEntity>> {
+        return weatherDataEntityDao.getWeatherDataByCityName(city).map {
             Success(it)
         }
     }
