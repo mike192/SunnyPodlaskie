@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailViewModel" />
+            type="pl.mosenko.sunnypodlaskie.ui.weatherdatadetail.WeatherDataDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

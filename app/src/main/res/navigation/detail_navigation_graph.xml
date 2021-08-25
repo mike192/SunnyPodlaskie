@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/weatherDataDetailFragmentTablet"
-        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment"
+        android:name="pl.mosenko.sunnypodlaskie.ui.weatherdatadetail.WeatherDataDetailFragment"
         android:label="fragment_weather_data_details"
         tools:layout="@layout/fragment_weather_data_details" >
         <argument

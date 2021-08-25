@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/weatherDataListFragment"
-        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListFragment"
+        android:name="pl.mosenko.sunnypodlaskie.ui.weatherdatalist.WeatherDataListFragment"
         android:label="WeatherDataListFragment" >
         <action
             android:id="@+id/navigateToSettingsFragment"
@@ -21,11 +21,11 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="pl.mosenko.sunnypodlaskie.mvp.setting.SettingsFragment"
+        android:name="pl.mosenko.sunnypodlaskie.ui.setting.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/weatherDataDetailFragment"
-        android:name="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment"
+        android:name="pl.mosenko.sunnypodlaskie.ui.weatherdatadetail.WeatherDataDetailFragment"
         android:label="WeatherDataDetailFragment" >
         <argument
             android:name="city"

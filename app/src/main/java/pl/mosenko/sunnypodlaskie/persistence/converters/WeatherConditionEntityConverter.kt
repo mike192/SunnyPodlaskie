@@ -1,15 +1,15 @@
 package pl.mosenko.sunnypodlaskie.persistence.converters
 
 import androidx.room.TypeConverter
-import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherConditionEntity
+import pl.mosenko.sunnypodlaskie.persistence.model.WeatherCondition
 
 object WeatherConditionEntityConverter {
 
     @TypeConverter
-    fun toWeatherConditionId(entity: WeatherConditionEntity) = entity.id
+    fun toWeatherConditionId(entity: WeatherCondition) = entity.id
 
     @TypeConverter
-    fun fromWeatherConditionId(id: Int) = WeatherConditionEntity(id, weatherConditions[id]!!)
+    fun fromWeatherConditionId(id: Int) = WeatherCondition(id, weatherConditions[id]!!)
 }
 
 private val weatherConditions: Map<Int, String> = mapOf(

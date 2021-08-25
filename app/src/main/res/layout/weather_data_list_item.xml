@@ -11,7 +11,7 @@
 
         <variable
             name="weatherData"
-            type="pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity" />
+            type="pl.mosenko.sunnypodlaskie.persistence.model.WeatherData" />
 
         <variable
             name="clickListener"

@@ -5,11 +5,11 @@ import androidx.room.Room
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import pl.mosenko.sunnypodlaskie.BuildConfig
-import pl.mosenko.sunnypodlaskie.mvp.setting.SettingsViewModel
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailViewModel
-import pl.mosenko.sunnypodlaskie.mvp.weatherdatalist.WeatherDataListViewModel
-import pl.mosenko.sunnypodlaskie.network.api.DefaultWeatherDataApi
-import pl.mosenko.sunnypodlaskie.network.api.WeatherDataApi
+import pl.mosenko.sunnypodlaskie.ui.setting.SettingsViewModel
+import pl.mosenko.sunnypodlaskie.ui.weatherdatadetail.WeatherDataDetailViewModel
+import pl.mosenko.sunnypodlaskie.ui.weatherdatalist.WeatherDataListViewModel
+import pl.mosenko.sunnypodlaskie.api.DefaultWeatherDataApi
+import pl.mosenko.sunnypodlaskie.api.WeatherDataApi
 import pl.mosenko.sunnypodlaskie.persistence.WeatherDataDatabase
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
 import pl.mosenko.sunnypodlaskie.util.*

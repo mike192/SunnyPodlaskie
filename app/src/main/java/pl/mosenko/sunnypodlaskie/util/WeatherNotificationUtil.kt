@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import pl.mosenko.sunnypodlaskie.R
-import pl.mosenko.sunnypodlaskie.mvp.MainActivity
+import pl.mosenko.sunnypodlaskie.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
 

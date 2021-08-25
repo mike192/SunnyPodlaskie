@@ -1,9 +1,9 @@
 package pl.mosenko.sunnypodlaskie.util
 
-import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataDto
-import pl.mosenko.sunnypodlaskie.network.dto.WeatherDataListDto
+import pl.mosenko.sunnypodlaskie.api.dto.WeatherDataDto
+import pl.mosenko.sunnypodlaskie.api.dto.WeatherDataListDto
 import pl.mosenko.sunnypodlaskie.persistence.converters.WeatherConditionEntityConverter
-import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
+import pl.mosenko.sunnypodlaskie.persistence.model.WeatherData
 import java.util.*
 
 /**
@@ -24,7 +24,7 @@ class WeatherDtoEntityConverter {
     }
 
     private fun convertToWeatherDataEntity(weatherInfo: WeatherDataListDto) =
-        WeatherDataEntity(
+        WeatherData(
             receivingTime = convertToDate(weatherInfo.dt),
             iconKey = weatherInfo.weatherDto[0].icon,
             city = mapCityToCorrectCity(weatherInfo.name),
@@ -46,15 +46,15 @@ class WeatherDtoEntityConverter {
         return cityCorrectName ?: name
     }
 
-    fun convertToWeatherDataEntityList(weatherDataDto: WeatherDataDto): MutableList<WeatherDataEntity> {
+    fun convertToWeatherDataEntityList(weatherDataDto: WeatherDataDto): MutableList<WeatherData> {
         val weatherDataWeatherDataListDto = weatherDataDto.weatherDataListDto
-        val weatherDataEntityList: MutableList<WeatherDataEntity> =
+        val weatherDataList: MutableList<WeatherData> =
             ArrayList(weatherDataWeatherDataListDto.size)
         for (weatherInfo in weatherDataWeatherDataListDto) {
             val weatherDataEntity = convertToWeatherDataEntity(weatherInfo)
-            weatherDataEntityList.add(weatherDataEntity)
+            weatherDataList.add(weatherDataEntity)
         }
-        return weatherDataEntityList
+        return weatherDataList
     }
 
     private fun convertToDate(unixTimestamp: Long) = Date(unixTimestamp * 1000)

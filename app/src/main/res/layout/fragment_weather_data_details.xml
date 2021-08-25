@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailViewModel" />
+            type="pl.mosenko.sunnypodlaskie.ui.weatherdatadetail.WeatherDataDetailViewModel" />
     </data>
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="pl.mosenko.sunnypodlaskie.mvp.weatherdatadetail.WeatherDataDetailFragment">
+        tools:context="pl.mosenko.sunnypodlaskie.ui.weatherdatadetail.WeatherDataDetailFragment">
 
         <include
             android:id="@+id/inc_primary_info"

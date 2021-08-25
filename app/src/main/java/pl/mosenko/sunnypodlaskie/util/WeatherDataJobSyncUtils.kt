@@ -2,7 +2,7 @@ package pl.mosenko.sunnypodlaskie.util
 
 import android.content.Context
 import androidx.work.*
-import pl.mosenko.sunnypodlaskie.service.WeatherDataSyncWorker
+import pl.mosenko.sunnypodlaskie.sync.WeatherDataSyncWorker
 import java.util.concurrent.TimeUnit
 
 /**

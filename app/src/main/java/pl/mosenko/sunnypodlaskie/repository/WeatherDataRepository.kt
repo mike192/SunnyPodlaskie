@@ -4,10 +4,10 @@ import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import pl.mosenko.sunnypodlaskie.network.api.DefaultWeatherDataApi
+import pl.mosenko.sunnypodlaskie.api.DefaultWeatherDataApi
 import pl.mosenko.sunnypodlaskie.persistence.WeatherDataDatabase
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
-import pl.mosenko.sunnypodlaskie.persistence.entities.WeatherDataEntity
+import pl.mosenko.sunnypodlaskie.persistence.model.WeatherData
 import pl.mosenko.sunnypodlaskie.repository.Result.*
 import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter
 
@@ -25,7 +25,7 @@ class WeatherDataRepository(
         flow {
             emit(Loading)
             try {
-                val weatherDataList: List<WeatherDataEntity> = if (forceUpdate) {
+                val weatherDataList: List<WeatherData> = if (forceUpdate) {
                     val currentWeatherData = defaultWeatherDataApi.getCurrentWeatherData()
                     val weatherDataEntityList =
                         weatherDtoEntityConverter.convertToWeatherDataEntityList(currentWeatherData)
@@ -43,7 +43,7 @@ class WeatherDataRepository(
             }
         }
 
-    fun getWeatherDataByCity(city: String): Flow<Result<WeatherDataEntity>> {
+    fun getWeatherDataByCity(city: String): Flow<Result<WeatherData>> {
         return weatherDataEntityDao.getWeatherDataByCityName(city).map {
             Success(it)
         }
