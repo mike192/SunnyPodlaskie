@@ -1,8 +1,11 @@
 package pl.mosenko.sunnypodlaskie.repository
 
 import androidx.room.withTransaction
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import pl.mosenko.sunnypodlaskie.api.DefaultWeatherDataApi
 import pl.mosenko.sunnypodlaskie.persistence.WeatherDataDatabase
@@ -18,7 +21,8 @@ class WeatherDataRepository(
     private var database: WeatherDataDatabase,
     private var defaultWeatherDataApi: DefaultWeatherDataApi,
     private var weatherDataEntityDao: WeatherDataEntityDao,
-    private var weatherDtoEntityConverter: WeatherDtoEntityConverter
+    private var weatherDtoEntityConverter: WeatherDtoEntityConverter,
+    private var repositoryDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
     fun loadWeatherData(forceUpdate: Boolean) =
@@ -28,7 +32,9 @@ class WeatherDataRepository(
                 val weatherDataList: List<WeatherData> = if (forceUpdate) {
                     val currentWeatherData = defaultWeatherDataApi.getCurrentWeatherData()
                     val weatherDataEntityList =
-                        weatherDtoEntityConverter.convertToWeatherDataEntityList(currentWeatherData)
+                        weatherDtoEntityConverter.convertToWeatherDataEntityList(
+                            currentWeatherData
+                        )
                     database.withTransaction {
                         weatherDataEntityDao.clearAllWeatherData()
                         weatherDataEntityDao.insertAll(weatherDataEntityList)
@@ -41,11 +47,11 @@ class WeatherDataRepository(
             } catch (throwable: Throwable) {
                 emit(Error(throwable))
             }
-        }
+        }.flowOn(repositoryDispatcher)
 
     fun getWeatherDataByCity(city: String): Flow<Result<WeatherData>> {
         return weatherDataEntityDao.getWeatherDataByCityName(city).map {
             Success(it)
-        }
+        }.flowOn(repositoryDispatcher)
     }
 }

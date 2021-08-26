@@ -1,94 +1,118 @@
 package pl.mosenko.sunnypodlaskie.repository
 
-import com.google.gson.Gson
-import com.j256.ormlite.stmt.DeleteBuilder
-import io.reactivex.Observable
-import junit.framework.Assert
-import org.junit.Rule
+import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnit
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import pl.mosenko.sunnypodlaskie.api.DefaultWeatherDataApi
-import pl.mosenko.sunnypodlaskie.api.dto.WeatherDataDto
-import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherConditionEntityDAO
+import pl.mosenko.sunnypodlaskie.persistence.WeatherDataDatabase
 import pl.mosenko.sunnypodlaskie.persistence.dao.WeatherDataEntityDao
 import pl.mosenko.sunnypodlaskie.persistence.model.WeatherData
-import pl.mosenko.sunnypodlaskie.testutils.TrampolineSchedulerRule
-import pl.mosenko.sunnypodlaskie.util.RawResourceUtil
-import java.util.concurrent.atomic.AtomicBoolean
+import pl.mosenko.sunnypodlaskie.util.WeatherDtoEntityConverter
+import java.util.*
 
 /**
  * Created by syk on 12.06.17.
  */
+@ExperimentalCoroutinesApi
 class WeatherDataRepositoryTest {
-    @Rule
-    var rule = MockitoJUnit.rule()
 
-    @Rule
-    var trampolineSchedulerRule: TrampolineSchedulerRule? = TrampolineSchedulerRule()
+    private lateinit var coroutineDispatcher: TestCoroutineDispatcher
+    private val database: WeatherDataDatabase = mock()
+    private val weatherDtoEntityConverter: WeatherDtoEntityConverter = mock()
 
-    @Mock
-    lateinit var defaultWeatherDataApi: DefaultWeatherDataApi
-
-    @Mock
-    lateinit var weatherDataEntityDao: WeatherDataEntityDao
-
-    @Mock
-    lateinit var weatherConditionEntities: WeatherConditionEntityDAO
-
-    @InjectMocks
-    lateinit var weatherDataRepository: WeatherDataRepository
-
-    @Test
-    @Throws(Exception::class)
-    fun loadCurrentWeatherData_ShouldCallOnNext() {
-        val onNextCalled = AtomicBoolean(false)
-        val callback: WeatherDataRepository.Callback = object : WeatherDataRepository.Callback {
-            override fun onNextWeatherDataEntities(weatherDataList: MutableList<WeatherData>, isConnectedToInternet: Boolean) {
-                onNextCalled.set(true)
-            }
-
-            override fun onError(throwable: Throwable) {
-                onNextCalled.set(false)
-            }
-        }
-        Mockito.`when`(defaultWeatherDataApi.getCurrentWeatherData()).thenReturn(
-                Observable.just(getTestWeatherDataDto())
-        )
-        Mockito.`when`(weatherDataEntityDao.deleteBuilder()).thenReturn(Mockito.mock(DeleteBuilder::class.java) as DeleteBuilder<WeatherData, Long>?)
-        Mockito.`when`<Int?>(weatherDataEntityDao.create(Mockito.mock(MutableList::class.java))).thenReturn(1)
-        weatherDataRepository.loadCurrentWeatherData(true, callback)
-        Assert.assertTrue(onNextCalled.get())
-    }
-
-    private fun getTestWeatherDataDto(): WeatherDataDto? {
-        val gson = Gson()
-        val inJson = this.javaClass.classLoader?.getResourceAsStream("test_weather_data.json")
-        val json = RawResourceUtil.readTextFromInputStream(inJson)
-        return gson.fromJson(json, WeatherDataDto::class.java)
+    @Before
+    fun setupTest() {
+        coroutineDispatcher = TestCoroutineDispatcher()
     }
 
     @Test
-    @Throws(Exception::class)
-    fun loadCurrentWeatherData_ShouldCallOnError() {
-        val onNextCalled = AtomicBoolean(false)
-        val callback: WeatherDataRepository.Callback = object : WeatherDataRepository.Callback {
-            override fun onNextWeatherDataEntities(weatherDataList: MutableList<WeatherData>, isConnectedToInternet: Boolean) {
-                onNextCalled.set(true)
+    fun `loadWeatherData should return Loading result as the first flow data regardless from input`() =
+        coroutineDispatcher.runBlockingTest {
+            val defaultWeatherDataApi: DefaultWeatherDataApi = mock()
+            val weatherDataEntityDao: WeatherDataEntityDao = mock()
+
+            val repository = WeatherDataRepository(
+                database,
+                defaultWeatherDataApi,
+                weatherDataEntityDao,
+                weatherDtoEntityConverter,
+                coroutineDispatcher
+            )
+
+            val weatherDataResult = repository.loadWeatherData(true)
+            val firstResult = weatherDataResult.first()
+
+            assertThat(firstResult).isInstanceOf(Result.Loading::class.java)
+        }
+
+    @Test
+    fun `loadWeatherData should return data from database when forceUpdate is false`() =
+        coroutineDispatcher.runBlockingTest {
+            val defaultWeatherDataApi: DefaultWeatherDataApi = mock()
+            val expectedWeatherDataList = listOf(
+                WeatherData(
+                    city = "Białystok",
+                    iconKey = "100",
+                    receivingTime = Date(),
+                    temperature = 5.3
+                ),
+                WeatherData(
+                    city = "Warszawa",
+                    iconKey = "100",
+                    receivingTime = Date(),
+                    temperature = 5.6
+                )
+            )
+            val weatherDataEntityDao: WeatherDataEntityDao = mock {
+                onBlocking { getAllWeatherData() } doReturn expectedWeatherDataList
             }
 
-            override fun onError(throwable: Throwable) {
-                onNextCalled.set(false)
+            val repository = WeatherDataRepository(
+                database,
+                defaultWeatherDataApi,
+                weatherDataEntityDao,
+                weatherDtoEntityConverter,
+                coroutineDispatcher
+            )
+
+            val weatherDataResult = repository.loadWeatherData(false)
+            var actualWeatherDataList: List<WeatherData>? = null
+            weatherDataResult.collect {
+                if (it is Result.Success) {
+                    actualWeatherDataList = it.data
+                }
             }
+
+            assertThat(expectedWeatherDataList).isEqualTo(actualWeatherDataList)
         }
-        Mockito.`when`(defaultWeatherDataApi.getCurrentWeatherData()).thenReturn(
-                Observable.empty()
-        )
-        Mockito.`when`(weatherDataEntityDao.deleteBuilder()).thenReturn(Mockito.mock(DeleteBuilder::class.java))
-        Mockito.`when`<Int?>(weatherDataEntityDao.create(Mockito.mock(MutableList::class.java))).thenReturn(1)
-        weatherDataRepository.loadCurrentWeatherData(true, callback)
-        Assert.assertFalse(onNextCalled.get())
-    }
+
+    @Test
+    fun `loadWeatherData should fetch data from rest api when forceUpdate is true`() =
+        coroutineDispatcher.runBlockingTest {
+            val defaultWeatherDataApi: DefaultWeatherDataApi = mock {
+                onBlocking { getCurrentWeatherData() } doReturn mock()
+            }
+            val weatherDataEntityDao: WeatherDataEntityDao = mock()
+
+            val repository = WeatherDataRepository(
+                database,
+                defaultWeatherDataApi,
+                weatherDataEntityDao,
+                weatherDtoEntityConverter,
+                coroutineDispatcher
+            )
+
+            val weatherDataResult = repository.loadWeatherData(true)
+
+            weatherDataResult.collect {   /* no-op */ }
+            verify(defaultWeatherDataApi).getCurrentWeatherData()
+        }
 }

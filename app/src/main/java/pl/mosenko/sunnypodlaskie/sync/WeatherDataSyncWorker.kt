@@ -3,9 +3,7 @@ package pl.mosenko.sunnypodlaskie.sync
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pl.mosenko.sunnypodlaskie.persistence.model.WeatherData
@@ -25,25 +23,23 @@ class WeatherDataSyncWorker(appContext: Context, params: WorkerParameters) :
     private val weatherNotificationUtil: WeatherNotificationUtil by inject()
 
     override suspend fun doWork(): Result {
-        return withContext(Dispatchers.IO) {
-            var repositoryResult: RepositoryResult<List<WeatherData>>? = null
-            weatherDataRepository.loadWeatherData(true)
-                .collect { result ->
-                    if (result is Success) {
-                        showNotification(result.data)
-                    }
-                    repositoryResult = result
+        var repositoryResult: RepositoryResult<List<WeatherData>>? = null
+        weatherDataRepository.loadWeatherData(true)
+            .collect { result ->
+                if (result is Success) {
+                    showNotification(result.data)
                 }
-            if (runAttemptCount >= RUN_ATTEMPT_COUNT_LIMIT) {
-                return@withContext Result.failure()
+                repositoryResult = result
             }
+        if (runAttemptCount >= RUN_ATTEMPT_COUNT_LIMIT) {
+            return Result.failure()
+        }
 
-            return@withContext when (repositoryResult) {
-                is Success -> {
-                    Result.success()
-                }
-                else -> Result.retry()
+        return when (repositoryResult) {
+            is Success -> {
+                Result.success()
             }
+            else -> Result.retry()
         }
     }
 

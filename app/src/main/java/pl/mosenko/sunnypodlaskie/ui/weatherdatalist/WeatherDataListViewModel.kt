@@ -19,7 +19,7 @@ class WeatherDataListViewModel(
     val snackbarMessage: LiveData<Event<Int>> = _snackbarMessage
 
     private val _weatherDataList = _refreshList.switchMap {
-        repository.loadWeatherData(it).asLiveData(viewModelScope.coroutineContext + Dispatchers.IO)
+        repository.loadWeatherData(it).asLiveData(viewModelScope.coroutineContext)
     }
     val weatherDataList: LiveData<Result<List<WeatherData>>> = _weatherDataList
 

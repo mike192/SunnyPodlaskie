@@ -1,16 +1,16 @@
 package pl.mosenko.sunnypodlaskie.ui.setting
 
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.rule.ActivityTestRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.appcompat.widget.SwitchCompat
 import android.view.View
-import org.hamcrest.core.AllOf
-import org.junit.Rule
+import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.MediumTest
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.Test
 import org.junit.runner.RunWith
 import pl.mosenko.sunnypodlaskie.R
@@ -19,44 +19,36 @@ import pl.mosenko.sunnypodlaskie.R
  * Created by syk on 10.06.17.
  */
 @RunWith(AndroidJUnit4::class)
+@MediumTest
 class SettingsActivityTest {
-    @Rule
-    var activityTestRule: ActivityTestRule<SettingsActivity?>? = ActivityTestRule(SettingsActivity::class.java)
+
     @Test
     fun notificationPreferenceSummary_shouldChangeAfterSwitchTurnOff() {
-        Given@{
-            val switchWidgetReal = activityTestRule.getActivity().findViewById<View?>(R.id.switchWidget) as SwitchCompat
-            InstrumentationRegistry.getInstrumentation().runOnMainSync { switchWidgetReal.isChecked = true }
+        val settingsScenario = launchFragmentInContainer<SettingsFragment>()
+        settingsScenario.onFragment { fragment ->
+            val switchCompat =
+                fragment.requireView().findViewById<View>(R.id.switchWidget) as SwitchCompat
+            switchCompat.isChecked = true
         }
-        When@{
-            val switchWidget = Espresso.onView(
-                    ViewMatchers.withId(R.id.switchWidget))
-            switchWidget.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            switchWidget.perform(ViewActions.click())
-        }
-        Then@{
-            val textView = Espresso.onView(
-                    AllOf.allOf(ViewMatchers.withId(android.R.id.summary), ViewMatchers.withText("Wyłączone")))
-            textView.check(ViewAssertions.matches(ViewMatchers.withText("Wyłączone")))
-        }
+
+        onView(withId(R.id.switchWidget)).perform(click())
+
+        onView(allOf(withId(android.R.id.summary), withText("Wyłączone")))
+            .check(matches(withText("Wyłączone")))
     }
 
     @Test
     fun notificationPreferenceSummary_shouldChangeAfterSwitchTurnOn() {
-        Given@{
-            val switchWidgetReal = activityTestRule.getActivity().findViewById<View?>(R.id.switchWidget) as SwitchCompat
-            InstrumentationRegistry.getInstrumentation().runOnMainSync { switchWidgetReal.isChecked = false }
+        val settingsScenario = launchFragmentInContainer<SettingsFragment>()
+        settingsScenario.onFragment { fragment ->
+            val switchCompat =
+                fragment.requireView().findViewById<View>(R.id.switchWidget) as SwitchCompat
+            switchCompat.isChecked = false
         }
-        When@{
-            val switchWidget = Espresso.onView(
-                    ViewMatchers.withId(R.id.switchWidget))
-            switchWidget.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            switchWidget.perform(ViewActions.click())
-        }
-        Then@{
-            val textView = Espresso.onView(
-                    AllOf.allOf(ViewMatchers.withId(android.R.id.summary), ViewMatchers.withText("Włączone")))
-            textView.check(ViewAssertions.matches(ViewMatchers.withText("Włączone")))
-        }
+
+        onView(withId(R.id.switchWidget)).perform(click())
+
+        onView(allOf(withId(android.R.id.summary), withText("Włączone")))
+            .check(matches(withText("Włączone")))
     }
 }

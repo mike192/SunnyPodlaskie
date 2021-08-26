@@ -1,45 +1,41 @@
 package pl.mosenko.sunnypodlaskie.ui.weatherdatalist
 
-import android.app.Activity
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.rule.ActivityTestRule
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
-import androidx.test.runner.lifecycle.Stage
-import org.junit.Assert
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import pl.mosenko.sunnypodlaskie.R
-import pl.mosenko.sunnypodlaskie.ui.setting.SettingsActivity
+import pl.mosenko.sunnypodlaskie.ui.MainActivity
 
 /**
  * Created by syk on 10.06.17.
  */
 @RunWith(AndroidJUnit4::class)
 class WeatherDataListActivityTest {
-    @Rule
-    var listActivityActivityTestRule: ActivityTestRule<WeatherDataListActivity?>? = ActivityTestRule(WeatherDataListActivity::class.java)
+
     @Test
-    fun clickOnSetting_shouldStartSettingActivity() {
-        Espresso.onView(ViewMatchers.withId(R.id.action_settings)).perform(ViewActions.click())
-        val activity = getActivityInstance()
-        Assert.assertTrue(activity is SettingsActivity)
+    fun clickOnWeatherDataItem_shouldStartWeatherDataDetails() {
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.rv_content)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_content))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
+            )
+        onView(withId(R.id.ll_weather_data_details)).check(matches(isDisplayed()))
     }
 
-    fun getActivityInstance(): Activity? {
-        val activity = arrayOfNulls<Activity?>(1)
-        InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            var currentActivity: Activity? = null
-            val resumedActivities: MutableCollection<*>? = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
-            if (resumedActivities.iterator().hasNext()) {
-                currentActivity = resumedActivities.iterator().next() as Activity?
-                activity[0] = currentActivity
-            }
-        }
-        return activity[0]
+    @Test
+    fun clickOnSetting_shouldStartSettingFragment() {
+        ActivityScenario.launch(MainActivity::class.java)
+
+        onView(withId(R.id.action_settings)).perform(click())
+        onView(withText(R.string.pref_sync_time_label)).check(matches(isDisplayed()))
     }
 }

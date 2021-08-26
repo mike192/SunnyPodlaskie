@@ -1,6 +1,6 @@
 package pl.mosenko.sunnypodlaskie.util
 
-import junit.framework.Assert
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 /**
@@ -11,13 +11,13 @@ class WeatherDataUtilTest {
     fun getFormattedTemperatureTest() {
         val temperature = 23.12233
         val formattedTemperature = WeatherDataUtil.getFormattedTemperature(temperature)
-        Assert.assertEquals("23.1\u00b0", formattedTemperature)
+        assertThat(formattedTemperature).isEqualTo("23.1\u00b0")
     }
 
     @Test
     fun getFormattedPressureTest() {
         val pressure = 1000.0
         val formattedPressure = WeatherDataUtil.getFormattedPressure(pressure)
-        Assert.assertEquals("1000.0hPa", formattedPressure)
+        assertThat(formattedPressure).isEqualTo("1000.0 hPa")
     }
 }

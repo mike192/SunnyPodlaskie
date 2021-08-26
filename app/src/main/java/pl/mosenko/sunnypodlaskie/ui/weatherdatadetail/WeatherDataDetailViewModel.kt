@@ -19,8 +19,8 @@ class WeatherDataDetailViewModel(
     val errorEvent: LiveData<Event<Throwable>> = _errorEvent
 
     private val _weatherDataDetails = _city.switchMap {
-        repository.getWeatherDataByCity(it).asLiveData(viewModelScope.coroutineContext + Dispatchers.IO)
-            .map { convertResult(it) }
+        repository.getWeatherDataByCity(it).asLiveData(viewModelScope.coroutineContext)
+            .map { result ->  convertResult(result) }
     }
     val weatherDataDetails: LiveData<WeatherDataDetailPresentationModel?> = _weatherDataDetails
 

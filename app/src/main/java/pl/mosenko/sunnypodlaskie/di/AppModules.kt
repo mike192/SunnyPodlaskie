@@ -2,6 +2,7 @@ package pl.mosenko.sunnypodlaskie.di
 
 import android.content.Context
 import androidx.room.Room
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import pl.mosenko.sunnypodlaskie.BuildConfig
