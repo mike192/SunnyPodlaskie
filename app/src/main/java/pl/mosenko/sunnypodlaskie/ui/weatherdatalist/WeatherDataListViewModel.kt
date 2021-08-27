@@ -1,12 +1,11 @@
 package pl.mosenko.sunnypodlaskie.ui.weatherdatalist
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
 import pl.mosenko.sunnypodlaskie.R
-import pl.mosenko.sunnypodlaskie.ui.Event
 import pl.mosenko.sunnypodlaskie.persistence.model.WeatherData
 import pl.mosenko.sunnypodlaskie.repository.Result
 import pl.mosenko.sunnypodlaskie.repository.WeatherDataRepository
+import pl.mosenko.sunnypodlaskie.ui.common.Event
 import pl.mosenko.sunnypodlaskie.util.ConnectivityUtil
 
 class WeatherDataListViewModel(

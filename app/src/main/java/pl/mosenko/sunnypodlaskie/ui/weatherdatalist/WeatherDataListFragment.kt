@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataListBinding
-import pl.mosenko.sunnypodlaskie.ui.EventObserver
+import pl.mosenko.sunnypodlaskie.ui.common.EventObserver
 import pl.mosenko.sunnypodlaskie.ui.weatherdatadetail.WeatherDataDetailFragment
 import pl.mosenko.sunnypodlaskie.ui.weatherdatalist.WeatherDataListAdapter.WeatherDataClickedListener
 import pl.mosenko.sunnypodlaskie.persistence.model.WeatherData

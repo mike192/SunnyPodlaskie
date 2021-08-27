@@ -13,7 +13,6 @@ import java.util.*
  * Created by syk on 26.05.17.
  */
 class WeatherPreferenceUtil(private val context: Context) {
-    private val TAG = WeatherPreferenceUtil::class.java.simpleName
 
     fun getSyncDate(): Date {
         val syncTimeString = getStringSyncTime()
@@ -71,5 +70,9 @@ class WeatherPreferenceUtil(private val context: Context) {
             return false
         }
         return hours in 0..24 && minutes >= 0 && minutes <= 59
+    }
+
+    companion object {
+        private const val TAG = "WeatherPreferenceUtil"
     }
 }

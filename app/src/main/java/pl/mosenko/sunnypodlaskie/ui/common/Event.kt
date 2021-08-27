@@ -1,11 +1,10 @@
-package pl.mosenko.sunnypodlaskie.ui
+package pl.mosenko.sunnypodlaskie.ui.common
 
 import androidx.lifecycle.Observer
 
 class Event<out T>(private val content: T) {
 
-    var hasBeenHandled = false
-        private set
+    private var hasBeenHandled = false
 
     fun getContentIfNotHandled(): T? {
         return if (hasBeenHandled) {
@@ -15,8 +14,6 @@ class Event<out T>(private val content: T) {
             content
         }
     }
-
-    fun getContent(): T = content
 }
 
 class EventObserver<T>(private val onEventUnhandledContent: (T) -> Unit) : Observer<Event<T>> {

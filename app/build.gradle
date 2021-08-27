@@ -5,6 +5,10 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 30
     ndkVersion "22.1.7171670"
@@ -20,15 +24,27 @@ android {
 
         buildConfigField "String", "BASEURL", "\"http://api.openweathermap.org/\""
     }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
             testCoverageEnabled = true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.txt"
         }
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            shrinkResources true
+            debuggable true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         externalNativeBuild {
             ndkBuild {
@@ -83,6 +99,7 @@ dependencies {
     implementation "javax.annotation:jsr250-api:1.0"
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.google.android.material:material:1.4.0"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.7"
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.robolectric:robolectric:4.5.1"

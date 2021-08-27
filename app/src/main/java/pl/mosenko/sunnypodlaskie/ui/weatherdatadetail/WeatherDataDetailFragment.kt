@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import pl.mosenko.sunnypodlaskie.BuildConfig
 import pl.mosenko.sunnypodlaskie.R
 import pl.mosenko.sunnypodlaskie.databinding.FragmentWeatherDataDetailsBinding
-import pl.mosenko.sunnypodlaskie.ui.EventObserver
+import pl.mosenko.sunnypodlaskie.ui.common.EventObserver
 
 /**
  * Created by syk on 20.05.17.

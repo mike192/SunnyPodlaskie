@@ -1,5 +1,6 @@
 package pl.mosenko.sunnypodlaskie.broadcastreceiver
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -14,6 +15,7 @@ class AlarmWeatherSyncReceiver : BroadcastReceiver(), KoinComponent {
 
     private val weatherDataJobSyncUtils: WeatherDataJobSyncUtils by inject()
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
         weatherDataJobSyncUtils.scheduleWeatherDataSync(context)
     }

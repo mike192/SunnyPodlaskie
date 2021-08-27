@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package pl.mosenko.sunnypodlaskie
 
 import androidx.multidex.MultiDexApplication
