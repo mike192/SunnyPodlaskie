@@ -6,7 +6,7 @@ The application is written in Kotlin Programming Language, it uses MVVM architec
 * Kotlin Coroutines / Flows (https://kotlinlang.org/docs/coroutines-overview.html)
 * Gson (https://github.com/google/gson)
 * Koin (https://insert-koin.io/)
-* DataBinding, ViewBinding, Room, ViewModels, LiveData, Navigation, Room from Android Jetpack (http://jakewharton.github.io/butterknife/)
+* DataBinding, ViewBinding, Room, ViewModels, LiveData, Navigation, Room from Android Jetpack (https://developer.android.com/jetpack/androidx/explorer)
 
 Libraries used for tests:
 * Espresso
